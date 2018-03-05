@@ -1,14 +1,29 @@
 {
-  "name": "animal_tracker",
-  "version": "0.0.1",
-  "description": "Project code for animal tracker node.js site.",
+  "name": "node_ejs_boilerplate",
+  "version": "1.0.0",
+  "description": "Boilerplate showing the use of ejs as view template engine in a Node.js application",
+  "author": "Jennifer Bland",
   "main": "server.js",
-  "dependencies": {
-    "aws-iot-device-sdk": "^2.0.0",
-    "socket.io": "^2.0.3"
-  },
-  "devDependencies": {},
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node.js",
+    "ejs",
+    "node",
+    "express",
+    "boilerplate"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ratracegrad/nodejs_ejs_boilerplate"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "aws-iot-device-sdk": "^2.2.1",
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
+    "socket.io": "^2.0.4"
   }
 }

@@ -1,25 +1,33 @@
-var awsIot = require('aws-iot-device-sdk');
-var io = require('socket.io')(3000);
+'use strict';
 
-var thingName = '00001323'; // Replace with your own thing name
 
-var device = awsIot.device({
-   keyPath: './certs/privkey.pem',
-  certPath: './certs/cert.pem',
-    caPath: './certs/ca.pem',
-  clientId: thingName,
-      host: 'a31ovqfkmg1ev8.iot.eu-west-1.amazonaws.com'
+// ================================================================
+// get all the tools we need
+// ================================================================
+var express = require('express');
+var routes = require('./routes/index.js');
+var tools = require('./data/sensordata.js');
+var port = process.env.PORT || 8080;
+
+var app = express();
+
+// ================================================================
+// setup our express application
+// ================================================================
+app.use('/public', express.static(process.cwd() + '/public'));
+app.set('view engine', 'ejs');
+
+
+// ================================================================
+// setup routes
+// ================================================================
+routes(app);
+
+// ================================================================
+// start our server
+// ================================================================
+app.listen(port, function() {
+    console.log('Server listening on port ' + port + '...');
 });
 
-// When the MQTT client connects, subscribe to the thing topic
-device.on('connect', function() {
-  console.log('Client connected');
-  device.subscribe('$aws/things/' + thingName + '/shadow/update');
-});
-
-device.on('message', function(topic, payload) {
-  console.log('Message: ', topic, payload.toString());
-
-  // Broadcast the message to any connected socket clients
-  io.emit('broadcast', {topic, message: payload.toString()});
-});
+tools.getSensorData();
