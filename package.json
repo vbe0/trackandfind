@@ -1,0 +1,14 @@
+{
+  "name": "animal_tracker",
+  "version": "0.0.1",
+  "description": "Project code for animal tracker node.js site.",
+  "main": "server.js",
+  "dependencies": {
+    "aws-iot-device-sdk": "^2.0.0",
+    "socket.io": "^2.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
