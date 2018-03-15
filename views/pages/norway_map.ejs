@@ -23,13 +23,6 @@
 
             map.on('click', clear)
 
-            var myIcon = L.icon({
-                iconUrl: 'public/images/sheep.png',
-                iconSize: [58, 58],
-                iconAnchor: [22, 94],
-                popupAnchor: [-3, -76]
-            });
-
             var marker = L.marker([69.48037, 18.9772839]).addTo(map);
             var polygon; 
             marker.on('click', plotpoints)
