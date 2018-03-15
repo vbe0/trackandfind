@@ -24,6 +24,12 @@
             var marker = L.marker([69.581537, 18.9772839]).addTo(map);
             var marker = L.marker([69.881412, 18.9772839]).addTo(map);
             var marker = L.marker([69.681444, 18.9732839]).addTo(map);
+            var polygon = L.polygon([
+            [69.48037, 18.9772839],
+            [69.581537, 20.9772839],
+            [69.881412, 18.9772839]
+            ]).addTo(map);    
+            marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
         </script>
         <% include ../partials/scripts %>
 
