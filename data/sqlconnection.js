@@ -14,6 +14,7 @@ var config =
         }
    }
 
+
 var connection = new Connection(config);
 
 module.exports = {
@@ -26,26 +27,56 @@ module.exports = {
                 queryDatabase()
             }
         });
+    },
+
+    db_insert: function(foo) {
+        insert_into_table(foo);
     }
 }
 
-function queryDatabase()
-   { console.log('Reading rows from the Table...');
 
-       // Read all rows from table
-     request = new Request(
-          "SELECT * from DataPoints",
-             function(err, rowCount, rows) 
-                {
-                    console.log(rowCount + ' row(s) returned');
-                    process.exit();
+function insert_into_table(dataPoint) {
+    id = dataPoint.id;
+    animal_id = dataPoint.animal_id;
+    longitude = dataPoint.longitude;
+    latitude = dataPoint.latitude;
+    time_stamp = dataPoint.time_stamp;
+
+    // Insert into table
+    request = new Request(
+        "INSERT INTO DataPoints (id, animal_id, longitude, laditude, time_stamp) VALUES (?, ?, ?, ?, ?);", 
+        [id, animal_id, longitude, latitude, time_stamp], 
+            function (err, results, fields) {
+                if (err) {
+                    throw err;
+                } else { 
+                    console.log('Inserted ' + results.affectedRows + ' row(s).');
                 }
-            );
+            }
+    );
 
-     request.on('row', function(columns) {
+    connection.execSql(request);
+}
+
+
+
+function queryDatabase() { 
+    console.log('Reading rows from the Table...');
+
+    // Read all rows from table
+    request = new Request(
+        "SELECT * from DataPoints",
+            function(err, rowCount, rows) {
+                console.log(rowCount + ' row(s) returned');
+                process.exit();
+            }
+    );
+
+    request.on('row', function(columns) {
         columns.forEach(function(column) {
             console.log("%s\t%s", column.metadata.colName, column.value);
-         });
-             });
-     connection.execSql(request);
+        });
+    });
+
+    connection.execSql(request);
    }
