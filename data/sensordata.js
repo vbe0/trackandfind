@@ -14,9 +14,14 @@ var device = awsIot.device({
       host: 'a31ovqfkmg1ev8.iot.eu-west-1.amazonaws.com'
 });
 
+
+var db = require('./sqlconnection.js');
+
+
 module.exports = 
 {
     getSensorData: function () {
+        //db.db_query();
 
         // When the MQTT client connects, subscribe to the thing topic
         device.on('connect', function() {
