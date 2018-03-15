@@ -9,7 +9,7 @@ module.exports = function(app) {
         res.render('pages/about');
     });
 
-    app.get('/leaflet', function(req, res) {
-        res.render('pages/leaflet');
+    app.get('/norway_map', function(req, res) {
+        res.render('pages/norway_map');
     });
 };

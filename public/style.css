@@ -6,9 +6,10 @@ html {
 }
 body {
     /* Margin bottom by footer height */
+    padding-top: 48px;
     margin-bottom: 60px;
 }
-#about {
+about {
     padding-top: 48px;
 }
 .footer {

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <% include ../partials/head %>
+    <head>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+        <% include ../partials/nav %>
+    </head>
+    
+    <body>
+        <div class="row">
+            <div class="container" id="norway_map">
+                <div id="map" style="height: 600px; width: 1000px;"></div>                
+            </div>
+        </div>
+
+        <script>
+            var map = L.map('map').setView([69.6815037, 18.9772839], 11);
+            L.tileLayer('http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo2&zoom={z}&x={x}&y={y}', {
+                attribution: '<a href="http://www.kartverket.no/">Kartverket</a>'
+            }).addTo(map);
+            var marker = L.marker([69.48037, 18.9772839]).addTo(map);
+            var marker = L.marker([69.581537, 18.9772839]).addTo(map);
+            var marker = L.marker([69.881412, 18.9772839]).addTo(map);
+            var marker = L.marker([69.681444, 18.9732839]).addTo(map);
+        </script>
+        <% include ../partials/scripts %>
+
+    </body>
+</html>
