@@ -23,15 +23,15 @@
 
             map.on('click', clear)
 
-            var marker = L.marker([69.48037, 18.9772839]).addTo(map);
-            marker.on('click', plotpoints)
-
             var myIcon = L.icon({
-                iconUrl: '../../images/sheep2.png',
+                iconUrl: '../../images/sheep.png',
                 iconSize: [38, 95],
                 iconAnchor: [22, 94],
                 popupAnchor: [-3, -76]
             });
+
+            var marker = L.marker([69.48037, 18.9772839], {icon: myIcon}).addTo(map);
+            marker.on('click', plotpoints)
 
             function plotpoints(e) 
             {
