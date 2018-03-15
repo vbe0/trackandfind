@@ -38,11 +38,29 @@
                 [69.881412, 18.9772839]
                 ]).addTo(map);    
             }
+            function plot(grid) 
+            {
+                var lat = grid[0]
+                var lng = grid[1]
+                console.log("lat:", lat, "lng: ", lng)
+                var newLatLng = new L.LatLng(lat, lng)
+                marker.setLatLng(newLatLng)
+            }
 
             function clear(e)
             {
                 map.removeLayer(polygon);
             }
+
+            var socket = io('http://localhost:3000');
+            socket.on('broadcast', function(data) {
+                var payload = JSON.parse(data.message);
+                //alert(data.message);
+                //console.log(data.message)
+                //console.log(payload.latlng)
+                var grids = payload.latlng.split(",") 
+                plot(grids)
+            });
         </script>
 
     </body>
