@@ -1,5 +1,6 @@
 var Connection = require('tedious').Connection;
 var Request = require('tedious').Request;
+var TYPES = require('tedious').TYPES;  
 
 // Create connection to database
 var config = 
@@ -14,29 +15,21 @@ var config =
         }
    }
 
-
 var connection = new Connection(config);
 
 module.exports = {
     // Attempt to connect and execute queries if connection goes through
-    db_query: function() {
+    db_insert: function() {
         connection.on('connect', function(err) {
-            if (err) {
-                console.log(err)
-            } else {
-                queryDatabase()
-            }
+            queryDatabase();
         });
-    },
-
-    db_insert: function(foo) {
-        insert_into_table(foo);
     }
 }
 
-
-function insert_into_table(dataPoint) {
-    id = dataPoint.id;
+function insert_into_table() {
+    console.log("Inserting into db...");
+    
+    /*id = dataPoint.id;
     animal_id = dataPoint.animal_id;
     longitude = dataPoint.longitude;
     latitude = dataPoint.latitude;
@@ -44,28 +37,38 @@ function insert_into_table(dataPoint) {
 
     // Insert into table
     request = new Request(
-        "INSERT INTO DataPoints (id, animal_id, longitude, laditude, time_stamp) VALUES (?, ?, ?, ?, ?);", 
-        [id, animal_id, longitude, latitude, time_stamp], 
-            function (err, results, fields) {
-                if (err) {
-                    throw err;
-                } else { 
-                    console.log('Inserted ' + results.affectedRows + ' row(s).');
-                }
-            }
-    );
-
+        "INSERT DataPoints (id, animal_id, longitude, laditude, time_stamp) VALUES (@id, @animal_id, @longitude, @laditude, CURRENT_TIMESTAMP);", function (err) {
+        if (err) {  
+            console.log(err);}
+        });
+        
+    request.addParameter('id', TYPES.Int, id);
+    request.addParameter('animal_id', TYPES.int, animal_id);
+    request.addParameter('longitude', TYPES.Int, longitude); 
+    request.addParameter('latitude', TYPES.Int, latitude);  
+    request.addParameter('time_stamp', TYPES.Text, time_stamp);  
+    request.on('row', function(columns) {  
+        columns.forEach(function(column) {  
+            if (column.value === null) {  
+                console.log('NULL');  
+            } else {  
+                console.log("Product id of inserted item is " + column.value);  
+            }  
+        });  
+    });       
+    
     connection.execSql(request);
+    */
 }
 
 
 
-function queryDatabase() { 
+function queryDatabase(id) { 
     console.log('Reading rows from the Table...');
 
     // Read all rows from table
     request = new Request(
-        "SELECT * from DataPoints",
+        "SELECT * from DataPoints", 
             function(err, rowCount, rows) {
                 console.log(rowCount + ' row(s) returned');
                 process.exit();
@@ -79,4 +82,5 @@ function queryDatabase() {
     });
 
     connection.execSql(request);
+
    }
