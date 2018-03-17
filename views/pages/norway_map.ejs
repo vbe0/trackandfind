@@ -5,7 +5,9 @@
     <head>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
         <% include ../partials/nav %>
-        <% include ../partials/scripts %>        
+        <% include ../partials/scripts %>
+        <% include ../partials/scripts/norway_map_scripts %>
+        
     </head>
     
     <body>
@@ -16,51 +18,7 @@
         </div>
         
         <script>
-            var map = L.map('map').setView([69.6815037, 18.9772839], 8);
-            L.tileLayer('http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo2&zoom={z}&x={x}&y={y}', {
-                attribution: '<a href="http://www.kartverket.no/">Kartverket</a>'
-            }).addTo(map);
-
-            map.on('click', clear)
-
-            var marker = L.marker([69.48037, 18.9772839]).addTo(map);
-            var polygon; 
-            marker.on('click', plotpoints)
-
-            function plotpoints(e) 
-            {
-                if (polygon != null) {
-                    map.removeLayer(polygon);
-                }
-                polygon = L.polygon([
-                [69.48037, 18.9772839],
-                [69.581537, 20.9772839],
-                [69.881412, 18.9772839]
-                ]).addTo(map);    
-            }
-            function plot(grid) 
-            {
-                var lat = grid[0]
-                var lng = grid[1]
-                console.log("lat:", lat, "lng: ", lng)
-                var newLatLng = new L.LatLng(lat, lng)
-                marker.setLatLng(newLatLng)
-            }
-
-            function clear(e)
-            {
-                map.removeLayer(polygon);
-            }
-
-            var socket = io('http://localhost:3000');
-            socket.on('broadcast', function(data) {
-                var payload = JSON.parse(data.message);
-                //alert(data.message);
-                //console.log(data.message)
-                //console.log(payload.latlng)
-                var grids = payload.latlng.split(",") 
-                plot(grids)
-            });
+            initMap()
         </script>
 
     </body>
