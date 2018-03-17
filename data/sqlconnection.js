@@ -3,23 +3,21 @@ var Request = require('tedious').Request;
 var TYPES = require('tedious').TYPES;  
 
 // Create connection to database
-var config = 
-   {
-     userName: 'tni068', // update me
-     password: 'Kake1234', // update me
-     server: 'animaltest.database.windows.net', // update me
-     options: 
-        {
-           database: 'test_db' //update me
-           , encrypt: true
-        }
-   }
+var config = {
+    userName: 'tni068', // update me
+    password: 'Kake1234', // update me
+    server: 'animaltest.database.windows.net', // update me
+    options: { 
+        database: 'test_db', 
+        encrypt: true 
+    }
+}
 
 var connection = new Connection(config);
 
 module.exports = {
     // Attempt to connect and execute queries if connection goes through
-    db_insert: function() {
+    db_get: function() {
         connection.on('connect', function(err) {
             queryDatabase();
         });

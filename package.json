@@ -24,8 +24,9 @@
     "async": "^2.6.0",
     "aws-iot-device-sdk": "^2.2.1",
     "ejs": "^2.4.1",
-    "express": "^4.13.4",
+    "express": "^4.16.3",
     "socket.io": "^2.0.4",
-    "tedious": "^2.3.1"
+    "tedious": "^2.6.1",
+    "webworker-threads": "^0.7.13"
   }
 }
