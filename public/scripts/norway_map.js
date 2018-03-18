@@ -1,6 +1,6 @@
 
 var map; 
-//listen()
+listen()
 
 function initMap()
 {
