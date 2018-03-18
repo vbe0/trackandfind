@@ -7,13 +7,13 @@
 var express = require('express');
 var routes = require('./routes/index.js');
 var tools = require('./data/sensordata.js');
-var port = process.env.PORT || 8080;
 
 var app = express();
 
-//var server = require('http').createServer(app);
-//var io = require('socket.io')(server);
-var io = require('socket.io')(3000);
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+//var io = require('socket.io')(3000);
+var port = process.env.PORT || 8080;
 
 
 
