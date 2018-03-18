@@ -11,6 +11,12 @@ var port = process.env.PORT || 8080;
 
 var app = express();
 
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+//var io = require('socket.io')(3000);
+
+
+
 // ================================================================
 // setup our express application
 // ================================================================
@@ -30,4 +36,4 @@ app.listen(port, function() {
     console.log('Server listening on port ' + port + '...');
 });
 
-tools.getSensorData();
+tools.getSensorData(io);

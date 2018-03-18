@@ -1,12 +1,7 @@
 var awsIot = require('aws-iot-device-sdk');
-//var io = require('socket.io')(3000);
 
 
-var express = require('express');
-var app = express();
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
-var port = process.env.PORT || 3000;
+
 
 
 var thingName = '00001319'; // Replace with your own thing name
@@ -24,7 +19,7 @@ var device = awsIot.device({
 
 module.exports = 
 {
-    getSensorData: function () {
+    getSensorData: function (io) {
 
         // When the MQTT client connects, subscribe to the thing topic
         device.on('connect', function() {
