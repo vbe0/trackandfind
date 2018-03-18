@@ -29,9 +29,8 @@ module.exports =
         s = JSON.parse(payload.toString())['state']['reported']['payload'];
         console.log('Message: ', s)
         console.log("GG: ", payload.toString())
-
         // Broadcast the message to any connected socket clients
-        io.emit('broadcast', {topic, message: payload.toString()});
+        // io.emit('broadcast', {topic, message: payload.toString()});
         return s;
         
         });
