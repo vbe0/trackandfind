@@ -46,7 +46,9 @@ function addMarker(markerName, lat, lng)
 
 function listen() 
 {
-    var socket = io('http://trackandfind.azurewebsites.net');
+    //var socket = io('http://trackandfind.azurewebsites.net');
+    var socket = io('http://localhost:3000');
+    
     socket.on('broadcast', function(data) {
         var payload = JSON.parse(data.message);
         var grids = payload.latlng.split(",") 
