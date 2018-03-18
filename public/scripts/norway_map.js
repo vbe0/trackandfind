@@ -46,7 +46,7 @@ function addMarker(markerName, lat, lng)
 
 function listen() 
 {
-    var socket = io({transports: ['websocket']});
+    var socket = io();
     //var socket = io('http://localhost:3000', {transports: ['websocket']});
     
     socket.on('broadcast', function(data) {
