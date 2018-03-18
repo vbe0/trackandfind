@@ -46,7 +46,7 @@ function addMarker(markerName, lat, lng)
 
 function listen() 
 {
-    var socket = io('http://trackandfind.azurewebsites.net');
+    var socket = io();
     //var socket = io('http://localhost:3000');
     
     socket.on('broadcast', function(data) {
