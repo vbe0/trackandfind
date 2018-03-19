@@ -12,7 +12,7 @@ var app = express();
 
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-//io = require('socket.io')(3000);
+io = require('socket.io')(3000);
 var port = process.env.PORT || 8080;
 
 

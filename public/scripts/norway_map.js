@@ -46,8 +46,8 @@ function addMarker(markerName, lat, lng)
 
 function listen() 
 {
-    var socket = io("ws://trackandfind.azurewebsites.net", {transports: ['websocket']});
-    //var socket = io('http://localhost:3000', {transports: ['websocket']});
+    //var socket = io("ws://trackandfind.azurewebsites.net", {transports: ['websocket']});
+    var socket = io('http://localhost:3000', {transports: ['websocket']});
     
     socket.on('broadcast', function(data) {
         var payload = JSON.parse(data.message);
