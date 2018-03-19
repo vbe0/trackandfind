@@ -13,13 +13,16 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 
+    <br>
+    <br>
+    </line>
     <body>
         <div class="container">
             <div class="container">
                 <div class='col-md-5'>
                     <div class="form-group">
                         <div class='input-group date' id='datetimepicker6'>
-                            <input type='text' class="form-control" />
+                            <input type='text' class="form-control" style= />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -40,7 +43,7 @@
                     </div>
                 </div>
             </div>
-            <button onclick="myFunction()">Click me</button>
+            <button onclick="queryData()">Query data</button>
         </div>
 
         <script type="text/javascript">
@@ -57,9 +60,16 @@
                 });
             });
 
-             function myFunction() {
-                var date = $("#datetimepicker6").data("DateTimePicker").date();
-                console.log(date['_d']);
+             function queryData() {
+                 jQuery.getJSON('/public/scripts/search.js',function (data) {
+                        console.log(data);
+                 });
+
+                //var date = $("#datetimepicker6").data("DateTimePicker").date()['_d']
+                //console.log(date);
+                //console.log(Date());
+
+                //M on Mar 19 2018 16:05:53 GMT+0100 (CET)
             };
 
         </script>

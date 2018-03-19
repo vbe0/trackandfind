@@ -24,10 +24,12 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')))
 app.use('/public', express.static(process.cwd() + '/public'));
 app.set('view engine', 'ejs');
 
+
 // ================================================================
 // setup routes
 // ================================================================
 routes(app);
+
 
 // ================================================================
 // start our server
@@ -35,5 +37,6 @@ routes(app);
 app.listen(port, function() {
     console.log('Server listening on port ' + port + '...');
 });
+
 
 tools.getSensorData();
