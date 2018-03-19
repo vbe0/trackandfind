@@ -1,6 +1,6 @@
 
 var map; 
-//listen()
+listen()
 
 function initMap()
 {
@@ -12,6 +12,7 @@ function initMap()
     obj.map.on('click', onMapClick);
 
     obj.markers = {};
+    obj.popups = {};
 
     map = obj; 
 }
@@ -34,12 +35,13 @@ function addMarker(markerName, lat, lng)
         var newLatLng = new L.LatLng(lat, lng)
         console.log("lat:", lat, "lng: ", lng)
         map.markers[markerName].setLatLng(newLatLng)
+        map.popups[markerName] = "<b>" + markerName + "</b>" + "<br>Updated:" + getDateTime()
     }
     else {
         map.markers[markerName] = L.marker([lat, lng]);
         console.log("Adding: ", markerName)
-        var popup = "<b>" + markerName + "</b>" + "<br>I am a sheep"
-        map.markers[markerName].bindPopup(popup)
+        map.popups[markerName] = "<b>" + markerName + "</b>" + "<br>Updated:" + getDateTime()
+        map.markers[markerName].bindPopup(map.popups[markerName])
         map.markers[markerName].addTo(map.map)
     }
 }
@@ -54,4 +56,31 @@ function listen()
         var grids = payload.latlng.split(",") 
         addMarker("Coolsheep", grids[0], grids[1])
     });
+}
+
+function getDateTime() {
+    var now     = new Date(); 
+    var year    = now.getFullYear();
+    var month   = now.getMonth()+1; 
+    var day     = now.getDate();
+    var hour    = now.getHours();
+    var minute  = now.getMinutes();
+    var second  = now.getSeconds(); 
+    if(month.toString().length == 1) {
+        var month = '0'+month;
+    }
+    if(day.toString().length == 1) {
+        var day = '0'+day;
+    }   
+    if(hour.toString().length == 1) {
+        var hour = '0'+hour;
+    }
+    if(minute.toString().length == 1) {
+        var minute = '0'+minute;
+    }
+    if(second.toString().length == 1) {
+        var second = '0'+second;
+    }   
+    var dateTime = year+'/'+month+'/'+day+' '+hour+':'+minute;   
+     return dateTime;
 }

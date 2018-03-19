@@ -12,14 +12,17 @@ var app = express();
 var server = require('http').Server(app);
 var port = process.env.PORT || 8080;
 
+var favicon = require('serve-favicon')
+var path = require('path')
+
+app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')))
+
 
 // ================================================================
 // setup our express application
 // ================================================================
 app.use('/public', express.static(process.cwd() + '/public'));
 app.set('view engine', 'ejs');
-
-
 
 // ================================================================
 // setup routes
@@ -33,7 +36,4 @@ app.listen(port, function() {
     console.log('Server listening on port ' + port + '...');
 });
 
-
-
-//tools.getSensorData(io);
-
+tools.getSensorData();
