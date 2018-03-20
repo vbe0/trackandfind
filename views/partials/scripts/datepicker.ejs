@@ -1,56 +1,64 @@
 <!doctype html>
 <html>
-    <!-- jquery JS -->
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker3.css" rel="stylesheet"/>
+        <link rel="stylesheet" type "text/css" href="/public/style.css" />
 
-    <!-- Bootstrap js -->
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
-    <!-- Propeller textfield js --> 
-    <script type="text/javascript" src="http://propeller.in/components/textfield/js/textfield.js"></script>
-
-    <!-- Datepicker moment with locales -->
-    <script type="text/javascript" language="javascript" src="http://propeller.in/components/datetimepicker/js/moment-with-locales.js"></script>
-
-    <!-- Propeller Bootstrap datetimepicker -->
-    <script type="text/javascript" language="javascript" src="http://propeller.in/components/datetimepicker/js/bootstrap-datetimepicker.js"></script>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+        
     <head>
         <h2 align="center"> Time interval selection </h2>
         
-        <div class="row">
-            <div class="col-sm-3"> 
-                <div class="form-group pmd-textfield pmd-textfield-floating-label">
-                    <label class="control-label" for="regular1">Start Date</label>
-                    <input type="text" class="form-control" id="datepicker-start">
+        <div class="container" id="timer">
+            <div class="col-sm-6" style="height:75px;">
+                <div class='col-md-5'>
+                    <div class="form-group">
+                        <div>Start</div>
+                        <div class='input-group date' id='startDate'>
+                            <input type='text' class="form-control" name="startDate" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-md-5'>
+                    <div class="form-group">
+                        <div>End</div>
+            
+                        <div class='input-group date' id='endDate'>
+                            <input type='text' class="form-control" name="org_endDate" />
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-sm-3"> 
-                <div class="form-group pmd-textfield pmd-textfield-floating-label">
-                    <label class="control-label" for="regular1">End Date</label>
-                    <input type="text" class="form-control" id="datepicker-end">
-                </div>
-            </div>
-        </div>            
+        </div>
+
+        <script type="text/javascript">
+            jQuery('#startDate').datepicker({
+                format: 'mm-dd-yyyy',
+                endDate: '0d',
+                autoclose: true
+            }).on("changeDate",function (e) {
+                jQuery('#endDate').datetimepicker("setStartDate", e.date);
+            });
+                
+            var d = new Date();
+            var now = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+            $('#startDate').datepicker('update', now);
+            jQuery('#endDate').datepicker({
+                format: 'mm-dd-yyyy',
+                endDate: '0d',
+                autoclose: true
+            }).on("changeDate",function (e) {
+                jQuery('#startDate').datepicker("setEndDate", e.date);
+            });
+            $('#endDate').datepicker('update', now);
+
+        </script>
     </head>
-
-    <script>
-        // Linked date and time picker 
-        // start date date and time picker 
-        $('#datepicker-start').datetimepicker();
-
-        // End date date and time picker 
-        $('#datepicker-end').datetimepicker({
-            useCurrent: false 
-        });
-        
-        // start date picke on chagne event [select minimun date for end date datepicker]
-        $("#datepicker-start").on("dp.change", function (e) {
-            $('#datepicker-end').data("DateTimePicker").minDate(e.date);
-        });
-        // Start date picke on chagne event [select maxmimum date for start date datepicker]
-        $("#datepicker-end").on("dp.change", function (e) {
-            $('#datepicker-start').data("DateTimePicker").maxDate(e.date);
-        });
-    </script>
 </html>
