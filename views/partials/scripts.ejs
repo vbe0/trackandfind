@@ -5,17 +5,3 @@
 <!-- Bootstrap javascript file -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <!-- Norgeskart -->
-
-<!-- Date picker -->
-<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
-
-<script>
-    $(function(){
-        $( "#datepicker" ).datepicker();
-        //Pass the user selected date format
-        $( "#format" ).change(function() {
-            $( "#datepicker" ).datepicker( "option", "dateFormat", $(this).val() );
-        });
-    });
-</script>

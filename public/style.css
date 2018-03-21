@@ -29,46 +29,27 @@ body {
     text-decoration: none;
 }
 
-/* Below line is used for online Google font */
-@import url(http://fonts.googleapis.com/css?family=Droid+Serif);
-select{
-width::80%;
-border:3px solid rgb(200, 200, 207);
-height:42px;
-padding:5px;
-border-radius:3px;
-margin:5px 10px 20px 35px;
+
+
+#timer {
+  margin: 0 auto;
 }
-input[type=text]{
-width:76%;
-border:3px solid rgb(200, 200, 207);
-height:23px;
-padding:5px;
-border-radius:3px;
-margin:5px 10px 20px 35px;
-}
-input[type=submit]{
-width:80%;
-border:3px solid rgb(200, 200, 207);
-height:42px;
-padding:5px;
-border-radius:3px;
-margin:10px 10px 20px 35px;
-border:1px solid green;
-}
-label{
-margin-left:35px;
-font-family: 'Droid Serif', serif;
-}
-.main{
-float:left;
-width:355px;
-height:350px;
-box-shadow:1px 1px 12px gray;
-padding-top:30px;
-}
-h2{
-width:370px;
-text-align:center;
-font-family: 'Droid Serif', serif;
-}
+
+/* Bootstrap css */
+@import "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css";
+
+/* Propeller typography */
+@import "http://propeller.in/components/typography/css/typography.css";
+
+/* Propeller input */
+@import "http://propeller.in/components/textfield/css/textfield.css";
+
+/* Propeller icons */
+@import "http://fonts.googleapis.com/icon?family=Material+Icons";
+@import "http://propeller.in/components/icons/css/google-icons.css";
+
+/* Bootstrap datetimepicker */
+@import "http://propeller.in/components/datetimepicker/css/bootstrap-datetimepicker.css";
+
+/* Propeller datetimepicker */
+@import "http://propeller.in/components/datetimepicker/css/pmd-datetimepicker.css";
