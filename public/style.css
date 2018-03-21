@@ -30,6 +30,19 @@ body {
 }
 
 
+.query_btn {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 6px 42px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 20px;
+    cursor: pointer;
+  }
+
 
 #timer {
   margin: 0 auto;
