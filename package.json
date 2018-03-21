@@ -22,6 +22,7 @@
   "license": "MIT",
   "dependencies": {
     "aws-iot-device-sdk": "^2.2.1",
+    "bootstrap-datetimepicker-npm": "^4.17.37-npm",
     "ejs": "^2.4.1",
     "express": "^4.13.4",
     "js-datepicker": "^2.3.0",
