@@ -16,6 +16,27 @@
                         <p>We do tracking with pycom and LoRaWAN.</p>
                     </div>
 
+                    <div class="container">
+                        <button id="mybutton" onclick="clicking()" type="button" class="btn btn-danger" style="width:1000px;height:800px;border-radius: 40%; font-size: 50px;">Test App</button>
+                    </div>
+
+                    <script>
+                        function clicking()
+                        {
+                            var elem = document.getElementById("mybutton")
+                            console.log(elem.value)
+                            elem.value = "..."
+                            sleep(500).then(() => {
+                                // Do something after the sleep!
+                                elem.class = "btn btn-success";
+                                elem.value = "success";
+                            });
+                            }
+                        function sleep (time) {
+                            return new Promise((resolve) => setTimeout(resolve, time));
+                        }
+                    </script>
+
             </div>
         </div><!-- end of content -->
         <% include ../partials/scripts %>
