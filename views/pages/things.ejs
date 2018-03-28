@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <% include ../partials/head %>
+
+    <body>
+        <link href="./../../public/style.css" rel="stylesheet" type="text/css" media="all" />
+
+        <% include ../partials/nav %>
+        <div class="container" id="about">
+            <div class="row">
+                <h2 class="text-center">Things available</h2>
+                    <div class="col-xs-12">
+                        <p></p>
+                    </div>
+            </div>
+        </div>
+
+        <div class="things-input-container">
+            <h3>Register</h3>
+			<form action="/things" method="post">
+                <input class="things-add-thing-input" type="text" name="thingname" placeholder="Thing name" required="">
+                <input class="things-add-thing-input" type="text" name="iot_username" placeholder="User name" required="">
+				<input class="things-add-button" type="submit" value="REGISTER">
+            </form>
+		</div>
+
+    </body>
+
+</html>
