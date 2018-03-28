@@ -1,15 +1,17 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
-var Thing = require('../models/thing');
+//var Thing = require('../models/thing');
+//var things_db = require('../database/thing_connect.js');
 
-// GET route for reading data
+
+// GET route for login
 router.get('/', function (req, res, next) {
 	return res.sendFile(path.join(__dirname + '/loginTemplate/index.html'));
 });
 
 
-//POST route for updating data
+//POST route for login. Check if user is registered
 router.post('/', function (req, res, next) {
   // confirm that user typed same password twice
   if (req.body.password !== req.body.passwordConf) {
@@ -57,7 +59,7 @@ router.post('/', function (req, res, next) {
 })
 
 
-// GET route after registering
+// GET route after registering. Go to map
 router.get('/profile', function (req, res, next) {
   User.findById(req.session.userId)
     .exec(function (error, user) {
@@ -127,7 +129,7 @@ router.post('/things', function (req, res, next) {
           return next(err);
         } else {
           // insert into database
-          console.log(Thing)
+          console.log(things_db)
         }
       }
     });

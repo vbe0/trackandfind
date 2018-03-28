@@ -1,30 +1,19 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
-
-
-//connect to MongoDB
-mongoose.connect('mongodb://localhost/users');
-var user_db = mongoose.connection;
-
-
-// Open user database
-user_db.on('error', console.error.bind(console, 'connection error:'));
-user_db.once('open', function () {
-  // we're connected!
-});
+//var things_db = require('./thing_connect.js')
+var user_db = require('./database/user_connect.js')
 
 
 // View engine we use for rendering
 app.set('view engine', 'ejs');
 
 
-//use sessions for tracking logins
+// Session cookies
 app.use(session({
-  secret: 'work hard',
+  secret: 'yolo swag',
   resave: true,
   saveUninitialized: false,
   store: new MongoStore({
@@ -32,22 +21,22 @@ app.use(session({
   })
 }));
 
-// parse incoming requests
+// Parse requests coming from client(s)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
-// serve static files from template
+// Static files from template
 app.use(express.static(__dirname + '/loginTemplate'));
 app.use('/public', express.static(process.cwd() + '/public'));
 
 
-// include routes
+// Routing
 var routes = require('./routes/router');
 app.use('/', routes);
 
 
-// catch 404 and forward to error handler
+// 404 errors if requesting for non-existing files
 app.use(function (req, res, next) {
   var err = new Error('File Not Found');
   err.status = 404;
