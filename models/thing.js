@@ -2,11 +2,9 @@ var mongoose = require('mongoose');
 
 var thingSchema = new mongoose.Schema({
     thingName: {
-        type: string,
+        type: String,
         unique: true,
         required: true,
         trim: true
     }
 });
-
-thingSchema.get

@@ -18,13 +18,35 @@
 
         <div class="things-input-container">
             <h3>Register</h3>
-			<form action="/things" method="post">
-                <input class="things-add-thing-input" type="text" name="thingname" placeholder="Thing name" required="">
-                <input class="things-add-thing-input" type="text" name="iot_username" placeholder="User name" required="">
-				<input class="things-add-button" type="submit" value="REGISTER">
+			<form id="newthing" action="" method="POST">
+                <input class="things-add-thing-input" id="thingname" type="text" name="thingname" placeholder="Thing name" required="">
+                <input class="things-add-thing-input" id="username" type="text" name="iot_username" placeholder="User name" required="">
+                <button id="btn" type="button" class="things-add-button">Insert thing</button>
             </form>
 		</div>
 
+        <script type="text/javascript">
+            $(function(){				
+                $('#btn').click(function(e){
+                    e.preventDefault();
+                    console.log('select_link clicked');
+                    
+					var data = {};
+					data.username = $("#thingname").val(),
+					data.thingname = $("#username").val();
+					
+					$.ajax({
+						type: 'POST',
+						data: JSON.stringify(data),
+				        contentType: 'application/json',
+                        url: 'http://localhost:3000/things',						
+                        success: function(data) {
+                            console.log('success');
+                            console.log(JSON.stringify(data));
+                        }
+                    });
+                });
+            });
+        </script>
     </body>
-
 </html>

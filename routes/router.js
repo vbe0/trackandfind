@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
-
+var Thing = require('../models/thing');
 
 // GET route for reading data
 router.get('/', function (req, res, next) {
@@ -55,6 +55,7 @@ router.post('/', function (req, res, next) {
     return next(err);
   }
 })
+
 
 // GET route after registering
 router.get('/profile', function (req, res, next) {
@@ -112,6 +113,7 @@ router.get('/things', function (req, res, next) {
     });
 });
 
+
 // A new thing will be added to the database
 router.post('/things', function (req, res, next) {
   User.findById(req.session.userId)
@@ -124,8 +126,8 @@ router.post('/things', function (req, res, next) {
           err.status = 400;
           return next(err);
         } else {
-          console.log(req.body)
-          return res.render('pages/things');
+          // insert into database
+          console.log(Thing)
         }
       }
     });
@@ -133,7 +135,7 @@ router.post('/things', function (req, res, next) {
 
 
 
-// GET for logout logout
+// GET for logout
 router.get('/logout', function (req, res, next) {
   if (req.session) {
     // delete session object

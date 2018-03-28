@@ -8,13 +8,15 @@ var MongoStore = require('connect-mongo')(session);
 
 //connect to MongoDB
 mongoose.connect('mongodb://localhost/users');
-var db = mongoose.connection;
+var user_db = mongoose.connection;
 
-//handle mongo error
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
+
+// Open user database
+user_db.on('error', console.error.bind(console, 'connection error:'));
+user_db.once('open', function () {
   // we're connected!
 });
+
 
 // View engine we use for rendering
 app.set('view engine', 'ejs');
@@ -26,7 +28,7 @@ app.use(session({
   resave: true,
   saveUninitialized: false,
   store: new MongoStore({
-    mongooseConnection: db
+    mongooseConnection: user_db
   })
 }));
 
