@@ -14,6 +14,7 @@ var port = process.env.PORT || 8080;
 
 var favicon = require('serve-favicon')
 var path = require('path')
+var bodyParser = require('body-parser')
 
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')))
 
@@ -39,4 +40,7 @@ app.listen(port, function() {
 });
 
 
-tools.getSensorData();
+app.post('/', function(req, res) {
+    console.log(req);
+});
+///tools.getSensorData();

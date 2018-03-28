@@ -48,6 +48,9 @@ const CONFIG = {
   }
 }
 
+
+
+
 // Instantiate a new Managed IoT Cloud API object
 let api = new MIC
 

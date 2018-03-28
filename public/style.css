@@ -48,6 +48,10 @@ body {
   margin: 0 auto;
 }
 
+#ex1Slider .slider-selection {
+	background: #BABABA;
+}
+
 /* Bootstrap css */
 @import "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css";
 

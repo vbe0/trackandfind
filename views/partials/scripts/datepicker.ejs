@@ -4,6 +4,7 @@
         
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="/public/style.css" />
 
         <!-- Optional theme -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
@@ -40,14 +41,17 @@
                 </div>
             </div>
             <br>
-            <button class="query_btn">Query</button>
+            <div id="spn_url"></div>
+            <button type="submit" id="submit" class="query_btn" onClick="$(this).submit();">Query</button>
         </div>
 
     
 
 
         <script type="text/javascript">
-            $(function () {
+            let start = 0;
+
+            $(document).ready(function () {
                 $('#datetimepicker6').datetimepicker();
                 $('#datetimepicker7').datetimepicker({
                     useCurrent: false //Important! See issue #1075
@@ -57,6 +61,16 @@
                 });
                 $("#datetimepicker7").on("dp.change", function (e) {
                     $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+                });
+            });
+
+            $(document).ready(function () {
+                $('#submit').click(function () {
+                    let start = $('#datetimepicker6').data("DateTimePicker").date();
+                    let stop = $('#datetimepicker7').data("DateTimePicker").date();
+                    /*jQuery.getJSON("/", { start: start, stop: stop }, function() {
+                        console.log("Successful call");
+                    });*/
                 });
             });
         </script>
