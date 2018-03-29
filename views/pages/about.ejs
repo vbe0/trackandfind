@@ -11,28 +11,28 @@
         <!-- content for about page -->
         <div class="container" id="about">
             <div class="row">
-                <h2 class="text-center">About Page</h2>
+                <h2 class="text-center">GG Page</h2>
                     <div class="col-xs-12">
-                        <p>We do tracking with pycom and LoRaWAN.</p>
+                        <p>Test.</p>
+                        <div class="container">
+                            <button id="mybutton" onclick="clicking()" type="button" class="btn btn-danger" style="width:500px;height:200px; font-size: 50px;">Click to test App</button>
+                        </div>
+                        <p id="testapp" style="font-size: 50px;"></p>
                     </div>
 
-                    <div class="container">
-                        <button id="mybutton" onclick="clicking()" type="button" class="btn btn-danger" style="width:1000px;height:800px;border-radius: 40%; font-size: 50px;">Test App</button>
-                    </div>
 
                     <script>
                         function clicking()
                         {
-                            var elem = document.getElementById("mybutton")
+                            var elem = document.getElementById("testapp")
                             console.log(elem.value)
-                            elem.value = "..."
-                            sleep(500).then(() => {
-                                // Do something after the sleep!
-                                elem.class = "btn btn-success";
-                                elem.value = "success";
+                            elem.innerHTML = "Testing..."
+                            sleep(1000).then(() => {
+                                elem.innerHTML = "Done!"
                             });
                             }
-                        function sleep (time) {
+                        function sleep (time) 
+                        {
                             return new Promise((resolve) => setTimeout(resolve, time));
                         }
                     </script>
