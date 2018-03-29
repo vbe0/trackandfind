@@ -1,6 +1,5 @@
 'use strict';
 
-
 // ================================================================
 // get all the tools we need
 // ================================================================
@@ -11,12 +10,11 @@ var tools = require('./data/sensordata.js');
 var app = express();
 
 var server = require('http').Server(app);
-var io = require('socket.io')(server);
-io = require('socket.io')(3000);
 var port = process.env.PORT || 8080;
 
 var favicon = require('serve-favicon')
 var path = require('path')
+var bodyParser = require('body-parser')
 
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')))
 
@@ -27,10 +25,12 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')))
 app.use('/public', express.static(process.cwd() + '/public'));
 app.set('view engine', 'ejs');
 
+
 // ================================================================
 // setup routes
 // ================================================================
 routes(app);
+
 
 // ================================================================
 // start our server
@@ -39,4 +39,8 @@ app.listen(port, function() {
     console.log('Server listening on port ' + port + '...');
 });
 
-tools.getSensorData(io);
+
+app.post('/', function(req, res) {
+    console.log(req);
+});
+///tools.getSensorData();

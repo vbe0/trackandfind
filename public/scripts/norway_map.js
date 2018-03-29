@@ -36,6 +36,7 @@ function addMarker(markerName, lat, lng)
         console.log("lat:", lat, "lng: ", lng)
         map.markers[markerName].setLatLng(newLatLng)
         map.popups[markerName] = "<b>" + markerName + "</b>" + "<br>Updated:" + getDateTime()
+        map.markers[markerName].bindPopup(map.popups[markerName])        
     }
     else {
         map.markers[markerName] = L.marker([lat, lng]);

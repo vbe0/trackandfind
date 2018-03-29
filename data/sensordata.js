@@ -8,6 +8,7 @@ var thingName = '00001319'; // Replace with your own thing name
 
 var http = require('http');
 var fs = require("fs");
+var io = require('socket.io')(3000);
 
 var device = awsIot.device({
    keyPath: './certs/privkey.pem',
@@ -19,7 +20,7 @@ var device = awsIot.device({
 
 module.exports = 
 {
-    getSensorData: function (io) {
+    getSensorData: function () {
 
         // When the MQTT client connects, subscribe to the thing topic
         device.on('connect', function() {
