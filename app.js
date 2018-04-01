@@ -3,7 +3,6 @@ var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
-//var things_db = require('./thing_connect.js')
 var user_db = require('./database/user_connect.js')
 
 

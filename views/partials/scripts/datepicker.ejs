@@ -17,35 +17,35 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 
         <h2 align="center">Selector panel</h3>
-        <div class="container">
-            <div class='col-md-3'>
-                <label>Start time</label>
-                <div class="form-group">
-                    <div class='input-group date' id='datetimepicker6'>
-                        <input type='text' class="form-control" />
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
+        <form id="newthing" action="" method="POST">
+            <div class="container">
+                <div class='col-md-3'>
+                    <label>Start time</label>
+                    <div class="form-group">
+                        <div class='input-group date' id='datetimepicker6'>
+                            <input type='text' class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class='col-md-3'>
-                <label>End time</label>
-                <div class="form-group">
-                    <div class='input-group date' id='datetimepicker7'>
-                        <input type='text' class="form-control" />
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span> 
-                        </span>
+                <div class='col-md-3'>
+                    <label>End time</label>
+                    <div class="form-group">
+                        <div class='input-group date' id='datetimepicker7'>
+                            <input type='text' class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span> 
+                            </span>
+                        </div>
                     </div>
                 </div>
+                <br>
+                <div id="spn_url"></div>
+                <button type="submit" id="submit_btn" class="query_btn" onClick="$(this).submit();">Query</button>
             </div>
-            <br>
-            <div id="spn_url"></div>
-            <button type="submit" id="submit" class="query_btn" onClick="$(this).submit();">Query</button>
-        </div>
-
-    
+        </form>
 
 
         <script type="text/javascript">
@@ -64,13 +64,28 @@
                 });
             });
 
-            $(document).ready(function () {
-                $('#submit').click(function () {
-                    let start = $('#datetimepicker6').data("DateTimePicker").date();
-                    let stop = $('#datetimepicker7').data("DateTimePicker").date();
-                    /*jQuery.getJSON("/", { start: start, stop: stop }, function() {
-                        console.log("Successful call");
-                    });*/
+            $(function(){				
+                let start = $('#datetimepicker6').data("DateTimePicker").date();
+                let stop = $('#datetimepicker7').data("DateTimePicker").date();
+                
+                $('#submit_btn').click(function(e){
+                    e.preventDefault();
+                    console.log('select_link clicked');
+                    
+					var data = {};
+					data.start = $('#datetimepicker6').data("DateTimePicker").date();
+					data.stop = $('#datetimepicker7').data("DateTimePicker").date();
+					
+					$.ajax({
+						type: 'POST',
+						data: JSON.stringify(data),
+				        contentType: 'application/json',
+                        url: 'http://localhost:3000/profile',						
+                        success: function(data) {
+                            console.log('success');
+                            console.log(JSON.stringify(data));
+                        }
+                    });
                 });
             });
         </script>

@@ -1,9 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
-//var Thing = require('../models/thing');
-//var things_db = require('../database/thing_connect.js');
-
+var things_data = require('../data/search.js')
 
 // GET route for login
 router.get('/', function (req, res, next) {
@@ -116,27 +114,6 @@ router.get('/things', function (req, res, next) {
 });
 
 
-// A new thing will be added to the database
-router.post('/things', function (req, res, next) {
-  User.findById(req.session.userId)
-    .exec(function (error, user) {
-      if (error) {
-        return next(error);
-      } else {
-        if (user === null) {
-          var err = new Error('Not authorized! Go back!');
-          err.status = 400;
-          return next(err);
-        } else {
-          // insert into database
-          console.log(things_db)
-        }
-      }
-    });
-});
-
-
-
 // GET for logout
 router.get('/logout', function (req, res, next) {
   if (req.session) {
@@ -151,6 +128,29 @@ router.get('/logout', function (req, res, next) {
   }
 });
 
+
+
+
+// Elastic search query
+router.post('/profile', function (req, res, next) {
+	User.findById(req.session.userId)
+    .exec(function (error, user) {
+    	if (error) {
+        	return next(error);
+      	} else {
+        	if (user === null) {
+          		var err = new Error('Not authorized! Go back!');
+          		err.status = 400;
+          		return next(err);
+        	} else {
+				var r = things_data.getData().then((data) => {
+					//res.send(data)
+					console.log(data)
+				})
+			}
+        }
+    })
+})
 
 
 module.exports = router;

@@ -25,28 +25,6 @@
             </form>
 		</div>
 
-        <script type="text/javascript">
-            $(function(){				
-                $('#btn').click(function(e){
-                    e.preventDefault();
-                    console.log('select_link clicked');
-                    
-					var data = {};
-					data.username = $("#thingname").val(),
-					data.thingname = $("#username").val();
-					
-					$.ajax({
-						type: 'POST',
-						data: JSON.stringify(data),
-				        contentType: 'application/json',
-                        url: 'http://localhost:3000/things',						
-                        success: function(data) {
-                            console.log('success');
-                            console.log(JSON.stringify(data));
-                        }
-                    });
-                });
-            });
         </script>
     </body>
 </html>
