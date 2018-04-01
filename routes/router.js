@@ -143,11 +143,11 @@ router.post('/profile', function (req, res, next) {
           		err.status = 400;
           		return next(err);
         	} else {
-				var r = things_data.getData().then((data) => {
-					//res.send(data)
-					console.log(data)
-				})
-			}
+				    var r = things_data.getData().then((data) => {
+					    res.send(data)
+					    console.log(data)
+				    })
+			    }
         }
     })
 })

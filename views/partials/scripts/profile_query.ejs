@@ -43,51 +43,48 @@
                 </div>
                 <br>
                 <div id="spn_url"></div>
-                <button type="submit" id="submit_btn" class="query_btn" onClick="$(this).submit();">Query</button>
+                <button type="submit" id="submit_btn" class="query_btn">Query</button>
             </div>
         </form>
 
 
         <script type="text/javascript">
-            let start = 0;
-
-            $(document).ready(function () {
-                $('#datetimepicker6').datetimepicker();
+                $(document).ready(function () {
+                $('#datetimepicker6').datetimepicker()
                 $('#datetimepicker7').datetimepicker({
                     useCurrent: false //Important! See issue #1075
-                });
+                })
                 $("#datetimepicker6").on("dp.change", function (e) {
-                    $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
-                });
+                    $('#datetimepicker7').data("DateTimePicker").minDate(e.date)
+                })
                 $("#datetimepicker7").on("dp.change", function (e) {
-                    $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
-                });
-            });
+                    $('#datetimepicker6').data("DateTimePicker").maxDate(e.date)
+                })
+            })
 
-            $(function(){				
-                let start = $('#datetimepicker6').data("DateTimePicker").date();
-                let stop = $('#datetimepicker7').data("DateTimePicker").date();
+            $("#submit_btn").on('click', function() {
+                document.getElementById('submit_btn').setAttribute("class", "query_btn_disabled")
+                $("#submit_btn").attr('disabled', true)
                 
-                $('#submit_btn').click(function(e){
-                    e.preventDefault();
-                    console.log('select_link clicked');
-                    
-					var data = {};
-					data.start = $('#datetimepicker6').data("DateTimePicker").date();
-					data.stop = $('#datetimepicker7').data("DateTimePicker").date();
-					
-					$.ajax({
-						type: 'POST',
-						data: JSON.stringify(data),
-				        contentType: 'application/json',
-                        url: 'http://localhost:3000/profile',						
-                        success: function(data) {
-                            console.log('success');
-                            console.log(JSON.stringify(data));
-                        }
-                    });
-                });
-            });
+                var data = {};
+				data.start = $('#datetimepicker6').data("DateTimePicker").date()
+				data.stop = $('#datetimepicker7').data("DateTimePicker").date()
+                
+                $.ajax({
+					type: 'POST',
+					data: JSON.stringify(data),
+				    contentType: 'application/json',
+                    url: 'http://localhost:3000/profile',						
+                    success: function(data) {
+                        console.log('success');
+                        console.log(JSON.stringify(data));
+                    },
+                    complete: function() {
+                        document.getElementById('submit_btn').setAttribute("class", "query_btn");
+                        $("#submit_btn").attr('disabled', false)
+                    }
+                })
+            })
         </script>
     </body>
 </html>
