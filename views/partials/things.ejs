@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script src="public/scripts/manage_things.js"></script>
+</head>
+
+<div id=table_div class="container" style="margin-top:20px;">
+    <h3 align="center">Trackers</h3>
+    <table id="tracker_table" class="table table-bordered" style="table-layout: fixed; width: 100%;">
+        <colgroup>
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 64%;">
+            <col span="1" style="width: 6%;">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th></th>
+            </tr>
+        </thead>
+
+    </table>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+    $.ajax({
+        url: 'http://localhost:8080/things/all',
+        data: " ",
+        success: function (data) {
+            console.log(data)
+            fillTable(data)
+        }
+    });
+
+</script>
+
+</html>

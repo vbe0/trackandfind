@@ -29,8 +29,9 @@
     "connect-mongo": "^2.0.1",
     "ejs": "^2.4.1",
     "express": "^4.13.4",
-    "express-session": "file:express-session",
+    "express-session": "^1.15.6",
     "js-datepicker": "^2.3.0",
+    "mic-sdk-js": "0.0.2",
     "mongoose": "^5.0.12",
     "serve-favicon": "^2.0.0",
     "socket.io": "^2.0.4"
