@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
-var things_data = require('../data/search.js')
+var thingsData = require('../data/search.js')
 
 // GET route for login
 router.get('/', function (req, res, next) {
@@ -133,8 +133,7 @@ router.get('/logout', function (req, res, next) {
 
 // Elastic search query
 router.post('/profile', function (req, res, next) {
-	User.findById(req.session.userId)
-    .exec(function (error, user) {
+	User.findById(req.session.userId).exec(function (error, user) {
     	if (error) {
         	return next(error);
       	} else {
@@ -143,13 +142,14 @@ router.post('/profile', function (req, res, next) {
           		err.status = 400;
           		return next(err);
         	} else {
-				    var r = things_data.getData().then((data) => {
-					    res.send(data)
-					    console.log(data)
-				    })
-			    }
-        }
-    })
+				var body = req.body
+				var r = thingsData.getData(body).then(data => {
+					res.send("data")
+					//console.log(data)
+				})
+			}
+    	}
+	})
 })
 
 

@@ -84,11 +84,20 @@ body {
 
 
 #timer {
-  margin: 0 auto;
+    margin: 0 auto;
 }
 
-#ex1Slider .slider-selection {
-	background: #BABABA;
+#theSlider .slider-selection {
+    background: #BABABA;
+}
+
+#theSlider .theSlider {
+    margin: 4px 200px;
+}
+
+
+#query_selector {
+    margin-top: 18px;
 }
 
 
