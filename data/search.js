@@ -8,6 +8,7 @@ let api = new MIC
 
 // Init by providing the app endpoint
 function getSensorData(time, params) {
+	
 	//console.log("time = ", time)
 	var config = getParams(time, params)
 
@@ -49,7 +50,6 @@ function getParams(time, params) {
 			startDate = userStart
 		}
 	} else {
-		console.log("time.start null")
 		startDate = absoluteStart
 	}
 
@@ -65,8 +65,6 @@ function getParams(time, params) {
 	} else {
 		endDate = today
 	}
-
-	console.log(startDate, " ", endDate)
 
 	body = {
 	

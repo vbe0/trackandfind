@@ -103,7 +103,11 @@
                             max: mapData.length,
                             enabled: true,
                         })
-                        addMarker("Thomas", 69.68, 18.97)
+                        var lat = mapData[0].split(",")[0].replace("(", "")
+                        var lng = mapData[0].split(",")[1].replace(")", "").replace(" ", "")
+                        if (lat != undefined && lng != undefined) {
+                            addMarker("Thomas", lat, lng)
+                        }
                     }
                 })
             })
@@ -111,9 +115,9 @@
         
         $('#theSlider').slider();
         $('#theSlider').on('slide', function(e){
-            console.log(mapData[e.value].split(",")[0].replace("(", ""))
-            console.log(mapData[e.value].split(",")[1].replace(")", "").replace(" ", ""))
-            onMapClick("Thomas", mapData[e.value].split(",")[0].replace("(", ""), mapData[e.value].split(",")[1].replace(")", "").replace(" ", ""))
+            var lat = mapData[e.value].split(",")[0].replace("(", "")
+            var lng = mapData[e.value].split(",")[1].replace(")", "").replace(" ", "")
+            onMapClick("Thomas", lat, lng)
         })
 
             
