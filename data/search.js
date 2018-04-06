@@ -20,8 +20,7 @@ function getSensorData(time, params) {
 					
 			// Invoke ObservationLambda FIND with a query payload
 			return api.invoke('ObservationLambda', { action: 'FIND', query: config.query }).then(res => {
-				//console.log(res.hits.hits.length)
-				return res;
+				return purifyData(res);
 			})
 		})
 	}).catch(err => console.error(err));
@@ -35,13 +34,13 @@ function getParams(time, params) {
 	/* 'startDate' is used to denote the start of the interval */
 	var startDate, userStart, endDate, userEnd
 	var today = new Date() * 1
+	var absoluteStart = new Date(START) * 1
 
 	/* No data produced before START is useful. Therefore,
 	 * avoid reading garbage that is incompatible to the rest of the system
 	 */
 	if (time.start != null) {		
 		userStart = new Date(time.start) * 1
-		var absoluteStart = new Date(START) * 1
 		
 		/* Don't use garbage historic data */
 		if (userStart < absoluteStart) {
@@ -50,7 +49,8 @@ function getParams(time, params) {
 			startDate = userStart
 		}
 	} else {
-		startDate = absoluteStarts
+		console.log("time.start null")
+		startDate = absoluteStart
 	}
 
 	if (time.stop != null) {
@@ -65,6 +65,8 @@ function getParams(time, params) {
 	} else {
 		endDate = today
 	}
+
+	console.log(startDate, " ", endDate)
 
 	body = {
 	
@@ -121,14 +123,23 @@ function getParams(time, params) {
 
 /* Remove garbage and purify the dataset */
 function purifyData(data) {
-	console.log(JSON.stringify(data))
+
+	var arr = data.hits.hits, i
+	var result = []
+	for (i = 0; i < data.hits.hits.length; i++) {
+		var pos = arr[i]["_source"]["state"]["payload"]
+		if (String(pos).includes("None") == false) {
+			result.push(pos)
+		}	
+	}
+	
+	return result
 }
 
 
 /* To be implemented: sliding window if the total amount of data > WINDOW*/
 module.exports = {
     getData: function (time, params) {
-		var data = getSensorData(time, params);
-		return purifyData(data)
+		return getSensorData(time, params);
 	}
 }

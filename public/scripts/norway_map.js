@@ -1,6 +1,6 @@
 
 var map; 
-listen()
+//listen()
 
 function initMap()
 {
@@ -17,9 +17,9 @@ function initMap()
     map = obj; 
 }
 
-function onMapClick()
-{
-
+function onMapClick(markerName, lat, lng) {
+    var newLatLng = new L.LatLng(lat, lng)
+    map.markers[markerName].setLatLng(newLatLng)
 }
 
 function removeMarkers()
@@ -85,3 +85,4 @@ function getDateTime() {
     var dateTime = year+'/'+month+'/'+day+' '+hour+':'+minute;   
      return dateTime;
 }
+

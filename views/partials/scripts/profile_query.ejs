@@ -56,13 +56,14 @@
                 <br>
                 <br>
                 <br>
-                <input id="theSlider" data-slider-id='theSlider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/>
+                <input id="theSlider" data-slider-id='theSlider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="1" data-slider-value="0"/>
             </form>
         </div>
 
 
 
         <script type="text/javascript">
+            var mapData = []
             $(document).ready(function () {
                 $('#datetimepicker6').datetimepicker()
                 $('#datetimepicker7').datetimepicker({
@@ -80,6 +81,7 @@
                 document.getElementById('submit_btn').setAttribute("class", "query_btn_disabled")
                 $("#submit_btn").attr('disabled', true)
                 
+
                 var data = {
                     start: $('#datetimepicker6').data("DateTimePicker").date(),
                     stop: $('#datetimepicker7').data("DateTimePicker").date()
@@ -91,22 +93,28 @@
 				    contentType: 'application/json',
                     url: 'http://localhost:3000/profile',						
                     success: function(data) {
-                        console.log('success');
-                        console.log(JSON.stringify(data));
+                        mapData = data,
+                        console.log(mapData[0]);
                     },
                     complete: function() {
                         document.getElementById('submit_btn').setAttribute("class", "query_btn");
                         $("#submit_btn").attr('disabled', false)
+                        $('#theSlider').slider({
+                            max: mapData.length,
+                            enabled: true,
+                        })
+                        addMarker("Thomas", 69.68, 18.97)
                     }
                 })
             })
 
         
-            $('#theSlider').slider({
-	            formatter: function(value) {
-		            return 'Current value: ' + value;
-	            }
-            });
+        $('#theSlider').slider();
+        $('#theSlider').on('slide', function(e){
+            console.log(mapData[e.value].split(",")[0].replace("(", ""))
+            console.log(mapData[e.value].split(",")[1].replace(")", "").replace(" ", ""))
+            onMapClick("Thomas", mapData[e.value].split(",")[0].replace("(", ""), mapData[e.value].split(",")[1].replace(")", "").replace(" ", ""))
+        })
 
             
         </script>

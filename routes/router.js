@@ -134,21 +134,20 @@ router.get('/logout', function (req, res, next) {
 // Elastic search query
 router.post('/profile', function (req, res, next) {
 	User.findById(req.session.userId).exec(function (error, user) {
-    	if (error) {
-        	return next(error);
-      	} else {
-        	if (user === null) {
-          		var err = new Error('Not authorized! Go back!');
-          		err.status = 400;
-          		return next(err);
-        	} else {
-				var body = req.body
+    if (error) {
+      return next(error);
+  	} else {
+      if (user === null) {
+        var err = new Error('Not authorized! Go back!');
+        err.status = 400;
+        return next(err);
+    	} else {
+		    var body = req.body
 				var r = thingsData.getData(body).then(data => {
-					res.send("data")
-					//console.log(data)
+				  res.send(data)
 				})
-			}
-    	}
+		  }
+	  }
 	})
 })
 
