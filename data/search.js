@@ -125,12 +125,13 @@ function purifyData(data) {
 	var arr = data.hits.hits, i
 	var result = []
 	for (i = 0; i < data.hits.hits.length; i++) {
+		var timestamp = arr[i]["_source"]['timestamp']
 		var pos = arr[i]["_source"]["state"]["payload"]
 		if (String(pos).includes("None") == false) {
-			result.push(pos)
+			var slice = {pos, timestamp}
+			result.push(slice)
 		}	
 	}
-	
 	return result
 }
 

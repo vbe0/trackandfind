@@ -57,6 +57,7 @@
                 <br>
                 <br>
                 <input id="theSlider" data-slider-id='theSlider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="1" data-slider-value="0"/>
+                <span id="timestamplabel">Time : <span id="theSliderTimestamp"></span></span>
             </form>
         </div>
 
@@ -103,8 +104,8 @@
                             max: mapData.length,
                             enabled: true,
                         })
-                        var lat = mapData[0].split(",")[0].replace("(", "")
-                        var lng = mapData[0].split(",")[1].replace(")", "").replace(" ", "")
+                        var lat = mapData[0].pos.split(",")[0].replace("(", "")
+                        var lng = mapData[0].pos.split(",")[1].replace(")", "").replace(" ", "")
                         if (lat != undefined && lng != undefined) {
                             addMarker("Thomas", lat, lng)
                         }
@@ -115,12 +116,15 @@
         
         $('#theSlider').slider();
         $('#theSlider').on('slide', function(e){
-            var lat = mapData[e.value].split(",")[0].replace("(", "")
-            var lng = mapData[e.value].split(",")[1].replace(")", "").replace(" ", "")
-            onMapClick("Thomas", lat, lng)
+            var lat = mapData[e.value].pos.split(",")[0].replace("(", "")
+            var lng = mapData[e.value].pos.split(",")[1].replace(")", "").replace(" ", "")
+            if (lat != undefined && lng != undefined) {
+                document.getElementById("theSliderTimestamp").textContent = new Date(mapData[e.value].timestamp)
+                onMapClick("Thomas", lat, lng)
+            }
         })
 
-            
+
         </script>
     </body>
 </html>
