@@ -2,6 +2,10 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 var thingsData = require('../data/search.js')
+var Things = require('../data/get_things.js')
+//var Thing = require('../models/thing');
+//var things_db = require('../database/thing_connect.js');
+
 
 // GET route for login
 router.get('/', function (req, res, next) {
@@ -28,7 +32,7 @@ router.post('/', function (req, res, next) {
       password: req.body.password,
       passwordConf: req.body.passwordConf,
     }
-
+    
     User.create(userData, function (error, user) {
       if (error) {
         return next(error);
@@ -112,6 +116,72 @@ router.get('/things', function (req, res, next) {
       }
     });
 });
+
+
+
+/* Get all things and display on a list at '/things' */
+router.get('/things/all', function (req, res, next) {
+  User.findById(req.session.userId)
+    .exec(function (error, user) {
+      if (error) {
+        return next(error);
+      } else {
+        if (user === null) {
+          var err = new Error('Not authorized! Go back!');
+          err.status = 400;
+          return next(err);
+        } else {
+          Things.fetchThings("ggwp").then(s => {
+            res.send(s)
+          })
+        }
+      }
+    });
+});
+
+/* Update thing and display on a list at '/things' */
+router.post('/things/update', function (req, res, next) {
+  User.findById(req.session.userId)
+    .exec(function (error, user) {
+      if (error) {
+        return next(error);
+      } else {
+        if (user === null) {
+          var err = new Error('Not authorized! Go back!');
+          err.status = 400;
+          return next(err);
+        } else {
+          //var params = JSON.parse(req.body)
+          Things.updateThing(req.body).then(s => {
+            res.send(s)
+          })
+        }
+      }
+    });
+});
+
+
+
+// A new thing will be added to the database
+router.post('/things', function (req, res, next) {
+  User.findById(req.session.userId)
+    .exec(function (error, user) {
+      if (error) {
+        return next(error);
+      } else {
+        if (user === null) {
+          var err = new Error('Not authorized! Go back!');
+          err.status = 400;
+          return next(err);
+        } else {
+          var r = Things.fetchThings().then(s => {
+            res.send(s)
+          })
+        }
+      }
+    });
+});
+
 
 
 // GET for logout
