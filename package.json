@@ -1,8 +1,8 @@
 {
-  "name": "node_ejs_boilerplate",
+  "name": "trackandfind",
   "version": "1.0.0",
-  "description": "Boilerplate showing the use of ejs as view template engine in a Node.js application",
-  "author": "Jennifer Bland",
+  "description": "Track and find with iot devices",
+  "author": "Valter Berg and Thomas Bye Nilsen",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -19,10 +19,10 @@
     "type": "git",
     "url": "https://github.com/ratracegrad/nodejs_ejs_boilerplate"
   },
+  "engines" : { "node" : ">=0.12" },
   "license": "MIT",
   "dependencies": {
     "aws-iot-device-sdk": "^2.2.1",
-    "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "bootstrap-datetimepicker-npm": "^4.17.37-npm",
     "connect-mongo": "^2.0.1",
