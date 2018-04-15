@@ -34,14 +34,14 @@ function addMarker(markerName, lat, lng)
 {
     if (markerName in map.markers) {
         var newLatLng = new L.LatLng(lat, lng)
-        console.log("lat:", lat, "lng: ", lng)
+        //console.log("lat:", lat, "lng: ", lng)
         map.markers[markerName].setLatLng(newLatLng)
         map.popups[markerName] = "<b>" + markerName + "</b>" + "<br>Updated:" + getDateTime()
         map.markers[markerName].bindPopup(map.popups[markerName])        
     }
     else {
         map.markers[markerName] = L.marker([lat, lng]);
-        console.log("Adding: ", markerName)
+        //console.log("Adding: ", markerName)
         map.popups[markerName] = "<b>" + markerName + "</b>" + "<br>Updated:" + getDateTime()
         map.markers[markerName].bindPopup(map.popups[markerName])
         map.markers[markerName].addTo(map.map)

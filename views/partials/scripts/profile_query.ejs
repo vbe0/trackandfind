@@ -104,10 +104,9 @@
                             max: mapData.length,
                             enabled: true,
                         })
-                        console.log('Mapdata: ', mapData)
                         var coordinates = getFirstValidPositions(mapData)
                         if (coordinates != undefined && coordinates.lat != undefined && coordinates.lng != undefined) {
-                            addMarker("Thomas", coordinates.lat, coordinates.lng)
+                            addMarker("Bella", coordinates.lat, coordinates.lng)
                         } else {
                             addMarker("Did not work", 69.69857, 18.76296)
                         }
@@ -140,7 +139,7 @@
             var coordinates = getFirstValidPositions(mapData, e.value)
             if (coordinates != undefined && coordinates.lat != undefined && coordinates.lng != undefined) {
                 document.getElementById("theSliderTimestamp").textContent = new Date(mapData[e.value].timestamp)
-                addMarker("Thomas", coordinates.lat, coordinates.lng)
+                addMarker("Bella", coordinates.lat, coordinates.lng)
             }
         })
 

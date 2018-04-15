@@ -124,7 +124,5 @@ function editThing(btn)
         saveEdit(btn)
         changeEditBtn(btn)
     }
-    console.log(btn.id, "Clicked", "Row:" , btn.parentNode.parentNode.rowIndex)
-    
 }
 
