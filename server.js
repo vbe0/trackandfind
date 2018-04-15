@@ -31,8 +31,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Static files from template
 app.use(express.static(__dirname + '/loginTemplate'));
-//app.use('/public', express.static(process.cwd() + '/public'));
-//app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')))
+app.use('/public', express.static(process.cwd() + '/public'));
+app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')))
 
 // Routing
 var routes = require('./routes/router');
