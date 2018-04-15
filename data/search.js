@@ -87,7 +87,7 @@ function getParams(time, params) {
 							minimum_should_match: 1,
 							must: [{
 								terms: {
-									thingName: ['00001319']
+									thingName: ['00001384']
 								}
 							},
 							{
