@@ -34,12 +34,10 @@ app.use(express.static(__dirname + '/loginTemplate'));
 //app.use('/public', express.static(process.cwd() + '/public'));
 //app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')))
 
-console.log("Gets here 1")
 // Routing
 var routes = require('./routes/router');
 app.use('/', routes);
 
-console.log("Gets here 2")
 
 // 404 errors if requesting for non-existing files
 app.use(function (req, res, next) {
@@ -48,7 +46,6 @@ app.use(function (req, res, next) {
   next(err);
 });
 
-console.log("Gets here 3")
 
 // error handler
 // define as the last app.use callback
@@ -56,10 +53,10 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.send(err.message);
 });
-console.log("Gets here 4")
 
 
 // listen on port 3000
-app.listen(8080, function () {
-  console.log('Express app listening on port 3000');
+port = process.env.PORT || 3000; 
+app.listen(port, function () {
+  console.log('Express app listening on port ', port);
 });
