@@ -103,11 +103,12 @@ function saveEdit(btn)
     params.id = btn.id
     params.label = btn.parentNode.parentNode.childNodes[1].innerHTML
     params.description = btn.parentNode.parentNode.childNodes[2].innerHTML
+    var host = window.location.host; 
     $.ajax({
         type: 'POST',
         data: JSON.stringify(params),
         contentType: 'application/json',
-        url: 'http://localhost:8080/things/update',						
+        url: 'http://' + host + '/things/update',						
         success: function(data) {
             //console.log(JSON.stringify(data));
         }

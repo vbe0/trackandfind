@@ -33,9 +33,9 @@
 
 
 <script type="text/javascript">
-    port = process.env.PORT || 3000; 
+    var host = window.location.host; 
     $.ajax({
-        url: 'http://localhost:' + port + '/things/all',
+        url: 'http://' + host + '/things/all',
         data: " ",
         success: function (data) {
             console.log(data)
