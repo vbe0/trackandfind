@@ -1,12 +1,13 @@
 
 var map; 
-listen()
+//listen()
 
 function initMap()
 {
     var obj = {};
     obj.map = L.map('map').setView([69.6815037, 18.9772839], 8);
-    L.tileLayer('http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo2&zoom={z}&x={x}&y={y}', {
+    //L.tileLayer('http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo2&zoom={z}&x={x}&y={y}', {
+    L.tileLayer('http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=norges_grunnkart&zoom={z}&x={x}&y={y}', {
         attribution: '<a href="http://www.kartverket.no/">Kartverket</a>'
     }).addTo(obj.map);
     obj.map.on('click', onMapClick);
