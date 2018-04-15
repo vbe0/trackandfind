@@ -108,7 +108,7 @@ function saveEdit(btn)
         type: 'POST',
         data: JSON.stringify(params),
         contentType: 'application/json',
-        url: 'http://' + host + '/things/update',						
+        url: 'https://' + host + '/things/update',						
         success: function(data) {
             //console.log(JSON.stringify(data));
         }
