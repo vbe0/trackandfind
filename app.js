@@ -3,11 +3,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
-//var things_db = require('./thing_connect.js')
 var user_db = require('./database/user_connect.js')
-var favicon = require('serve-favicon')
-var path = require('path')
-
 
 
 // View engine we use for rendering
@@ -32,7 +28,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Static files from template
 app.use(express.static(__dirname + '/loginTemplate'));
 app.use('/public', express.static(process.cwd() + '/public'));
-app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')))
 
 
 // Routing
@@ -56,6 +51,6 @@ app.use(function (err, req, res, next) {
 
 
 // listen on port 3000
-app.listen(8080, function () {
+app.listen(3000, function () {
   console.log('Express app listening on port 3000');
 });

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="/public/style.css" />
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>   
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+
+
+        <!-- Slider js and css. -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.min.css" />
+
+        
+        <h2 align="center">Selector panel</h3>
+        <div class="container">
+            <form id="newthing" action="" method="POST">
+                <div class="container">
+                    <div class='col-md-3'>
+                        <label>Start time</label>
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker6'>
+                                <input type='text' class="form-control" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-3'>
+                        <label>End time</label>
+                        <div class="form-group">
+                            <div class='input-group date' id='datetimepicker7'>
+                                <input type='text' class="form-control" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span> 
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div id="spn_url"></div>
+                    <button type="submit" id="submit_btn" class="query_btn">Query</button>
+                </div>
+                <br>
+                <br>
+                <br>
+                <input id="theSlider" data-slider-id='theSlider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="1" data-slider-value="0"/>
+                <span id="timestamplabel">Time : <span id="theSliderTimestamp"></span></span>
+            </form>
+        </div>
+
+
+
+        <script type="text/javascript">
+            var mapData = []
+            $(document).ready(function () {
+                $('#datetimepicker6').datetimepicker()
+                $('#datetimepicker7').datetimepicker({
+                    useCurrent: false //Important! See issue #1075
+                })
+                $("#datetimepicker6").on("dp.change", function (e) {
+                    $('#datetimepicker7').data("DateTimePicker").minDate(e.date)
+                })
+                $("#datetimepicker7").on("dp.change", function (e) {
+                    $('#datetimepicker6').data("DateTimePicker").maxDate(e.date)
+                })
+            })
+
+            $("#submit_btn").on('click', function() {
+                document.getElementById('submit_btn').setAttribute("class", "query_btn_disabled")
+                $("#submit_btn").attr('disabled', true)
+                
+
+                var data = {
+                    start: $('#datetimepicker6').data("DateTimePicker").date(),
+                    stop: $('#datetimepicker7').data("DateTimePicker").date()
+                }
+                
+                $.ajax({
+					type: 'POST',
+					data: JSON.stringify(data),
+				    contentType: 'application/json',
+                    url: 'http://localhost:8080/profile',						
+                    success: function(data) {
+                        mapData = data,
+                        console.log(mapData[0]);
+                    },
+                    complete: function() {
+                        document.getElementById('submit_btn').setAttribute("class", "query_btn");
+                        $("#submit_btn").attr('disabled', false)
+                        $('#theSlider').slider({
+                            max: mapData.length,
+                            enabled: true,
+                        })
+                        console.log('Mapdata: ', mapData)
+                        var coordinates = getFirstValidPositions(mapData)
+                        if (coordinates != undefined && coordinates.lat != undefined && coordinates.lng != undefined) {
+                            addMarker("Thomas", coordinates.lat, coordinates.lng)
+                        } else {
+                            addMarker("Did not work", 69.69857, 18.76296)
+                        }
+                    }
+                })
+            })
+
+        function getFirstValidPositions(mapData, start=0)
+        {
+            var i
+            var lat, lng
+            for (i = start, len = mapData.length; i < len; i++){
+                try
+                {   
+                    lat = mapData[i].pos.split(",")[0]
+                    lng = mapData[i].pos.split(",")[1]
+                    lat = lat.replace("(", "")
+                    lng = lng.replace(")", "").trim()
+                }
+                catch (err)
+                {
+                    continue
+                }
+                console.log("lat, lng: ", lat, lng)
+                return {lat: lat, lng: lng}
+            }
+        }
+        
+        $('#theSlider').slider();
+        $('#theSlider').on('slide', function(e){
+            var coordinates = getFirstValidPositions(mapData, e.value)
+            if (coordinates != undefined && coordinates.lat != undefined && coordinates.lng != undefined) {
+                document.getElementById("theSliderTimestamp").textContent = new Date(mapData[e.value].timestamp)
+                addMarker("Thomas", coordinates.lat, coordinates.lng)
+            }
+        })
+
+
+        </script>
+    </body>
+</html>
