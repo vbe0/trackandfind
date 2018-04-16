@@ -1,3 +1,4 @@
+"use strict"
 let MIC = require('mic-sdk-js').default
 
 const WINDOW = 2000

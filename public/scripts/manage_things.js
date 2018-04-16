@@ -101,6 +101,7 @@ function saveEdit(btn)
     btn.parentNode.parentNode.childNodes[2].setAttribute("contenteditable", "false")
     var params = {}
     params.id = btn.id
+
     params.label = btn.parentNode.parentNode.childNodes[1].innerHTML
     params.description = btn.parentNode.parentNode.childNodes[2].innerHTML
     var host = window.location.host; 
@@ -108,7 +109,7 @@ function saveEdit(btn)
         type: 'POST',
         data: JSON.stringify(params),
         contentType: 'application/json',
-        url: 'https://' + host + '/things/update',						
+        url: '/things/update',						
         success: function(data) {
             //console.log(JSON.stringify(data));
         }
