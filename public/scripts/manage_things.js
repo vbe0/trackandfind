@@ -1,4 +1,16 @@
 
+
+function requestAllThings() {
+    $.ajax({
+        url: '/things/all',
+        data: " ",
+        success: function (data) {
+            console.log(data)
+            fillTable(data)
+        }
+    });
+}
+
 function fillTable(things) {
 
         var myTableDiv = document.getElementById("table_div")
