@@ -6,7 +6,8 @@ function initMap()
 {
     var obj = {};
     obj.map = L.map('map').setView([69.6815037, 18.9772839], 8);
-    L.tileLayer('http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo2&zoom={z}&x={x}&y={y}', {
+    //L.tileLayer('http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo2&zoom={z}&x={x}&y={y}', {
+    L.tileLayer('http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=norges_grunnkart&zoom={z}&x={x}&y={y}', {
         attribution: '<a href="http://www.kartverket.no/">Kartverket</a>'
     }).addTo(obj.map);
     obj.map.on('click', onMapClick);
@@ -33,14 +34,14 @@ function addMarker(markerName, lat, lng)
 {
     if (markerName in map.markers) {
         var newLatLng = new L.LatLng(lat, lng)
-        console.log("lat:", lat, "lng: ", lng)
+        //console.log("lat:", lat, "lng: ", lng)
         map.markers[markerName].setLatLng(newLatLng)
         map.popups[markerName] = "<b>" + markerName + "</b>" + "<br>Updated:" + getDateTime()
         map.markers[markerName].bindPopup(map.popups[markerName])        
     }
     else {
         map.markers[markerName] = L.marker([lat, lng]);
-        console.log("Adding: ", markerName)
+        //console.log("Adding: ", markerName)
         map.popups[markerName] = "<b>" + markerName + "</b>" + "<br>Updated:" + getDateTime()
         map.markers[markerName].bindPopup(map.popups[markerName])
         map.markers[markerName].addTo(map.map)

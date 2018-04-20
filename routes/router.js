@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
-var thingsData = require('../data/search.js')
 var Things = require('../data/get_things.js')
 //var Thing = require('../models/thing');
 //var things_db = require('../database/thing_connect.js');
 
+var thingsData = require('../data/search.js')
 
 // GET route for login
 router.get('/', function (req, res, next) {

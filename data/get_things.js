@@ -44,7 +44,7 @@ var foo = function (params) {
 var updateThing = function (params) {
     var api = new MIC;
     var things = {}
-     
+    //console.log('Params: ', params)
     // Init by providing the endpoint for your app
     return api.init('startiot.mic.telenorconnexion.com').then((manifest, credentials) => {
       // Login a user
@@ -55,6 +55,7 @@ var updateThing = function (params) {
         return api.invoke('ThingLambda', {
             action: 'UPDATE',   attributes: {
                 thingName: params.id,
+                domain: "animal_tracker",
                 label: params.label,
                 description: params.description
               }
@@ -64,7 +65,7 @@ var updateThing = function (params) {
 
         });
     })
-    .catch(err => console.log('Error: ', err));    
+    .catch(err => console.log('Error in request to iot server: ', err));    
 }
 
 module.exports = {

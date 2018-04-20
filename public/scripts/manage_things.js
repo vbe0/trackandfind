@@ -1,4 +1,16 @@
 
+
+function requestAllThings() {
+    $.ajax({
+        url: '/things/all',
+        data: " ",
+        success: function (data) {
+            console.log(data)
+            fillTable(data)
+        }
+    });
+}
+
 function fillTable(things) {
 
         var myTableDiv = document.getElementById("table_div")
@@ -101,13 +113,15 @@ function saveEdit(btn)
     btn.parentNode.parentNode.childNodes[2].setAttribute("contenteditable", "false")
     var params = {}
     params.id = btn.id
+
     params.label = btn.parentNode.parentNode.childNodes[1].innerHTML
     params.description = btn.parentNode.parentNode.childNodes[2].innerHTML
+     
     $.ajax({
         type: 'POST',
         data: JSON.stringify(params),
         contentType: 'application/json',
-        url: 'http://localhost:8080/things/update',						
+        url: '/things/update',						
         success: function(data) {
             //console.log(JSON.stringify(data));
         }
@@ -123,7 +137,5 @@ function editThing(btn)
         saveEdit(btn)
         changeEditBtn(btn)
     }
-    console.log(btn.id, "Clicked", "Row:" , btn.parentNode.parentNode.rowIndex)
-    
 }
 

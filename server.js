@@ -9,6 +9,7 @@ var favicon = require('serve-favicon')
 var path = require('path')
 
 
+
 // View engine we use for rendering
 app.set('view engine', 'ejs');
 
@@ -33,7 +34,6 @@ app.use(express.static(__dirname + '/loginTemplate'));
 app.use('/public', express.static(process.cwd() + '/public'));
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')))
 
-
 // Routing
 var routes = require('./routes/router');
 app.use('/', routes);
@@ -46,6 +46,7 @@ app.use(function (req, res, next) {
   next(err);
 });
 
+
 // error handler
 // define as the last app.use callback
 app.use(function (err, req, res, next) {
@@ -55,6 +56,15 @@ app.use(function (err, req, res, next) {
 
 
 // listen on port 3000
-app.listen(8080, function () {
-  console.log('Express app listening on port 3000');
+port = process.env.PORT || 3000; 
+app.listen(port, function () {
+  console.log('Express app listening on port ', port);
 });
+
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", '*');
+//   res.header("Access-Control-Allow-Credentials", true);
+//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+//   res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
+//   next();
+// });

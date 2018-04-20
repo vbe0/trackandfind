@@ -92,7 +92,7 @@
 					type: 'POST',
 					data: JSON.stringify(data),
 				    contentType: 'application/json',
-                    url: 'http://localhost:3000/profile',						
+                    url: '/profile',						
                     success: function(data) {
                         mapData = data,
                         console.log(mapData[0]);
@@ -104,23 +104,42 @@
                             max: mapData.length,
                             enabled: true,
                         })
-                        var lat = mapData[0].pos.split(",")[0].replace("(", "")
-                        var lng = mapData[0].pos.split(",")[1].replace(")", "").replace(" ", "")
-                        if (lat != undefined && lng != undefined) {
-                            addMarker("Thomas", lat, lng)
+                        var coordinates = getFirstValidPositions(mapData)
+                        if (coordinates != undefined && coordinates.lat != undefined && coordinates.lng != undefined) {
+                            addMarker("Bella", coordinates.lat, coordinates.lng)
+                        } else {
+                            addMarker("Did not work", 69.69857, 18.76296)
                         }
                     }
                 })
             })
 
+        function getFirstValidPositions(mapData, start=0)
+        {
+            var i
+            var lat, lng
+            for (i = start, len = mapData.length; i < len; i++){
+                try
+                {   
+                    lat = mapData[i].pos.split(",")[0]
+                    lng = mapData[i].pos.split(",")[1]
+                    lat = lat.replace("(", "")
+                    lng = lng.replace(")", "").trim()
+                }
+                catch (err)
+                {
+                    continue
+                }
+                return {lat: lat, lng: lng}
+            }
+        }
         
         $('#theSlider').slider();
         $('#theSlider').on('slide', function(e){
-            var lat = mapData[e.value].pos.split(",")[0].replace("(", "")
-            var lng = mapData[e.value].pos.split(",")[1].replace(")", "").replace(" ", "")
-            if (lat != undefined && lng != undefined) {
+            var coordinates = getFirstValidPositions(mapData, e.value)
+            if (coordinates != undefined && coordinates.lat != undefined && coordinates.lng != undefined) {
                 document.getElementById("theSliderTimestamp").textContent = new Date(mapData[e.value].timestamp)
-                onMapClick("Thomas", lat, lng)
+                addMarker("Bella", coordinates.lat, coordinates.lng)
             }
         })
 
