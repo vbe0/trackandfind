@@ -98,6 +98,24 @@ router.get('/about', function (req, res, next) {
     });
 });
 
+// GET live map page
+router.get('/livemap', function (req, res, next) {
+  User.findById(req.session.userId)
+    .exec(function (error, user) {
+      if (error) {
+        return next(error);
+      } else {
+        if (user === null) {
+          var err = new Error('Not authorized! Go back!');
+          err.status = 400;
+          return next(err);
+        } else {
+          return res.render('pages/livemap');
+        }
+      }
+    });
+});
+
 
 // GET things page
 router.get('/things', function (req, res, next) {
