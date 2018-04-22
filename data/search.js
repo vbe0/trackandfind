@@ -1,3 +1,4 @@
+"use strict"
 let MIC = require('mic-sdk-js').default
 
 const WINDOW = 2000
@@ -66,7 +67,7 @@ function getParams(time, params) {
 		endDate = today
 	}
 
-	body = {
+	var body = {
 	
 		// Username of the Cognito user
 		username: 'thomasbn94',
@@ -87,7 +88,7 @@ function getParams(time, params) {
 							minimum_should_match: 1,
 							must: [{
 								terms: {
-									thingName: ['00001384']
+									thingName: ['00001319']
 								}
 							},
 							{

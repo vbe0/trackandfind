@@ -87,12 +87,12 @@
                     start: $('#datetimepicker6').data("DateTimePicker").date(),
                     stop: $('#datetimepicker7').data("DateTimePicker").date()
                 }
-                var host = window.location.host;
+                
                 $.ajax({
 					type: 'POST',
 					data: JSON.stringify(data),
 				    contentType: 'application/json',
-                    url: 'https://'+ host +'/profile',						
+                    url: '/profile',						
                     success: function(data) {
                         mapData = data,
                         console.log(mapData[0]);
