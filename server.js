@@ -12,7 +12,11 @@ var path = require('path')
 
 // View engine we use for rendering
 app.set('view engine', 'ejs');
+app.set('view enging', 'pug')
 
+app.set('title', 'Track and Find')
+
+// app.set('views', path.join(__dirname, 'views'))
 
 // Session cookies
 app.use(session({

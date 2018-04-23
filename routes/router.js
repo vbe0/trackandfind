@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 var Things = require('../data/get_things.js')
+const pug = require('pug')
 //var Thing = require('../models/thing');
 //var things_db = require('../database/thing_connect.js');
 
@@ -110,7 +111,7 @@ router.get('/livemap', function (req, res, next) {
           err.status = 400;
           return next(err);
         } else {
-          return res.render('pages/livemap');
+          return res.render('pages/livemap.pug');
         }
       }
     });
@@ -129,7 +130,7 @@ router.get('/things', function (req, res, next) {
           err.status = 400;
           return next(err);
         } else {
-          return res.render('pages/things');
+          return res.render('pages/things.pug');
         }
       }
     });

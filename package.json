@@ -31,11 +31,11 @@
     "ejs": "^2.4.1",
     "express": "^4.13.4",
     "express-session": "file:express-session",
-    "jade": "^1.11.0",
     "jquery": "^3.3.1",
     "js-datepicker": "^2.3.0",
     "mic-sdk-js": "0.0.2",
     "mongoose": "^5.0.12",
+    "pug": "^2.0.3",
     "serve-favicon": "^2.0.0",
     "socket.io": "^2.0.4"
   }
