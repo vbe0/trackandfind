@@ -1,0 +1,15 @@
+doctype html
+html(lang='en')
+  br
+  br
+  head
+    link(rel='stylesheet', href='https://unpkg.com/leaflet@1.0.1/dist/leaflet.css')
+    include scripts.ejs
+    include scripts/norway_map_scripts.ejs
+  body
+    .row
+      #norway_map.container
+        #map(style='height: 600px; width: 1000px;')
+    script.
+      initMap()
+      
