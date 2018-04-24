@@ -30,9 +30,26 @@ html(lang='en')
                     data: "",
                     success: function (data) {
                         console.log(data)
+                        updateInput(data)
                     }
                 });
             }
+            // Put value in input view and format numbers to hh:mm:ss (stored as seconds)
+            function updateInput(data) {
+                var value = data.value
+                var editinput = document.getElementById("ratetime")
+                var hh,mm,ss
+
+                hh = Math.floor(Number(value)/(60 * 60))
+                mm = Math.floor((Number(value) - (hh * 60 * 60)) / 60)
+                ss = Number(value) - hh * 60 * 60 - mm * 60
+                if (hh < 10) { if (hh == 0) {hh = '00'} else { hh = '0' + String(hh)}} else {hh = String(hh)}
+                if (mm < 10) { if (mm == 0) {mm = '00'} else { mm = '0' + String(mm)}} else {mm = String(mm)}
+                if (ss < 10) { if (ss == 0) {ss = '00'} else { ss = '0' + String(ss)}} else {ss = String(ss)}
+                var rate = hh+ ':' + mm + ':' + ss 
+                editinput.value = rate
+            }
+
 
             function editClick() {
                 var editbtn = document.getElementById("editbtn")
@@ -58,7 +75,6 @@ html(lang='en')
                 mm_s = Number(hhmmss[1]) * 60
                 ss = Number(hhmmss[2])
                 var rate = hh_s + mm_s + ss 
-                console.log("sending rate: ", rate)
                 saveRateTime(rate)
             }
             function saveRateTime(rate) {

@@ -191,9 +191,9 @@ router.post('/updaterate/:name', function (req, res, next) {
           err.status = 400;
           return next(err);
         } else {
-          UpdateRate.updateRate(req.params.name , req.body.rate)
-          res.send("GG inserted")
-          
+          UpdateRate.updateRate(req.params.name , req.body.rate).then(s => {
+            res.send(s)
+          })
         }
       }
     });
@@ -211,7 +211,7 @@ router.get('/updaterate/:name', function (req, res, next) {
           return next(err);
         } else {
           console.log("Params: ", req.params)
-          UpdateRate.fetchRate("all").then(s => {
+          UpdateRate.fetchRate(req.params.name).then(s => {
             res.send(s)
           })
         }

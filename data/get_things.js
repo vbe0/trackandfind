@@ -6,7 +6,7 @@ var foo = function (params) {
     var things = {}
      
     // Init by providing the endpoint for your app
-    return api.init('startiot.mic.telenorconnexion.com').then((manifest, credentials) => {
+    return ret = api.init('startiot.mic.telenorconnexion.com').then((manifest, credentials) => {
       // Login a user
       
       return api.login('vbe013', 'GGwpGGwp4567').then(user => {
@@ -37,7 +37,7 @@ var foo = function (params) {
 
         });
     })
-    .catch(err => console.log('Error: ', err));    
+    .catch(err => console.log('Error: ', err)); 
 }
 
 
