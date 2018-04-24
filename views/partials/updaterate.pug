@@ -1,0 +1,75 @@
+html(lang='en')
+    head    
+        style(type="text/css").
+            .setupdaterate {
+                background-color: lightgrey;
+                width: 350px;
+            }
+            #savebtn {
+                display: none;
+            }
+    body 
+        .setupdaterate
+            h4 Update rate for all trackers (hh:mm:ss): 
+            input#ratetime.time(type="text" placeholder="hh:mm:ss" value="00:01:00" readonly="")
+
+
+            button#editbtn.btn.btn-info.btn-s(onclick="editClick()")
+                span.glyphicon.glyphicon-edit
+                | Edit
+
+            button#savebtn.btn.btn-info.btn-s(onclick="saveClick()")
+                span.glyphicon.glyphicon-save
+                | Save
+
+        script(type="text/javascript").
+            getCurrentRate()
+            function getCurrentRate() {
+                $.ajax({
+                    url: '/updaterate/all',
+                    data: "",
+                    success: function (data) {
+                        console.log(data)
+                    }
+                });
+            }
+
+            function editClick() {
+                var editbtn = document.getElementById("editbtn")
+                var savebtn = document.getElementById("savebtn")
+                editbtn.style.display = 'none'
+                savebtn.style.display = 'inline'
+
+                var editinput = document.getElementById("ratetime")
+                editinput.readOnly = false
+                editinput.focus()
+            }
+            function saveClick() {
+                var editbtn = document.getElementById("editbtn")
+                var savebtn = document.getElementById("savebtn")
+                editbtn.style.display = 'inline'
+                savebtn.style.display = 'none'
+
+                var editinput = document.getElementById("ratetime")
+                editinput.readOnly = true
+                var hh_s,mm_s,ss, hhmmss = editinput.value
+                var hhmmss = hhmmss.split(":")
+                hh_s = Number(hhmmss[0]) * 60 * 60
+                mm_s = Number(hhmmss[1]) * 60
+                ss = Number(hhmmss[2])
+                var rate = hh_s + mm_s + ss 
+                console.log("sending rate: ", rate)
+                saveRateTime(rate)
+            }
+            function saveRateTime(rate) {
+                var data = { rate: rate}
+                $.ajax({
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    url: '/updaterate/all',						
+                    success: function(data) {
+                        console.log(JSON.stringify(data));
+                    }
+                });
+            }
