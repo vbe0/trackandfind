@@ -43,7 +43,6 @@ var foo = function (params) {
 
 var updateThing = function (params) {
     var api = new MIC;
-    var things = {}
     //console.log('Params: ', params)
     // Init by providing the endpoint for your app
     return api.init('startiot.mic.telenorconnexion.com').then((manifest, credentials) => {

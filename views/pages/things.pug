@@ -2,6 +2,12 @@ html(lang='en')
     head 
         include ../partials/head.ejs
         include ../partials/nav.ejs
+        h3(align="center") Trackers     
     body 
-        link(rel="stylesheet", href="../../public/style.css", type="text/css", media="all")
-        include ../partials/things.ejs
+
+        .container
+            #table_div.container(style="margin-top:20px;")
+
+            include ../partials/things
+            
+            include ../partials/updaterate

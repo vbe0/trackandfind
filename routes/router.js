@@ -5,6 +5,7 @@ var Things = require('../data/get_things.js')
 const pug = require('pug')
 //var Thing = require('../models/thing');
 //var things_db = require('../database/thing_connect.js');
+const UpdateRate = require('../data/updaterate.js')
 
 var thingsData = require('../data/search.js')
 
@@ -178,7 +179,45 @@ router.post('/things/update', function (req, res, next) {
       }
     });
 });
-
+/* Update update rate' */
+router.post('/updaterate/:name', function (req, res, next) {
+  User.findById(req.session.userId)
+    .exec(function (error, user) {
+      if (error) {
+        return next(error);
+      } else {
+        if (user === null) {
+          var err = new Error('Not authorized! Go back!');
+          err.status = 400;
+          return next(err);
+        } else {
+          UpdateRate.updateRate(req.params.name , req.body.rate)
+          res.send("GG inserted")
+          
+        }
+      }
+    });
+});
+/* Get update rate' */
+router.get('/updaterate/:name', function (req, res, next) {
+  User.findById(req.session.userId)
+    .exec(function (error, user) {
+      if (error) {
+        return next(error);
+      } else {
+        if (user === null) {
+          var err = new Error('Not authorized! Go back!');
+          err.status = 400;
+          return next(err);
+        } else {
+          console.log("Params: ", req.params)
+          UpdateRate.fetchRate("all").then(s => {
+            res.send(s)
+          })
+        }
+      }
+    });
+});
 
 
 // A new thing will be added to the database
