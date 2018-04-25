@@ -25,6 +25,7 @@
   "license": "MIT",
   "dependencies": {
     "aws-iot-device-sdk": "^2.2.1",
+    "aws-mqtt-client": "0.0.5",
     "axios": "^0.18.0",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",

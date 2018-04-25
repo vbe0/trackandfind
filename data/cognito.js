@@ -1,7 +1,9 @@
 'use strict'
 const axios = require('axios')
 const Promise = require('bluebird')
+var MIC = require('mic-sdk-js').default
 
+var AWSMqtt = require('aws-mqtt-client')
 var AWS = require('aws-sdk');
 
 var url = 'https://1u31fuekv5.execute-api.eu-west-1.amazonaws.com/prod/manifest/?hostname=startiot.mic.telenorconnexion.com'
@@ -67,8 +69,46 @@ async function setUpLamda(){
     return lambda
 }
 
-getManifest(url).then(r => {
-    setUpLamda().then(lambda => {
-        console.log(lambda)
+// getManifest(url).then(r => {
+//     setUpLamda().then(lambda => {
+//         console.log(lambda.config.credentials)
+
+//     })
+// })
+
+var mqttConnect = function() {
+    var api = new MIC; 
+    var mqttClient; 
+    // Init by providing the endpoint for your app
+    api.init('startiot.mic.telenorconnexion.com')
+    .then((manifest, credentials) => {
+        // Login a user
+        api.login('vbe013', 'GGwpGGwp4567')
+        .then(user => {
+            
+            // Init a new MQTT client
+            mqttClient = new AWSMqtt({
+                region:                 api._AWS.config.region,
+                accessKeyId:            api._AWS.config.credentials.accessKeyId,
+                secretAccessKey:        api._AWS.config.credentials.secretAccessKey,
+                sessionToken:           api._AWS.config.credentials.sessionToken,
+                endpointAddress:        api._manifest.IotEndpoint,
+                maximumReconnectTimeMs: 8000
+            });
+
+            mqttClient.on('connect', () => connect())
+            mqttClient.on('message', (topic, message) => message())
+        })
     })
-})
+    var connect = function() {
+        mqttClient.subscribe('thing-update/my/topic/#', {qos: 1}, (err, granted) => {
+            if (err)
+              console.log(err)
+          })
+    }
+    var message = function(topic, message) {
+        console.log("MESSAGE FROM DEVICE: ", topic, message.toString('utf-8'))
+    }
+}
+
+mqttConnect()
