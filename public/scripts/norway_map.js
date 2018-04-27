@@ -1,6 +1,19 @@
 
+
+
+class leafletMap {
+    constructor () {
+        this.map = null 
+        this.markers = null 
+        this.popups = null 
+    }
+    
+    init() {
+        this.map = L.map('map').setView([69.6815037, 18.9772839], 8);
+    }
+}
 var map; 
-//listen()
+
 
 function initMap()
 {

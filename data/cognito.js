@@ -1,9 +1,9 @@
 
 var MIC = require('mic-sdk-js').default
 
-var AWSMqtt = require('aws-mqtt-client')
+var AWSMqtt = require('aws-mqtt-client').default
 
-var mqttConnect = function() {
+var mqttConnect = function(io) {
     var api = new MIC; 
     var mqttClient
     // Init by providing the endpoint for your app
@@ -21,22 +21,41 @@ var mqttConnect = function() {
                 sessionToken:           api._AWS.config.credentials.sessionToken,
                 endpointAddress:        api._manifest.IotEndpoint,
                 maximumReconnectTimeMs: 8000
-            }).catch(err => console.log('Error: ', err));
+            })
             mqttClient.on('connect', () => connect())
-            mqttClient.on('message', (topic, message) => message())
-        }).catch(err => console.log('Error: ', err));
+            mqttClient.on('message', (topic, message) => messagee(topic, message))
+        })
         var connect = function() {
-            mqttClient.subscribe('thing-update/my/topic/#', {qos: 1}, (err, granted) => {
+            mqttClient.subscribe('thing-update/INF-3910-3-v18/animal_tracker/#', {qos: 1}, (err, granted) => {
                 if (err)
                 console.log(err)
             })
+            console.log("Connecting to clients")
+            //publish("thing-update/INF-3910-3-v18/00001323", "GGWP")
         }
-        var message = function(topic, message) {
+        var messagee = function(topic, message) {
             console.log("MESSAGE FROM DEVICE: ", topic, message.toString('utf-8'))
-        }
-    }).catch(err => console.log('Error: ', err));
 
+            s = JSON.parse(message.toString())['state']['reported']['payload'];
+            console.log('Message: ', s)
+            // Broadcast the message to any connected socket clients
+            io.emit('livemap', {topic: topic, message: s});
+        }
+
+        var publish = function(topic, message) {
+            mqttClient.publish(topic, message, {qos: 1}, (err) => {
+              if (!err)
+                console.log('Payload published')
+              else
+                console.log('Something went wrong')
+            })
+        }
+    })
 }
 
-    
-mqttConnect()
+
+
+module.exports = 
+{
+    getSensorData: mqttConnect
+}

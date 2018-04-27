@@ -7,6 +7,7 @@ var MongoStore = require('connect-mongo')(session);
 var user_db = require('./database/user_connect.js')
 var favicon = require('serve-favicon')
 var path = require('path')
+var getSensorData = require('./data/cognito.js')
 
 
 
@@ -60,10 +61,18 @@ app.use(function (err, req, res, next) {
 
 
 // listen on port 3000
+var server = require('http').createServer(app)
 port = process.env.PORT || 3000; 
-app.listen(port, function () {
-  console.log('Express app listening on port ', port);
-});
+// app.listen(port, function () {
+//   console.log('Express app listening on port ', port);
+// });
+
+server.listen(port, function(){
+  console.log("Server listenting on port: ", port)
+})
+
+var io = require('socket.io')(server)
+getSensorData.getSensorData(io)
 
 // app.use(function(req, res, next) {
 //   res.header("Access-Control-Allow-Origin", '*');
