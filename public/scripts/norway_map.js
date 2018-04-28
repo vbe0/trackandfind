@@ -17,9 +17,8 @@ function initMap()
     map = obj; 
 }
 
-function onMapClick(markerName, lat, lng) {
-    var newLatLng = new L.LatLng(lat, lng)
-    map.markers[markerName].setLatLng(newLatLng)
+function onMapClick() {
+    console.log("Clicked map")
 }
 
 function removeMarkers()

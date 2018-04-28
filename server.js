@@ -71,8 +71,7 @@ server.listen(port, function(){
   console.log("Server listenting on port: ", port)
 })
 
-var io = require('socket.io')(server)
-getSensorData.getSensorData(io)
+getSensorData.getSensorData(server)
 
 // app.use(function(req, res, next) {
 //   res.header("Access-Control-Allow-Origin", '*');

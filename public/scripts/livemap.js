@@ -9,14 +9,23 @@ if (!Array.prototype.last){
 function getSensorData() 
 {
     // //var socket = io("ws://trackandfind.azurewebsites.net", {transports: ['websocket']});
-    var socket = io('http://localhost:3000', {transports: ['websocket']});
-    console.log("listening")
-    //var socket = require('socket.io-client').connect()
-    socket.on('livemap', function(data) {
-        //var payload = JSON.parse(data);
-        //console.log("payload: ", data.topic)
+    // var socket = io('http://localhost:3000', {transports: ['websocket']});
+    // console.log("listening")
+    // //var socket = require('socket.io-client').connect()
+    // socket.on('livemap', function(data) {
+    //     //var payload = JSON.parse(data);
+    //     //console.log("payload: ", data.topic)
+    //     addToMap(data)
+    // });
+    var host = location.origin.replace('http', 'ws')
+    console.log(host)
+    var ws = new WebSocket(host);
+    ws.onmessage = function (event) {
+      data = JSON.parse(event.data);
+        //console.log("Data: ", data)
         addToMap(data)
-    });
+    };
+
 }
 
 

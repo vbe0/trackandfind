@@ -3,9 +3,12 @@ var MIC = require('mic-sdk-js').default
 
 var AWSMqtt = require('aws-mqtt-client').default
 
-var mqttConnect = function(io) {
+var WebSocketServer = require("ws").Server
+
+var mqttConnect = function(server) {
     var api = new MIC; 
     var mqttClient
+    var wss = new WebSocketServer({server: server})
     // Init by providing the endpoint for your app
     api.init('startiot.mic.telenorconnexion.com')
     .then((manifest, credentials) => {
@@ -34,12 +37,17 @@ var mqttConnect = function(io) {
             //publish("thing-update/INF-3910-3-v18/00001323", "GGWP")
         }
         var messagee = function(topic, message) {
-            console.log("MESSAGE FROM DEVICE: ", topic, message.toString('utf-8'))
+            //console.log("MESSAGE FROM DEVICE: ", topic, message.toString('utf-8'))
 
             s = JSON.parse(message.toString())['state']['reported']['payload'];
             console.log('Message: ', s)
             // Broadcast the message to any connected socket clients
-            io.emit('livemap', {topic: topic, message: s});
+            //io.emit('livemap', {topic: topic, message: s});
+            wss.on("connection", function(ws) {
+                var id = setInterval(function() {
+                  ws.send(JSON.stringify({topic: topic, message: s}), function() {  })
+            }, 1000)
+            })
         }
 
         var publish = function(topic, message) {
