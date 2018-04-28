@@ -1,19 +1,5 @@
 
-
-
-class leafletMap {
-    constructor () {
-        this.map = null 
-        this.markers = null 
-        this.popups = null 
-    }
-    
-    init() {
-        this.map = L.map('map').setView([69.6815037, 18.9772839], 8);
-    }
-}
 var map; 
-
 
 function initMap()
 {
@@ -43,19 +29,25 @@ function removeMarkers()
     }
 }
 
-function addMarker(markerName, lat, lng)
+function addMarker(markerName, lat, lng, markerText="", live=false)
 {
+    var label =""
+    if (live) {
+        label = "<b>" + markerName + "</b>" + "<br>" + markerText + "<br>Updated:" + getDateTime() 
+    } else {
+        label ="<b>" + markerName + "</b>" + "<br>" + markerText
+    }
     if (markerName in map.markers) {
         var newLatLng = new L.LatLng(lat, lng)
         //console.log("lat:", lat, "lng: ", lng)
         map.markers[markerName].setLatLng(newLatLng)
-        map.popups[markerName] = "<b>" + markerName + "</b>" + "<br>Updated:" + getDateTime()
+        map.popups[markerName] = "<b>" + markerName + "</b>" + "<br>" + markerText + "Updated:" + getDateTime() 
         map.markers[markerName].bindPopup(map.popups[markerName])        
     }
     else {
         map.markers[markerName] = L.marker([lat, lng]);
         //console.log("Adding: ", markerName)
-        map.popups[markerName] = "<b>" + markerName + "</b>" + "<br>Updated:" + getDateTime()
+        map.popups[markerName] =  "<b>" + markerName + "</b>" + "<br>" + markerText + "Updated:" + getDateTime()
         map.markers[markerName].bindPopup(map.popups[markerName])
         map.markers[markerName].addTo(map.map)
     }
