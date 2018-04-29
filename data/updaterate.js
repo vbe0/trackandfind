@@ -7,7 +7,9 @@ var url = "mongodb://vbe:gg@clusteriot-shard-00-00-omyrb.mongodb.net:27017,clust
 var getRate = function (name) {
     return mongoClient.connectAsync(url)
         .then(function(db) {
-            return db.collection('updaterates').findAsync({name:name})
+            dbobj = db.db("mydb")
+            console.log(dbobj.collection)
+            return dbobj.collection('updaterates').findAsync({name:name})
         })
         .then(function(cursor) {
            return cursor.toArrayAsync();
@@ -27,7 +29,9 @@ var updateRate = function (name, value) {
     var myobj = { name: name, value: value };
     return mongoClient.connectAsync(url)
     .then(function(db) {
-        return db.collection('updaterates').update({name:name}, myobj, {upsert: true})
+        dbobj = db.db("mydb")
+        console.log(dbobj.collection)
+        return dbobj.collection('updaterates').update({name:name}, myobj, {upsert: true})
     })
     .then(function() {
         // This is how we return the data to the next .then() call
