@@ -9,6 +9,7 @@ var mqttConnect = function(server) {
     var api = new MIC; 
     var mqttClient
     var wss = new WebSocketServer({server: server})
+    var lasMsgs = {}
     // Init by providing the endpoint for your app
     api.init('startiot.mic.telenorconnexion.com')
     .then((manifest, credentials) => {
@@ -38,11 +39,10 @@ var mqttConnect = function(server) {
         }
         var messagee = function(topic, message) {
             //console.log("MESSAGE FROM DEVICE: ", topic, message.toString('utf-8'))
-
+            lastMsgs[topic] = message
             s = JSON.parse(message.toString())['state']['reported']['payload'];
             console.log('Message: ', s)
             // Broadcast the message to any connected socket clients
-            //io.emit('livemap', {topic: topic, message: s});
             wss.on("connection", function(ws) {
                 var id = setInterval(function() {
                   ws.send(JSON.stringify({topic: topic, message: s}), function() {  })

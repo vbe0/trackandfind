@@ -9,6 +9,8 @@ const UpdateRate = require('../data/updaterate.js')
 
 var thingsData = require('../data/search.js')
 
+var g_things = {} 
+
 // GET route for login
 router.get('/', function (req, res, next) {
 	return res.sendFile(path.join(__dirname + '/loginTemplate/index.html'));
@@ -141,6 +143,7 @@ router.get('/things', function (req, res, next) {
 
 /* Get all things and display on a list at '/things' */
 router.get('/things/all', function (req, res, next) {
+  var d = new Date()
   User.findById(req.session.userId)
     .exec(function (error, user) {
       if (error) {
@@ -151,9 +154,16 @@ router.get('/things/all', function (req, res, next) {
           err.status = 400;
           return next(err);
         } else {
-          Things.fetchThings("ggwp").then(s => {
-            res.send(s)
-          })
+          ct = d.getTime()
+          if (g_things.time === undefined || ct - g_things.time > 1000 * 60 * 15) {
+            Things.fetchThings("ggwp").then(s => {
+              g_things.things = s
+              g_things.time = ct
+              res.send(s)
+            })
+          }else {
+            res.send(g_things.things)
+          }
         }
       }
     });
@@ -161,6 +171,7 @@ router.get('/things/all', function (req, res, next) {
 
 /* Update thing and display on a list at '/things' */
 router.post('/things/update', function (req, res, next) {
+  var d = new Date()  
   User.findById(req.session.userId)
     .exec(function (error, user) {
       if (error) {
@@ -174,6 +185,10 @@ router.post('/things/update', function (req, res, next) {
           //var params = JSON.parse(req.body)
           Things.updateThing(req.body).then(s => {
             res.send(s)
+          })
+          Things.fetchThings("ggwp").then(s => {
+            g_things.things = s
+            g_things.time = d.getTime()
           })
         }
       }

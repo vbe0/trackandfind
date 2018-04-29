@@ -32,7 +32,7 @@ function addMarker(markerName, lat, lng, markerText="", live=false)
 {
     var label =""
     if (live) {
-        label = "<b>" + markerName + "</b>" + "<br>" + markerText + "<br>Updated:" + getDateTime() 
+        label = "<b>" + markerName + "</b>" + "<br>" + markerText + "<br>, Updated:" + getDateTime() 
     } else {
         label ="<b>" + markerName + "</b>" + "<br>" + markerText
     }
