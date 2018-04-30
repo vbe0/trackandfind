@@ -7,19 +7,11 @@ if (!Array.prototype.last){
 
 
 function getSensorData() 
-{
-    // //var socket = io("ws://trackandfind.azurewebsites.net", {transports: ['websocket']});
-    // var socket = io('http://localhost:3000', {transports: ['websocket']});
-    // console.log("listening")
-    // //var socket = require('socket.io-client').connect()
-    // socket.on('livemap', function(data) {
-    //     //var payload = JSON.parse(data);
-    //     //console.log("payload: ", data.topic)
-    //     addToMap(data)
-    // });
+{   
     var host = location.origin.replace('http', 'ws')
     console.log(host)
     var ws = new WebSocket(host);
+
     ws.onmessage = function (event) {
       data = JSON.parse(event.data);
         //console.log("Data: ", data)
@@ -27,7 +19,6 @@ function getSensorData()
     };
 
 }
-
 
 addToMap = function (data) {
     try {
@@ -37,7 +28,7 @@ addToMap = function (data) {
         var battery = msg[2]
         var topic = data.topic.split("/")
         var thing = topic.last()
-        //console.log("thing, lat, lng", thing, lat, lng)
+        console.log("thing, lat, lng", thing, lat, lng)
         addMarker(thing, lat, lng, markerText="Battery: "+ battery, live=true)
     }
     catch (err) {

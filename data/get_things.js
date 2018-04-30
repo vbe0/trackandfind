@@ -18,7 +18,7 @@ var foo = function (params) {
                     bool: {
                         filter: {
                             term: {
-                                thingType: "477" // Thing type id 
+                                thingType: "479" // Thing type id 
                             }
                         }
                     }
