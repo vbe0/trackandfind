@@ -61,6 +61,7 @@ var updateThing = function (params) {
             }).then(res => {
                 return res
             })
+            .catch(err => console.log('Error in request to iot server: ', err));
 
         });
     })

@@ -9,7 +9,7 @@ const UpdateRate = require('../data/updaterate.js')
 
 var thingsData = require('../data/search.js')
 
-var g_things = {} 
+var g_things = {time:undefined, things: {}} 
 
 // GET route for login
 router.get('/', function (req, res, next) {
@@ -155,7 +155,7 @@ router.get('/things/all', function (req, res, next) {
           return next(err);
         } else {
           ct = d.getTime()
-          if (g_things.time === undefined || ct - g_things.time > 1000 * 60 * 15) {
+          if (Object.keys(g_things.things).length === 0 && g_things.things.constructor === Object || g_things.time === undefined || ct - g_things.time > 1000 * 60 * 15) {
             Things.fetchThings("ggwp").then(s => {
               g_things.things = s
               g_things.time = ct

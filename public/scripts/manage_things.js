@@ -116,7 +116,7 @@ function saveEdit(btn)
 
     params.label = btn.parentNode.parentNode.childNodes[1].innerHTML
     params.description = btn.parentNode.parentNode.childNodes[2].innerHTML
-     
+    console.log(params)
     $.ajax({
         type: 'POST',
         data: JSON.stringify(params),

@@ -14,11 +14,11 @@ html(lang='en')
             input#ratetime.time(type="text" placeholder="hh:mm:ss" value="00:01:00" readonly="")
 
 
-            button#editbtn.btn.btn-info.btn-s(onclick="editClick()")
+            button#editupdateretebtn.btn.btn-info.btn-s(onclick="editUpdateRateClick()")
                 span.glyphicon.glyphicon-edit
                 | Edit
 
-            button#savebtn.btn.btn-info.btn-s(onclick="saveClick()")
+            button#saveupdateratebtn.btn.btn-info.btn-s(onclick="saveUpdateRateClick()")
                 span.glyphicon.glyphicon-save
                 | Save
 
@@ -51,9 +51,9 @@ html(lang='en')
             }
 
 
-            function editClick() {
-                var editbtn = document.getElementById("editbtn")
-                var savebtn = document.getElementById("savebtn")
+            function editUpdateRateClick() {
+                var editbtn = document.getElementById("editupdateretebtn")
+                var savebtn = document.getElementById("saveupdateratebtn")
                 editbtn.style.display = 'none'
                 savebtn.style.display = 'inline'
 
@@ -61,9 +61,9 @@ html(lang='en')
                 editinput.readOnly = false
                 editinput.focus()
             }
-            function saveClick() {
-                var editbtn = document.getElementById("editbtn")
-                var savebtn = document.getElementById("savebtn")
+            function saveUpdateRateClick() {
+                var editbtn = document.getElementById("editupdateretebtn")
+                var savebtn = document.getElementById("saveupdateratebtn")
                 editbtn.style.display = 'inline'
                 savebtn.style.display = 'none'
 
