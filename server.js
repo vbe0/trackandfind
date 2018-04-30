@@ -9,6 +9,7 @@ var favicon = require('serve-favicon')
 var path = require('path')
 var getSensorData = require('./data/cognito.js')
 
+var socketIO = require('socket.io')
 
 
 // View engine we use for rendering
@@ -71,7 +72,9 @@ server.listen(port, function(){
   console.log("Server listenting on port: ", port)
 })
 
-getSensorData.getSensorData(server)
+const io = socketIO(server)
+
+getSensorData.getSensorData(io)
 
 // app.use(function(req, res, next) {
 //   res.header("Access-Control-Allow-Origin", '*');
