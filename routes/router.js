@@ -6,10 +6,12 @@ const pug = require('pug')
 //var Thing = require('../models/thing');
 //var things_db = require('../database/thing_connect.js');
 const UpdateRate = require('../data/updaterate.js')
+const FetchData = require('../data/fetchdata.js')
 
 var thingsData = require('../data/search.js')
 
 var g_things = {time:undefined, things: {}} 
+var g_thingsData = {time:undefined, data: {}}
 
 // GET route for login
 router.get('/', function (req, res, next) {
@@ -101,6 +103,40 @@ router.get('/about', function (req, res, next) {
       }
     });
 });
+
+/* Get update rate' */
+//router.get('/data/:name/:fromdate.:todate', function (req, res, next) {
+router.get('/data/:name', function (req, res, next) {
+  var d = new Date()
+  User.findById(req.session.userId)
+    .exec(function (error, user) {
+      if (error) {
+        return next(error);
+      } else {
+        if (user === null) {
+          var err = new Error('Not authorized! Go back!');
+          err.status = 400;
+          return next(err);
+        } else {
+          console.log("Params for getting data: ", req.params)
+          var name = req.params.name 
+          time = {}
+          time.start = '2018-05-01T00:00:00'  // Have no good data before this. 
+          ct = d.getTime()
+          if (g_thingsData.data[name] === undefined || g_thingsData.time === undefined || ct - g_thingsData.time > 1000 * 60 * 10) {
+            g_thingsData.time = d.getTime()
+            FetchData.getData(time, req.params.name).then(s => {
+              g_thingsData.data[name] = s 
+              res.send(s)
+            })
+          } else {
+            res.send(g_thingsData.data[name])
+          }
+        }
+      }
+    });
+});
+
 
 // GET live map page
 router.get('/livemap', function (req, res, next) {

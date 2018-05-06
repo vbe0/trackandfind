@@ -22,16 +22,18 @@ function getSensorData()
 
 addToMap = function (data) {
     try {
-        var msg = data.message.split(",")
-        var lat = Number(msg[0])
-        var lng = Number(msg[1])
-        var battery = msg[2]
+        var lat = Number(data.message.lat)
+        var lng = Number(data.message.lng)
+        var battery = data.message.battery
+        var temp = data.message.temperature
         var topic = data.topic.split("/")
         var thing = topic.last()
-        console.log("thing, lat, lng", thing, lat, lng)
-        addMarker(thing, lat, lng, markerText="Battery: "+ battery, live=true)
+
+        addMarker(thing, lat, lng, markerText="Temperature: " + temp + "Battery: "+ battery)
     }
     catch (err) {
         console.log("Error parsing data from tracker", err)
     }
 }
+
+

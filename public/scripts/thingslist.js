@@ -2,6 +2,8 @@
 
 var allThings = {}
 
+var allHistory = {}
+
 function requestAllThings() {
     $.ajax({
         url: '/things/all',
@@ -10,6 +12,7 @@ function requestAllThings() {
             console.log(data)
             allThings = data
             fillTable(data)
+            getHistoryData()
         }
     });
 }
@@ -79,9 +82,11 @@ function buttonEvent(btn)
 {   
     console.log(btn)
     if (btn.innerHTML == "Hide") {
+        removeMarker(btn.id.replace('Hide', ''))
         changeBtn(btn, "Show")
     }
     else if (btn.innerHTML == "Show") {
+        addMarkerWithId(btn.id.replace('Hide', ''))
         changeBtn(btn, "Hide", 'btn-primary')
     }
     else if (btn.innerHTML == "View History") {
@@ -91,10 +96,12 @@ function buttonEvent(btn)
         changeBtn(btn, "View History")
     }
     else if (btn.innerHTML == "Hide All") {
+        removeMarkers()
         changeAllBtn('Show', 'Hide')
         changeAllBtn('View History', 'View History')
     }
     else if (btn.innerHTML == "Show All") {
+        addAllMarkers()
         changeAllBtn('Hide', 'Hide', 'btn-primary')
     }
     
@@ -114,31 +121,38 @@ changeAllBtn = function (label, type, btntype='btn-info')
     }
 }
 
-function enableEdit(btn)
-{
-    btn.parentNode.parentNode.childNodes[1].setAttribute("contenteditable", "true")
-    btn.parentNode.parentNode.childNodes[2].setAttribute("contenteditable", "true")
-    btn.parentNode.parentNode.childNodes[1].focus()    
-}
-function saveEdit(btn)
-{
-    btn.parentNode.parentNode.childNodes[1].setAttribute("contenteditable", "false")
-    btn.parentNode.parentNode.childNodes[2].setAttribute("contenteditable", "false")
-    var params = {}
-    params.id = btn.id
+getHistoryData = function () {
 
-    params.label = btn.parentNode.parentNode.childNodes[1].innerHTML
-    params.description = btn.parentNode.parentNode.childNodes[2].innerHTML
-     
-    $.ajax({
-        type: 'POST',
-        data: JSON.stringify(params),
-        contentType: 'application/json',
-        url: '/things/update',						
-        success: function(data) {
-            //console.log(JSON.stringify(data));
+    var i 
+    for (x in allThings) {
+        $.ajax({
+            url: '/data/'+ x,
+            data: " ",
+            success: function (data) {
+                allHistory[x] = data
+                console.log(data)
+                addLastToMap(x, data)
+            }
+        });
+    }
+}
+
+addLastToMap = function (thingName, thingdata) {
+    try {
+        var i, data
+        for (i = 1; i <= thingdata.length; i++){
+            data = thingdata[thingdata.length - i]
+            if (data.lng === "None"){
+                continue 
+            } else {
+                break
+            }
         }
-    });
+        console.log("Adding last received to map: ", data)
+        addPastMarker(data.name, data.lat, data.lng, markerText="Temp: "+ data.temperature + ", Battery: "+ data.battery, time=data.date)
+    }
+    catch (err) {
+        console.log("Error parsing data from history last received with", thingName, err)
+    }
 }
-
 

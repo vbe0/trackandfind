@@ -39,9 +39,14 @@ var mqttConnect = function(server) {
             console.log("Connecting to clients")
             //publish("thing-update/INF-3910-3-v18/00001323", "GGWP")
         }
+
         var messagee = function(topic, message) {
-            //console.log("MESSAGE FROM DEVICE: ", topic, message.toString('utf-8'))
-            s = JSON.parse(message.toString())['state']['reported']['payload'];
+            console.log("MESSAGE FROM DEVICE: ", topic, message.toString('utf-8'))
+            try {s = JSON.parse(message.toString())['state']['reported'];}
+            catch (err) {
+                console.log ("Error parsing message: ", err)
+                return
+            }
             console.log('Topic: ', topic, 'Message: ', s)
             // broadcast message to all connected clients
             
