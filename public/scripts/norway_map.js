@@ -27,11 +27,20 @@ function removeMarkers()
     for (marker in map.markers) {
         map.map.removeLayer(map.markers[marker]);
     }
+    for (pastmarker in map.pastmarkers) {
+        map.map.removeLayer(map.pastmarkers[pastmarker]);        
+    }
 }
 
 function addAllMarkers(){
     for (marker in map.markers) {
         map.markers[marker].addTo(map.map)
+    }
+    for (marker in map.pastmarkers) {
+        if (marker in map.markers) {
+            continue
+        }
+        map.pastmarkers[marker].addTo(map.map)
     }
 }
 
@@ -39,34 +48,24 @@ function addMarker(markerName, lat, lng, markerText="", time=getDateTime())
 {
     var label = "<b>" + markerName + "</b>" + "<br>" + markerText + "<br>. " + time
     removeMarker(markerName)
-    // if (markerName in map.markers) {
-        //     var newLatLng = new L.LatLng(lat, lng)
-        //     //console.log("lat:", lat, "lng: ", lng)
-        //     map.markers[markerName].setLatLng(newLatLng)
-        //     map.popups[markerName] = label
-        //     map.markers[markerName].bindPopup(map.popups[markerName])        
-        // }
-        // else {
-            map.markers[markerName] = L.marker([lat, lng]);
-            //console.log("Adding: ", markerName)
-            map.popups[markerName] =  label 
-            map.markers[markerName].bindPopup(map.popups[markerName])
-            map.markers[markerName].addTo(map.map)
-        //}
 
+    map.markers[markerName] = L.marker([lat, lng]);
+    //console.log("Adding: ", markerName)
+    map.popups[markerName] =  label 
+    map.markers[markerName].bindPopup(map.popups[markerName])
+    map.markers[markerName].addTo(map.map)
 }
 
 function addPastMarker(markerName, lat, lng, markerText="", time=getDateTime())
 {
     var label = "<b>" + markerName + "</b>" + "<br>" + markerText + "<br>. " + time
 
-    var circle = L.circle([lat, lng], {
-        color: 'blue',
-        fillColor: '#f03',
-        fillOpacity: 0.5,
-        radius: 200
-    })
-    map.pastmarkers[markerName] = circle
+    var marker = L.AwesomeMarkers.icon({
+        icon: '',
+        markerColor: 'yellow'
+    });
+
+    map.pastmarkers[markerName] = L.marker([lat,lng], {icon: marker})
     map.popups[markerName] = label
     map.pastmarkers[markerName].bindPopup(map.popups[markerName])        
     map.pastmarkers[markerName].addTo(map.map)
