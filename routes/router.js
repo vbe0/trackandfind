@@ -123,7 +123,7 @@ router.get('/data/:name', function (req, res, next) {
           time = {}
           time.start = '2018-05-01T00:00:00'  // Have no good data before this. 
           ct = d.getTime()
-          if (g_thingsData.data[name] === undefined || g_thingsData.time === undefined || ct - g_thingsData.time > 1000 * 60 * 10) {
+          if (g_thingsData.data[name] === undefined || g_thingsData.data[name].length == 0 || g_thingsData.time === undefined || ct - g_thingsData.time > 1000 * 60 * 10) {
             g_thingsData.time = d.getTime()
             FetchData.getData(time, req.params.name).then(s => {
               g_thingsData.data[name] = s 

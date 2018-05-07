@@ -140,6 +140,10 @@ getHistoryData = function () {
 addLastToMap = function (thingName, thingdata) {
     try {
         var i, data
+        if (thingdata === undefined) {
+            console.log("Data for ", thingName, " is undefined.")
+            return
+        }
         for (i = 1; i <= thingdata.length; i++){
             data = thingdata[thingdata.length - i]
             if (data.lng === "None"){
@@ -147,6 +151,10 @@ addLastToMap = function (thingName, thingdata) {
             } else {
                 break
             }
+        }
+        if (data === undefined) {
+            console.log("Data is undefined for thing ", thingName, ". All data is: ", thingdata)
+            return
         }
         console.log("Adding last received to map: ", data)
         addPastMarker(data.name, data.lat, data.lng, markerText="Temp: "+ data.temperature + ", Battery: "+ data.battery, time=data.date)

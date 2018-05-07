@@ -29,10 +29,14 @@ addToMap = function (data) {
         var topic = data.topic.split("/")
         var thing = topic.last()
 
+        if (lat == NaN || lng == NaN) {
+            console.log ("Received data without coordinates from ", thing, ". Data:", data)
+        }
+
         addMarker(thing, lat, lng, markerText="Temperature: " + temp + "Battery: "+ battery)
     }
     catch (err) {
-        console.log("Error parsing data from tracker", err)
+        console.log("Error parsing data from tracker: ", thing, err)
     }
 }
 
