@@ -14,8 +14,20 @@ function initMap()
     obj.markers = {};
     obj.popups = {};
     obj.pastmarkers = {}
+    obj.paths = {}
 
     map = obj; 
+}
+
+function addPath(thingName, coords)
+{
+    map.paths[thingName] = L.polyline(coords)
+    map.paths[thingName].addTo(map.map)
+}
+
+function removePath(thingName) 
+{
+    map.map.removeLayer(map.paths[thingName]);
 }
 
 function onMapClick() {

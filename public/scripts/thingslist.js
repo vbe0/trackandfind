@@ -9,7 +9,6 @@ function requestAllThings() {
         url: '/things/all',
         data: " ",
         success: function (data) {
-            console.log(data)
             allThings = data
             fillTable(data)
             getHistoryData()
@@ -90,9 +89,11 @@ function buttonEvent(btn)
         changeBtn(btn, "Hide", 'btn-primary')
     }
     else if (btn.innerHTML == "View History") {
+        addTrackerPathToMap(btn.id.replace('View History', ''))        
         changeBtn(btn, "Hide History", 'btn-primary')
     }
     else if (btn.innerHTML == "Hide History") {
+        removePath(btn.id.replace('View History', ''))                
         changeBtn(btn, "View History")
     }
     else if (btn.innerHTML == "Hide All") {
@@ -124,21 +125,25 @@ changeAllBtn = function (label, type, btntype='btn-info')
 getHistoryData = function () {
 
     var i 
+
     for (x in allThings) {
         $.ajax({
             url: '/data/'+ x,
             data: " ",
             success: function (data) {
-                allHistory[x] = data
-                console.log(data)
-                addLastToMap(x, data)
+                addToHistory(data)
+                addLastToMap(data)
             }
         });
     }
 }
+addToHistory = function (data) {
+    allHistory[data[0].name] = data
+}
 
-addLastToMap = function (thingName, thingdata) {
+addLastToMap = function (thingdata) {
     try {
+        var thingName = thingdata[0].name
         var i, data
         if (thingdata === undefined) {
             console.log("Data for ", thingName, " is undefined.")
@@ -152,15 +157,31 @@ addLastToMap = function (thingName, thingdata) {
                 break
             }
         }
-        if (data === undefined) {
-            console.log("Data is undefined for thing ", thingName, ". All data is: ", thingdata)
+        if (data.lat === 'None') {
+            console.log("Data.lat is none for thing ", thingName)
             return
         }
-        console.log("Adding last received to map: ", data)
-        addPastMarker(data.name, data.lat, data.lng, markerText="Temp: "+ data.temperature + ", Battery: "+ data.battery, time=data.date)
+        var date = String(new Date(Number(data.date))).replace('GMT+0200 (CEST)', '')
+
+        
+        console.log("Adding last received to map: ", data, "with date ", date)
+        addPastMarker(data.name, data.lat, data.lng, markerText="Temp: "+ data.temperature + ", Battery: "+ data.battery, time=date)
     }
     catch (err) {
         console.log("Error parsing data from history last received with", thingName, err)
     }
 }
 
+addTrackerPathToMap = function (thingName) {
+    var x 
+    var coords = []
+    //console.log(allHistory[thingName])
+
+    for (x in allHistory[thingName]) {
+        if (allHistory[thingName][x].lat != 'None' && allHistory[thingName][x].lng != undefined) {
+            coords.push([allHistory[thingName][x].lat, allHistory[thingName][x].lng])
+        }
+    }
+    console.log("Adding path for ", thingName)
+    addPath(thingName, coords)
+}

@@ -131,7 +131,7 @@ function purifyData(data) {
 		if (vals.state.battery === undefined) {
 			continue
 		}
-		value.date = new Date(Number(vals.timestamp))
+		value.date = vals.timestamp
 		value.name = vals.thingName
 		value.lng = vals.state.lng
 		value.lat = vals.state.lat

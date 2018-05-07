@@ -13,7 +13,7 @@ function getSensorData()
     var ws = new WebSocket(host);
 
     ws.onmessage = function (event) {
-      data = JSON.parse(event.data);
+        data = JSON.parse(event.data);
         //console.log("Data: ", data)
         addToMap(data)
     };
@@ -22,6 +22,10 @@ function getSensorData()
 
 addToMap = function (data) {
     try {
+        if (data.message.lat == 'None'|| data.message.lng == 'None') {
+            console.log ("Received data without coordinates from ", thing, ". Data:", data)
+            return 
+        }
         var lat = Number(data.message.lat)
         var lng = Number(data.message.lng)
         var battery = data.message.battery
@@ -29,14 +33,10 @@ addToMap = function (data) {
         var topic = data.topic.split("/")
         var thing = topic.last()
 
-        if (lat == NaN || lng == NaN) {
-            console.log ("Received data without coordinates from ", thing, ". Data:", data)
-        }
-
         addMarker(thing, lat, lng, markerText="Temperature: " + temp + "Battery: "+ battery)
     }
     catch (err) {
-        console.log("Error parsing data from tracker: ", thing, err)
+        console.log("Error parsing data from tracker: ", thing, " lat, lng", lat, lng, " data.message.lat, data.message.lng ", data.message.lat, data.message.lng)
     }
 }
 
