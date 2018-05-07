@@ -47,7 +47,7 @@ var mqttConnect = function(server) {
                 console.log ("Error parsing message: ", err)
                 return
             }
-            console.log('Topic: ', topic, 'Message: ', s)
+            //console.log('Topic: ', topic, 'Message: ', s)
             // broadcast message to all connected clients
             
             wss.clients.forEach((client) => {
