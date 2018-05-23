@@ -1,0 +1,26 @@
+doctype html
+html(lang="en")
+head
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    link#bootstrap-css(href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet")
+    script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js")
+    script(src="public/scripts/thingslist.js")
+    
+.container
+    table#things_table.table.table-bordered(style="table-layout: fixed; width: 100%;")
+        colgroup
+            col( width='10%')
+            col( width='10%')
+            col( width='44%')
+            col( width='36%')
+        thead
+        tr
+            th ID
+            th Name
+            th Description
+            th#btnAll(class='text-right') 
+script(type="text/javascript").
+    requestAllThings()
+    var btnAll = document.getElementById('btnAll')//$('#btnAll')
+    btnAll.appendChild( makeBtn("btnall", "Hide All"))
+    btnAll.appendChild( makeBtn("btnall", "Show All"))

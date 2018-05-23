@@ -1,0 +1,91 @@
+html(lang='en')
+    head    
+        style(type="text/css").
+            .setupdaterate {
+                background-color: lightgrey;
+                width: 350px;
+            }
+            #savebtn {
+                display: none;
+            }
+    body 
+        .setupdaterate
+            h4 Update rate for all trackers (hh:mm:ss): 
+            input#ratetime.time(type="text" placeholder="hh:mm:ss" value="00:01:00" readonly="")
+
+
+            button#editupdateretebtn.btn.btn-info.btn-s(onclick="editUpdateRateClick()")
+                span.glyphicon.glyphicon-edit
+                | Edit
+
+            button#saveupdateratebtn.btn.btn-info.btn-s(onclick="saveUpdateRateClick()")
+                span.glyphicon.glyphicon-save
+                | Save
+
+        script(type="text/javascript").
+            getCurrentRate()
+            function getCurrentRate() {
+                $.ajax({
+                    url: '/updaterate/all',
+                    data: "",
+                    success: function (data) {
+                        console.log(data)
+                        updateInput(data)
+                    }
+                });
+            }
+            // Put value in input view and format numbers to hh:mm:ss (stored as seconds)
+            function updateInput(data) {
+                var value = data.value
+                var editinput = document.getElementById("ratetime")
+                var hh,mm,ss
+
+                hh = Math.floor(Number(value)/(60 * 60))
+                mm = Math.floor((Number(value) - (hh * 60 * 60)) / 60)
+                ss = Number(value) - hh * 60 * 60 - mm * 60
+                if (hh < 10) { if (hh == 0) {hh = '00'} else { hh = '0' + String(hh)}} else {hh = String(hh)}
+                if (mm < 10) { if (mm == 0) {mm = '00'} else { mm = '0' + String(mm)}} else {mm = String(mm)}
+                if (ss < 10) { if (ss == 0) {ss = '00'} else { ss = '0' + String(ss)}} else {ss = String(ss)}
+                var rate = hh+ ':' + mm + ':' + ss 
+                editinput.value = rate
+            }
+
+
+            function editUpdateRateClick() {
+                var editbtn = document.getElementById("editupdateretebtn")
+                var savebtn = document.getElementById("saveupdateratebtn")
+                editbtn.style.display = 'none'
+                savebtn.style.display = 'inline'
+
+                var editinput = document.getElementById("ratetime")
+                editinput.readOnly = false
+                editinput.focus()
+            }
+            function saveUpdateRateClick() {
+                var editbtn = document.getElementById("editupdateretebtn")
+                var savebtn = document.getElementById("saveupdateratebtn")
+                editbtn.style.display = 'inline'
+                savebtn.style.display = 'none'
+
+                var editinput = document.getElementById("ratetime")
+                editinput.readOnly = true
+                var hh_s,mm_s,ss, hhmmss = editinput.value
+                var hhmmss = hhmmss.split(":")
+                hh_s = Number(hhmmss[0]) * 60 * 60
+                mm_s = Number(hhmmss[1]) * 60
+                ss = Number(hhmmss[2])
+                var rate = hh_s + mm_s + ss 
+                saveRateTime(rate)
+            }
+            function saveRateTime(rate) {
+                var data = { rate: rate}
+                $.ajax({
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    url: '/updaterate/all',						
+                    success: function(data) {
+                        console.log(JSON.stringify(data));
+                    }
+                });
+            }

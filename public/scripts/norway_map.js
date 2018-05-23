@@ -1,6 +1,5 @@
 
 var map; 
-//listen()
 
 function initMap()
 {
@@ -14,13 +13,25 @@ function initMap()
 
     obj.markers = {};
     obj.popups = {};
+    obj.pastmarkers = {}
+    obj.paths = {}
 
     map = obj; 
 }
 
-function onMapClick(markerName, lat, lng) {
-    var newLatLng = new L.LatLng(lat, lng)
-    map.markers[markerName].setLatLng(newLatLng)
+function addPath(thingName, coords)
+{
+    map.paths[thingName] = L.polyline(coords)
+    map.paths[thingName].addTo(map.map)
+}
+
+function removePath(thingName) 
+{
+    map.map.removeLayer(map.paths[thingName]);
+}
+
+function onMapClick() {
+    console.log("Clicked map")
 }
 
 function removeMarkers()
@@ -28,23 +39,67 @@ function removeMarkers()
     for (marker in map.markers) {
         map.map.removeLayer(map.markers[marker]);
     }
+    for (pastmarker in map.pastmarkers) {
+        map.map.removeLayer(map.pastmarkers[pastmarker]);        
+    }
 }
 
-function addMarker(markerName, lat, lng)
+function addAllMarkers(){
+    for (marker in map.markers) {
+        map.markers[marker].addTo(map.map)
+    }
+    for (marker in map.pastmarkers) {
+        if (marker in map.markers) {
+            continue
+        }
+        map.pastmarkers[marker].addTo(map.map)
+    }
+}
+
+function addMarker(markerName, lat, lng, markerText="", time=getDateTime())
+{
+    var label = "<b>" + markerName + "</b>" + "<br>" + markerText + "<br>. " + time
+    removeMarker(markerName)
+
+    map.markers[markerName] = L.marker([lat, lng]);
+    //console.log("Adding: ", markerName)
+    map.popups[markerName] =  label 
+    map.markers[markerName].bindPopup(map.popups[markerName])
+    map.markers[markerName].addTo(map.map)
+}
+
+function addPastMarker(markerName, lat, lng, markerText="", time=getDateTime())
+{
+    var label = "<b>" + markerName + "</b>" + "<br>" + markerText + "<br>. " + time
+
+    var marker = L.AwesomeMarkers.icon({
+        icon: '',
+        markerColor: 'yellow'
+    });
+
+    map.pastmarkers[markerName] = L.marker([lat,lng], {icon: marker})
+    map.popups[markerName] = label
+    map.pastmarkers[markerName].bindPopup(map.popups[markerName])        
+    map.pastmarkers[markerName].addTo(map.map)
+}
+
+function removeMarker(markerName)
+{   
+    if (markerName in map.markers) {
+        map.map.removeLayer(map.markers[markerName]);
+    }
+    if (markerName in map.pastmarkers) {
+        map.map.removeLayer(map.pastmarkers[markerName]);
+    }
+}
+function addMarkerWithId(markerName)
 {
     if (markerName in map.markers) {
-        var newLatLng = new L.LatLng(lat, lng)
-        //console.log("lat:", lat, "lng: ", lng)
-        map.markers[markerName].setLatLng(newLatLng)
-        map.popups[markerName] = "<b>" + markerName + "</b>" + "<br>Updated:" + getDateTime()
-        map.markers[markerName].bindPopup(map.popups[markerName])        
-    }
-    else {
-        map.markers[markerName] = L.marker([lat, lng]);
-        //console.log("Adding: ", markerName)
-        map.popups[markerName] = "<b>" + markerName + "</b>" + "<br>Updated:" + getDateTime()
-        map.markers[markerName].bindPopup(map.popups[markerName])
         map.markers[markerName].addTo(map.map)
+    }
+    else if (markerName in map.pastmarkers) {
+        map.pastmarkers[markerName].addTo(map.map)
+        
     }
 }
 

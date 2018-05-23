@@ -1,0 +1,23 @@
+doctype html
+html(lang="en")
+head
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    link#bootstrap-css(href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet")
+    script(src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js")
+    script(src="public/scripts/manage_things.js")
+    
+.container
+    table#tracker_table.table.table-bordered(style="table-layout: fixed; width: 100%;")
+        colgroup
+            col( width='15%')
+            col( width='15%')
+            col( width='64%')
+            col( width='6%')
+        thead
+        tr
+            th ID
+            th Name
+            th Description
+            th
+script(type="text/javascript").
+    requestAllThings()

@@ -7,12 +7,17 @@ var MongoStore = require('connect-mongo')(session);
 var user_db = require('./database/user_connect.js')
 var favicon = require('serve-favicon')
 var path = require('path')
+var getSensorData = require('./data/cognito.js')
 
 
 
 // View engine we use for rendering
 app.set('view engine', 'ejs');
+app.set('view enging', 'pug')
 
+app.set('title', 'Track and Find')
+
+// app.set('views', path.join(__dirname, 'views'))
 
 // Session cookies
 app.use(session({
@@ -56,10 +61,17 @@ app.use(function (err, req, res, next) {
 
 
 // listen on port 3000
+var server = require('http').createServer(app)
 port = process.env.PORT || 3000; 
-app.listen(port, function () {
-  console.log('Express app listening on port ', port);
-});
+// app.listen(port, function () {
+//   console.log('Express app listening on port ', port);
+// });
+
+server.listen(port, function(){
+  console.log("Server listenting on port: ", port)
+})
+
+getSensorData.getSensorData(server)
 
 // app.use(function(req, res, next) {
 //   res.header("Access-Control-Allow-Origin", '*');

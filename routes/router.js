@@ -2,10 +2,16 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 var Things = require('../data/get_things.js')
+const pug = require('pug')
 //var Thing = require('../models/thing');
 //var things_db = require('../database/thing_connect.js');
+const UpdateRate = require('../data/updaterate.js')
+const FetchData = require('../data/fetchdata.js')
 
 var thingsData = require('../data/search.js')
+
+var g_things = {time:undefined, things: {}} 
+var g_thingsData = {time:undefined, data: {}}
 
 // GET route for login
 router.get('/', function (req, res, next) {
@@ -98,6 +104,58 @@ router.get('/about', function (req, res, next) {
     });
 });
 
+/* Get update rate' */
+//router.get('/data/:name/:fromdate.:todate', function (req, res, next) {
+router.get('/data/:name', function (req, res, next) {
+  var d = new Date()
+  User.findById(req.session.userId)
+    .exec(function (error, user) {
+      if (error) {
+        return next(error);
+      } else {
+        if (user === null) {
+          var err = new Error('Not authorized! Go back!');
+          err.status = 400;
+          return next(err);
+        } else {
+          console.log("Params for getting data: ", req.params)
+          var name = req.params.name 
+          time = {}
+          time.start = '2018-05-01T00:00:00'  // Have no good data before this. 
+          ct = d.getTime()
+          if (g_thingsData.data[name] === undefined || g_thingsData.data[name].length == 0 || g_thingsData.time === undefined || ct - g_thingsData.time > 1000 * 60 * 10) {
+            g_thingsData.time = d.getTime()
+            FetchData.getData(time, req.params.name).then(s => {
+              g_thingsData.data[name] = s 
+              res.send(s)
+            })
+          } else {
+            res.send(g_thingsData.data[name])
+          }
+        }
+      }
+    });
+});
+
+
+// GET live map page
+router.get('/livemap', function (req, res, next) {
+  User.findById(req.session.userId)
+    .exec(function (error, user) {
+      if (error) {
+        return next(error);
+      } else {
+        if (user === null) {
+          var err = new Error('Not authorized! Go back!');
+          err.status = 400;
+          return next(err);
+        } else {
+          return res.render('pages/livemap.pug');
+        }
+      }
+    });
+});
+
 
 // GET things page
 router.get('/things', function (req, res, next) {
@@ -111,7 +169,7 @@ router.get('/things', function (req, res, next) {
           err.status = 400;
           return next(err);
         } else {
-          return res.render('pages/things');
+          return res.render('pages/things.pug');
         }
       }
     });
@@ -121,6 +179,7 @@ router.get('/things', function (req, res, next) {
 
 /* Get all things and display on a list at '/things' */
 router.get('/things/all', function (req, res, next) {
+  var d = new Date()
   User.findById(req.session.userId)
     .exec(function (error, user) {
       if (error) {
@@ -131,9 +190,16 @@ router.get('/things/all', function (req, res, next) {
           err.status = 400;
           return next(err);
         } else {
-          Things.fetchThings("ggwp").then(s => {
-            res.send(s)
-          })
+          ct = d.getTime()
+          if (Object.keys(g_things.things).length === 0 && g_things.things.constructor === Object || g_things.time === undefined || ct - g_things.time > 1000 * 60 * 15) {
+            Things.fetchThings("ggwp").then(s => {
+              g_things.things = s
+              g_things.time = ct
+              res.send(s)
+            })
+          }else {
+            res.send(g_things.things)
+          }
         }
       }
     });
@@ -141,6 +207,7 @@ router.get('/things/all', function (req, res, next) {
 
 /* Update thing and display on a list at '/things' */
 router.post('/things/update', function (req, res, next) {
+  var d = new Date()  
   User.findById(req.session.userId)
     .exec(function (error, user) {
       if (error) {
@@ -155,11 +222,53 @@ router.post('/things/update', function (req, res, next) {
           Things.updateThing(req.body).then(s => {
             res.send(s)
           })
+          Things.fetchThings("ggwp").then(s => {
+            g_things.things = s
+            g_things.time = d.getTime()
+          })
         }
       }
     });
 });
-
+/* Update update rate' */
+router.post('/updaterate/:name', function (req, res, next) {
+  User.findById(req.session.userId)
+    .exec(function (error, user) {
+      if (error) {
+        return next(error);
+      } else {
+        if (user === null) {
+          var err = new Error('Not authorized! Go back!');
+          err.status = 400;
+          return next(err);
+        } else {
+          UpdateRate.updateRate(req.params.name , req.body.rate).then(s => {
+            res.send(s)
+          })
+        }
+      }
+    });
+});
+/* Get update rate' */
+router.get('/updaterate/:name', function (req, res, next) {
+  User.findById(req.session.userId)
+    .exec(function (error, user) {
+      if (error) {
+        return next(error);
+      } else {
+        if (user === null) {
+          var err = new Error('Not authorized! Go back!');
+          err.status = 400;
+          return next(err);
+        } else {
+          console.log("Params: ", req.params)
+          UpdateRate.fetchRate(req.params.name).then(s => {
+            res.send(s)
+          })
+        }
+      }
+    });
+});
 
 
 // A new thing will be added to the database

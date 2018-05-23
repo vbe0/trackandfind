@@ -6,7 +6,7 @@ var foo = function (params) {
     var things = {}
      
     // Init by providing the endpoint for your app
-    return api.init('startiot.mic.telenorconnexion.com').then((manifest, credentials) => {
+    return ret = api.init('startiot.mic.telenorconnexion.com').then((manifest, credentials) => {
       // Login a user
       
       return api.login('vbe013', 'GGwpGGwp4567').then(user => {
@@ -18,7 +18,7 @@ var foo = function (params) {
                     bool: {
                         filter: {
                             term: {
-                                thingType: "477" // Thing type id 
+                                thingType: "479" // Thing type id 
                             }
                         }
                     }
@@ -37,13 +37,12 @@ var foo = function (params) {
 
         });
     })
-    .catch(err => console.log('Error: ', err));    
+    .catch(err => console.log('Error: ', err)); 
 }
 
 
 var updateThing = function (params) {
     var api = new MIC;
-    var things = {}
     //console.log('Params: ', params)
     // Init by providing the endpoint for your app
     return api.init('startiot.mic.telenorconnexion.com').then((manifest, credentials) => {
@@ -62,6 +61,7 @@ var updateThing = function (params) {
             }).then(res => {
                 return res
             })
+            .catch(err => console.log('Error in request to iot server: ', err));
 
         });
     })

@@ -1,0 +1,13 @@
+doctype html
+html(lang="en")
+  head
+    include ../partials/head.ejs
+    script(src='public/scripts/livemap.js')
+  body
+    include ../partials/nav.ejs
+    include ../partials/norwaymap
+    include ../partials/thingslist
+    #table_div.container(style="margin-top:20px;")
+    
+    script(type='text/javascript').
+        getSensorData()
