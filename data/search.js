@@ -88,7 +88,7 @@ function getParams(time, params) {
 							minimum_should_match: 1,
 							must: [{
 								terms: {
-									thingName: ['00001319']
+									thingName: ['00001416']
 								}
 							},
 							{
@@ -126,12 +126,17 @@ function purifyData(data) {
 	var arr = data.hits.hits, i
 	var result = []
 	for (i = 0; i < data.hits.hits.length; i++) {
-		var timestamp = arr[i]["_source"]['timestamp']
-		var pos = arr[i]["_source"]["state"]["payload"]
-		if (String(pos).includes("None") == false) {
-			var slice = {pos, timestamp}
-			result.push(slice)
-		}	
+		var data_i = {timestamp: arr[i]["_source"]['timestamp'],
+			pos: {
+				lon: arr[i]["_source"]["state"]["payload"].split(",")[0],
+				lat: arr[i]["_source"]["state"]["payload"].split(",")[1]
+			},
+			battery: arr[i]["_source"]["state"]["payload"].split(",")[2],
+			temperature: arr[i]["_source"]["state"]["payload"].split(",")[3],
+			accSum: arr[i]["_source"]["state"]["payload"].split(",")[4]
+		}
+
+		result.push(data_i)
 	}
 	return result
 }

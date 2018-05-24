@@ -9,19 +9,16 @@
         <!-- Optional theme -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
-
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>   
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
-
 
         <!-- Slider js and css. -->
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.min.css" />
-
         
         <h2 align="center">Selector panel</h3>
         <div class="container">
@@ -52,19 +49,24 @@
                     <br>
                     <div id="spn_url"></div>
                     <button type="submit" id="submit_btn" class="query_btn">Query</button>
+                    <input id="theSlider" data-slider-id='theSlider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="1" data-slider-value="0"/>
+                    <span id="timestamplabel">Time : <span id="theSliderTimestamp"></span></span>
                 </div>
                 <br>
                 <br>
-                <br>
-                <input id="theSlider" data-slider-id='theSlider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="1" data-slider-value="0"/>
-                <span id="timestamplabel">Time : <span id="theSliderTimestamp"></span></span>
+                <br>    
             </form>
+            <div id="warning_msg" class="warning_msg">Help messages appear here</div>
         </div>
-
-
+        
 
         <script type="text/javascript">
-            var mapData = []
+            // Set text value to 'text' on warning message field
+            function toggleText(text) {
+                document.getElementById("warning_msg").innerHTML = text;
+            }
+
+            var mapData = {}
             $(document).ready(function () {
                 $('#datetimepicker6').datetimepicker()
                 $('#datetimepicker7').datetimepicker({
@@ -82,7 +84,6 @@
                 document.getElementById('submit_btn').setAttribute("class", "query_btn_disabled")
                 $("#submit_btn").attr('disabled', true)
                 
-
                 var data = {
                     start: $('#datetimepicker6').data("DateTimePicker").date(),
                     stop: $('#datetimepicker7').data("DateTimePicker").date()
@@ -94,54 +95,76 @@
 				    contentType: 'application/json',
                     url: '/profile',						
                     success: function(data) {
-                        mapData = data,
-                        console.log(mapData[0]);
+                        mapData = JSON.stringify(data)
                     },
                     complete: function() {
                         document.getElementById('submit_btn').setAttribute("class", "query_btn");
+                        
+                        // Enable the query button again
                         $("#submit_btn").attr('disabled', false)
+                        
+                        // Initialize the slider to the context of POST response
                         $('#theSlider').slider({
-                            max: mapData.length,
+                            max: JSON.parse(mapData).length,
                             enabled: true,
                         })
+                        
+                        // Pinpoint the initial marker on the map
                         var coordinates = getFirstValidPositions(mapData)
-                        if (coordinates != undefined && coordinates.lat != undefined && coordinates.lng != undefined) {
-                            addMarker("Bella", coordinates.lat, coordinates.lng)
+        
+                        /* Try to display an initial marker on the map if possible. Alert user if coordinates
+                         * are not present.
+                         */
+                        if (coordinates != undefined && coordinates.lon != undefined && coordinates.lat != undefined) {
+                            addMarker("Bella", coordinates.lon, coordinates.lat)
+                            $('#theSlider').slider('setValue', coordinates.idx);
+                            toggleText("Map marker set to first known GPS coordinate")
                         } else {
-                            addMarker("Did not work", 69.69857, 18.76296)
+                            toggleText("No GPS available for the selected dataset")
                         }
                     }
                 })
             })
 
-        function getFirstValidPositions(mapData, start=0)
-        {
-            var i
-            var lat, lng
-            for (i = start, len = mapData.length; i < len; i++){
-                try
-                {   
-                    lat = mapData[i].pos.split(",")[0]
-                    lng = mapData[i].pos.split(",")[1]
-                    lat = lat.replace("(", "")
-                    lng = lng.replace(")", "").trim()
-                }
-                catch (err)
-                {
-                    continue
-                }
-                return {lat: lat, lng: lng}
-            }
-        }
         
         $('#theSlider').slider();
+
+        /* As the slider moves, we want to display each (lon-lat) pair.
+         * However, they might not exist. Use the latest known pair if this is the case.
+         */
         $('#theSlider').on('slide', function(e){
-            var coordinates = getFirstValidPositions(mapData, e.value)
-            if (coordinates != undefined && coordinates.lat != undefined && coordinates.lng != undefined) {
-                document.getElementById("theSliderTimestamp").textContent = new Date(mapData[e.value].timestamp)
-                addMarker("Bella", coordinates.lat, coordinates.lng)
+            var lon = JSON.parse(mapData)[e.value]['pos']['lon']
+            var lat = JSON.parse(mapData)[e.value]['pos']['lat']
+        
+            if (lon != "None" || lat != "None") {
+                toggleText("Using current GPS coordinate")
+                document.getElementById("theSliderTimestamp").textContent = new Date(JSON.parse(mapData)[e.value]['timestamp'])
+                // bella?
+                addMarker("Bella", lon, lat)
+            }
+            else {
+                toggleText("No GPS available. Using last known GPS coordinate, if any")
             }
         })
+
+        /* Returns the first valid pair of longitude-latitude coordinate values */
+        function getFirstValidPositions(mapData, start=0) {
+            var data = JSON.parse(mapData)
+            var i, lon, lat
+            for (i = start; i < data.length; i++) {
+                try {
+                    lon = data[i]["pos"]["lon"]
+                    lat = data[i]["pos"]["lat"]
+                } catch (err) {
+                    continue
+                }
+                /* Index is used to move the slider to the value corresponding to
+                 * the coordinate pair being returned
+                 */
+                return { lon: lon, lat: lat, index: i }
+            }
+            return undefined
+        }
 
 
         </script>

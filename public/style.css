@@ -83,6 +83,50 @@ body {
 }
 
 
+.warning_msg {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    width: 260px;
+    padding: 20px 100px 20px 20px;
+    overflow: hidden;
+    border: none;
+    -webkit-border-radius: 7px;
+    border-radius: 7px;
+    font: normal 16px/1 Impact, Charcoal, sans-serif;
+    color: rgba(255,255,255,1);
+    text-align: justify;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    background: #585859;
+    -webkit-box-shadow: 1px 1px 1px 0 rgba(0,0,0,0.3) ;
+    box-shadow: 1px 1px 1px 0 rgba(0,0,0,0.3) ;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2) ;
+}
+
+
+.noGPS {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    width: 160px;
+    padding: 20px 100px 20px 20px;
+    overflow: hidden;
+    border: none;
+    -webkit-border-radius: 7px;
+    border-radius: 7px;
+    font: normal 16px/1 Impact, Charcoal, sans-serif;
+    color: rgba(255,255,255,1);
+    text-align: justify;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    background: #585859;
+    -webkit-box-shadow: 1px 1px 1px 0 rgba(0,0,0,0.3) ;
+    box-shadow: 1px 1px 1px 0 rgba(0,0,0,0.3) ;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2) ;
+}
+
+
 #timer {
     margin: 0 auto;
 }
