@@ -1,0 +1,85 @@
+<div class="chart-container" style="position: relative; height:40vh; width:80vw">
+    <canvas id="accChart" width="100" height="30" display=canvas></canvas>
+</div>
+<!--<canvas id="tempChart" width="100" height="30" display=canvas>-->
+<br>
+
+
+<script>
+
+    function updateChartData(chart, data) {
+        chart.clear()
+        var labels = [], accs = [], dataset = JSON.parse(data), i
+        for (i = 0; i < dataset.length; i++) {
+            accs.push(dataset[i]['accSum'])
+            labels.push(new Date(dataset[i]['timestamp']))  
+        }   
+        console.log(accs)
+        chart.data.labels = labels
+        chart.data.datasets[0].data = accs
+        chart.toBase64Image();
+        chart.update()
+    }
+
+    /* Initialize accelerometer chart */
+    function setAccChart() {    
+        var ctx = document.getElementById("accChart").getContext('2d');
+        var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [], // x axis
+                datasets: [{
+                    label: 'Accelerometer readings',
+                    data: [], // data points/dataset
+                    backgroundColor: 'rgb(0, 99, 132)'
+                }]
+            },
+            options: {
+                showLines: true}
+               /* animation: {
+                    duration: 0
+                },
+                hover: {
+                    animationDuration: 0
+                },
+                responsiveAnimationDuration: 0
+            }*/
+        });
+        
+        return myLineChart
+    }
+
+    /* Initialize temperature chart */
+    /*function setTempChart(serverData) {
+        
+        var labels = [], temps = [], dataset = JSON.parse(serverData), i
+        
+        for (i = 0; i < dataset.length; i++) {
+            temps.push(dataset[i]['temperature'])
+            labels.push(new Date(dataset[i]['timestamp']))  
+        }
+
+        var ctx = document.getElementById("tempChart").getContext('2d');
+        var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels, // x axis
+                datasets: [{
+                    label: 'Temperature readings',
+                    data: temps, // data points/dataset
+                    backgroundColor: 'rgb(0, 99, 132)'
+                }]
+            },
+            options: {
+                showLines: true,
+                animation: {
+                    duration: 0
+                },
+                hover: {
+                    animationDuration: 0
+                },
+                responsiveAnimationDuration: 0
+            }
+        });
+    }*/
+</script>

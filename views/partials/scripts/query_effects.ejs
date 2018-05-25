@@ -1,4 +1,5 @@
 <script type="text/javascript">
+
     // Set text value to 'text' on warning message field
     function toggleText(text) {
         document.getElementById("warning_msg").innerHTML = text;
@@ -26,6 +27,8 @@
             start: $('#datetimepicker6').data("DateTimePicker").date(),
             stop: $('#datetimepicker7').data("DateTimePicker").date()
         }
+
+        var chart = setAccChart(mapData)
                 
         $.ajax({
 		    type: 'POST',
@@ -61,6 +64,9 @@
                         toggleText("No GPS available for the selected dataset")
                         removeMarker("Bella") //bella?
                     }
+
+                    //setTempChart(mapData)
+                    updateChartData(chart, mapData)
                 }
             })
         })
@@ -84,6 +90,8 @@
             document.getElementById("theSliderTimestamp").textContent = new Date(JSON.parse(mapData)[e.value]['timestamp'])
             toggleText("No GPS available. Using last known GPS coordinate, if any")
         }
+
+        document.getElementById("theTemperature").textContent = JSON.parse(mapData)[e.value]['temperature']
     })
 
     /* Returns the first valid pair of longitude-latitude coordinate values */
@@ -103,4 +111,5 @@
         //console.log(lat)
         return { lon: lon, lat: lat, index: i }
     }
+
 </script>

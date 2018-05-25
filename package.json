@@ -30,6 +30,7 @@
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "bootstrap-datetimepicker-npm": "^4.17.37-npm",
+    "chart.js": "^2.7.2",
     "connect-mongo": "^2.0.1",
     "ejs": "^2.4.1",
     "express": "^4.13.4",
