@@ -19,10 +19,11 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.min.css" />
-        
+        <script type="text/javascript" src="public/scripts/thingslist.js"></script>
 
-        <h2 align="center">Selector panel</h3>
-        <div class="container">
+        <div class="query_custom_div">
+            <h2>Selector panel</h3>
+            <br>
             <form id="newthing" action="" method="POST">
                 <div class="container">
                     <div class='col-md-3'>
@@ -47,21 +48,51 @@
                             </div>
                         </div>
                     </div>
-                    <br>
-                    <div id="spn_url"></div>
-                    <button type="submit" id="submit_btn" class="query_btn">Query</button>
-                    <input id="theSlider" data-slider-id='theSlider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="1" data-slider-value="0"/>
                 </div>
-                <br>
-                <br>
-                <br>    
             </form>
+            <br>
+            
+            <div id="spn_url"></div>
+            <button type="submit" id="submit_btn" class="query_btn">Query</button>
+            <input id="theSlider" data-slider-id='theSlider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="1" data-slider-value="0"/>
+            <br>
+            <br>
             <span id="timestamplabel">Time : <span id="theSliderTimestamp"></span></span>
+            <br>
             <br>
             <span id="temperaturelabel">Temperature : <span id="theTemperature"></span></span>
             <br>
+            <br>
             <span id="batteryvoltage">Current battery voltage : <span id="theBatteryVoltage"></span></span>
+            <br>
+            <br>
             <div id="warning_msg" class="warning_msg">Help messages appear here</div>
+            <br>
+        </div>
+        <div class="container">
+            <table class="table table-bordered" id="profile_things_table" style="table-layout: fixed; width: 50%;"></table>
+            <colgroup>
+                <col width="10%">
+                <col width="10%">
+                <col width="44%">
+                <col width="36%">
+            </colgroup>
+            <thead></thead>
+            <tbody>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th id="checkbox"> </th>
+                </tr>
+            </tbody>  
         </div>
     </body>
+    <script type="text/javascript">
+        //requestAllThings("profile")
+        var checkboxes = document.getElementById("checkbox")
+        
+        //getSelectedCheckBoxes()
+        console.log("kek = " + checkboxes)
+    </script>
 </html>

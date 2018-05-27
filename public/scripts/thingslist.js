@@ -4,63 +4,93 @@ var allThings = {}
 
 var allHistory = {}
 
-function requestAllThings() {
+function requestAllThings(source) {
+    return
+    /*
     $.ajax({
         url: '/things/all',
         data: " ",
         success: function (data) {
             allThings = data
-            fillTable(data)
-            getHistoryData()
+            fillTable(data, source)
+            if (source == "live") {
+                getHistoryData()
+            }
         }
     });
+    */
 }
 
-function fillTable(things) {
+function fillTable(things, source) {
+    var myTableDiv, table
 
-        var myTableDiv = document.getElementById("table_div")
-        var table = document.getElementById("things_table")
-        var tableBody = document.createElement('TBODY')
+    if (source == "profile") {
+        myTableDiv = document.getElementById("profile_table_div")
+        table = document.getElementById("profile_things_table")
+    } else {
+        myTableDiv = document.getElementById("table_div")
+        table = document.getElementById("things_table")
+    }
 
-        table.appendChild(tableBody);
+    var tableBody = document.createElement('TBODY')
 
-        //TABLE ROWS
+    table.appendChild(tableBody);
+
+    //TABLE ROWS
+    var tr = document.createElement('TR');
+    tableBody.appendChild(tr);
+    for (var key in things) {
         var tr = document.createElement('TR');
-        tableBody.appendChild(tr);
-        for (var key in things) {
-            var tr = document.createElement('TR');
 
-            var td = document.createElement('TD')
-            td.appendChild(document.createTextNode(key));
-            tr.appendChild(td)
+        var td = document.createElement('TD')
+        td.appendChild(document.createTextNode(key));
+        tr.appendChild(td)
 
-            var td = document.createElement('TD')
-            td.appendChild(document.createTextNode(things[key].label));
-            tr.appendChild(td)
+        var td = document.createElement('TD')
+        td.appendChild(document.createTextNode(things[key].label));
+        tr.appendChild(td)
 
-            var td = document.createElement('TD')
-            td.appendChild(document.createTextNode(things[key].description));         
-            tr.appendChild(td)
+        var td = document.createElement('TD')
+        td.appendChild(document.createTextNode(things[key].description));         
+        tr.appendChild(td)
 
-            var td = document.createElement('TD')
-            var att = document.createAttribute("class");
-            att.value = "text-right"
-            td.setAttributeNode(att)
+        var td = document.createElement('TD')
+        var att = document.createAttribute("class");
+        att.value = "text-right"
+        td.setAttributeNode(att)
 
+        if (source == "live") {
             td.appendChild(makeBtn(key, "Hide", 'btn-primary'));
             td.appendChild(makeBtn(key, "View History"));
-            
-            tr.appendChild(td)
-
-
-            tableBody.appendChild(tr);
+        } else if (source == "profile") {
+            td.appendChild(makeCheckbox(key))
         }
 
-        myTableDiv.appendChild(table)
+        tr.appendChild(td)
+        tableBody.appendChild(tr);
+    }
+
+    myTableDiv.appendChild(table)
 }
 
-function makeBtn(id, label, btntype='btn-info') 
-{
+
+function getSelectedCheckBoxes() {
+    console.log("Checking checkboxes...");
+    console.log(document.getElementById("profile_table_div"))
+    $("INPUT:checkbox[name=type]:checked").each(function() {
+        console.log($(this).val())
+    })
+    console.log(document.getElementById("checkbox_id"))
+}
+
+function makeCheckbox(id) {
+    var a = document.createElement('input')
+    a.setAttribute('type', 'checkbox')
+    return a
+}
+
+
+function makeBtn(id, label, btntype='btn-info') {
     var a = document.createElement('BUTTON')    
     var att = document.createAttribute("class")
     att.value = 'btn ' + btntype + ' btn-xs'
@@ -121,6 +151,9 @@ changeAllBtn = function (label, type, btntype='btn-info')
         changeBtn(btn, label, btntype)
     }
 }
+
+
+
 
 getHistoryData = function () {
 

@@ -29,7 +29,21 @@ body {
     text-decoration: none;
 }
 
+/* Customized positioning of query parameter panel */
+.query_custom_div {
+    position: absolute;
+    top: 80px;
+    left: 1200px;
+}
 
+/* Customized positioning of the map on /profile */
+.map_custom_div {
+    position: absolute;
+    top: 80px;
+    left: 30px;
+}
+
+/* CSS for query button */
 .query_btn {
     display: inline-block;
     -webkit-box-sizing: content-box;
@@ -55,7 +69,7 @@ body {
     transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
   }
 
-
+/* When the query button is disabled */
 .query_btn_disabled {
     content: "Querying...";
     display: inline-block;
@@ -82,7 +96,7 @@ body {
     transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
 }
 
-
+/* Help message box */
 .warning_msg {
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
@@ -104,40 +118,10 @@ body {
     text-shadow: 1px 1px 1px rgba(0,0,0,0.2) ;
 }
 
-
-.noGPS {
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
-    width: 160px;
-    padding: 20px 100px 20px 20px;
-    overflow: hidden;
-    border: none;
-    -webkit-border-radius: 7px;
-    border-radius: 7px;
-    font: normal 16px/1 Impact, Charcoal, sans-serif;
-    color: rgba(255,255,255,1);
-    text-align: justify;
-    -o-text-overflow: ellipsis;
-    text-overflow: ellipsis;
-    background: #585859;
-    -webkit-box-shadow: 1px 1px 1px 0 rgba(0,0,0,0.3) ;
-    box-shadow: 1px 1px 1px 0 rgba(0,0,0,0.3) ;
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.2) ;
-}
-
-
 #timer {
     margin: 0 auto;
 }
 
-#theSlider .slider-selection {
-    
-}
-
-#theSlider .theSlider {
-    
-}
 .custab{
     border: 1px solid #ccc;
     padding: 5px;
