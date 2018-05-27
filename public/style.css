@@ -29,6 +29,13 @@ body {
     text-decoration: none;
 }
 
+/* Customized positioning of available things */
+.things_custom_div {
+    position: absolute;
+    top: 490px;
+    left: 1200px;
+}
+
 /* Customized positioning of query parameter panel */
 .query_custom_div {
     position: absolute;

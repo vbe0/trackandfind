@@ -5,8 +5,6 @@ var allThings = {}
 var allHistory = {}
 
 function requestAllThings(source) {
-    return
-    /*
     $.ajax({
         url: '/things/all',
         data: " ",
@@ -18,7 +16,7 @@ function requestAllThings(source) {
             }
         }
     });
-    */
+    
 }
 
 function fillTable(things, source) {
@@ -76,16 +74,17 @@ function fillTable(things, source) {
 
 function getSelectedCheckBoxes() {
     console.log("Checking checkboxes...");
-    console.log(document.getElementById("profile_table_div"))
+    console.log(document.getElementById("checkbox"))
     $("INPUT:checkbox[name=type]:checked").each(function() {
         console.log($(this).val())
     })
-    console.log(document.getElementById("checkbox_id"))
 }
 
 function makeCheckbox(id) {
     var a = document.createElement('input')
+    var att = document.createAttribute("class")
     a.setAttribute('type', 'checkbox')
+    a.setAttributeNode(att)
     return a
 }
 

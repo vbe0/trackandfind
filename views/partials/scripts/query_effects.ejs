@@ -1,10 +1,6 @@
 <script type="text/javascript">
-    //requestAllThings("profile")
-    var checkboxes = document.getElementById('checkbox_id')
+    requestAllThings("profile")
     
-    //getSelectedCheckBoxes()
-    console.log("kek = " + checkboxes)
-
     // Set text value to 'text' on warning message field
     function toggleText(text) {
         document.getElementById("warning_msg").innerHTML = text;
@@ -32,7 +28,8 @@
             start: $('#datetimepicker6').data("DateTimePicker").date(),
             stop: $('#datetimepicker7').data("DateTimePicker").date()
         }
-
+        
+        getSelectedCheckBoxes()
 
         $.ajax({
 		    type: 'POST',
