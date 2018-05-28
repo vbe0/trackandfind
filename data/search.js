@@ -8,10 +8,13 @@ const WINDOW = 2000
 let api = new MIC
 
 // Init by providing the app endpoint
-function getSensorData(time, params) {
-	
-	//console.log("time = ", time)
-	var config = getParams(time, params)
+function getSensorData(start, stop, thing) {
+	var time = {
+		start: start, 
+		stop: stop
+	}
+	console.log("thing = " + thing)
+	var config = getParams(time, thing)
 
 	// The manifest is fetched and a 'unauthorized'
 	// Cognito identity is created
@@ -29,9 +32,14 @@ function getSensorData(time, params) {
 }
 
 /* Returns the configuration parameters body used in Elastic search */
-function getParams(time, params) {
+function getParams(timeP, thing) {
+	var time = {
+		start: timeP.start, 
+		stop: timeP.stop
+	}
+
 	const DAY = 86400000
-	const START = 1522747531024 // Data prior to this timestamp is not interesting at all
+	const START = 1525478400000 // Data prior to this timestamp is not interesting at all
 	
 	/* 'startDate' is used to denote the start of the interval */
 	var startDate, userStart, endDate, userEnd
@@ -44,7 +52,7 @@ function getParams(time, params) {
 	if (time.start != null) {		
 		userStart = new Date(time.start) * 1
 		
-		/* Don't use garbage historic data */
+		/* Don't use historical garbage data */
 		if (userStart < absoluteStart) {
 			startDate = absoluteStart
 		} else {
@@ -88,7 +96,7 @@ function getParams(time, params) {
 							minimum_should_match: 1,
 							must: [{
 								terms: {
-									thingName: ['00001416']
+									thingName: [thing]
 								}
 							},
 							{
@@ -126,6 +134,7 @@ function purifyData(data) {
 	var arr = data.hits.hits, i
 	var result = []
 	for (i = 0; i < data.hits.hits.length; i++) {
+		//console.log(arr[i])
 		var data_i = {timestamp: arr[i]["_source"]['timestamp'],
 			pos: {
 				lon: arr[i]["_source"]["state"]["payload"].split(",")[0],
@@ -141,10 +150,40 @@ function purifyData(data) {
 	return result
 }
 
+var packData = function(start, stop, thing) {
+	var k = 0, result = []
+	return new Promise(
+		function (resolve, reject) {
+			//console.log(start, stop, thing)
+			var res = getSensorData(start, stop, thing).then(data => {
+				//console.log("Finished getting data from " + thing)
+				resolve(data)
+				return data
+			})
+		}
+	)
+}
+
+
 
 /* To be implemented: sliding window if the total amount of data > WINDOW*/
 module.exports = {
-    getData: function (time, params) {
-		return getSensorData(time, params);
+    getData: function (params) {
+		return new Promise(
+			function(resolve, reject) {
+				var result = []
+				params.things.reduce(
+					(p, x) => 
+						p.then(result => packData(params.start, params.stop, x)).then( r => {
+							result.push(r)
+						}),
+						Promise.resolve(),
+				).then(_ => {
+					resolve(result)
+					//console.log(result)
+					return result
+				})
+			}
+		)
 	}
 }

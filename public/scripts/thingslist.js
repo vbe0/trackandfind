@@ -61,7 +61,7 @@ function fillTable(things, source) {
             td.appendChild(makeBtn(key, "Hide", 'btn-primary'));
             td.appendChild(makeBtn(key, "View History"));
         } else if (source == "profile") {
-            td.appendChild(makeCheckbox(key))
+            td.appendChild(makeBtn(key, "Include"));
         }
 
         tr.appendChild(td)
@@ -69,23 +69,6 @@ function fillTable(things, source) {
     }
 
     myTableDiv.appendChild(table)
-}
-
-
-function getSelectedCheckBoxes() {
-    console.log("Checking checkboxes...");
-    console.log(document.getElementById("checkbox"))
-    $("INPUT:checkbox[name=type]:checked").each(function() {
-        console.log($(this).val())
-    })
-}
-
-function makeCheckbox(id) {
-    var a = document.createElement('input')
-    var att = document.createAttribute("class")
-    a.setAttribute('type', 'checkbox')
-    a.setAttributeNode(att)
-    return a
 }
 
 
@@ -106,56 +89,59 @@ function makeBtn(id, label, btntype='btn-info') {
     return a
 }
 
-function buttonEvent(btn) 
-{   
-    console.log(btn)
+function buttonEvent(btn) {   
+    console.log("kek")
     if (btn.innerHTML == "Hide") {
         removeMarker(btn.id.replace('Hide', ''))
         changeBtn(btn, "Show")
-    }
-    else if (btn.innerHTML == "Show") {
+    } else if (btn.innerHTML == "Show") {
         addMarkerWithId(btn.id.replace('Hide', ''))
         changeBtn(btn, "Hide", 'btn-primary')
-    }
-    else if (btn.innerHTML == "View History") {
+    } else if (btn.innerHTML == "View History") {
         addTrackerPathToMap(btn.id.replace('View History', ''))        
         changeBtn(btn, "Hide History", 'btn-primary')
-    }
-    else if (btn.innerHTML == "Hide History") {
+    } else if (btn.innerHTML == "Hide History") {
         removePath(btn.id.replace('View History', ''))                
         changeBtn(btn, "View History")
-    }
-    else if (btn.innerHTML == "Hide All") {
+    } else if (btn.innerHTML == "Include") {
+        changeBtn(btn, "Exclude", 'btn-primary')
+    } else if (btn.innerHTML == "Exclude") {
+        changeBtn(btn, "Include")
+    } else if (btn.innerHTML == "Hide All") {
         removeMarkers()
         changeAllBtn('Show', 'Hide')
         changeAllBtn('View History', 'View History')
-    }
-    else if (btn.innerHTML == "Show All") {
+    } else if (btn.innerHTML == "Show All") {
         addAllMarkers()
         changeAllBtn('Hide', 'Hide', 'btn-primary')
     }
-    
 }
 
-function changeBtn(btn, label, btntype="btn-info") 
-{
+function getSelectedBtns() {
+    var selectedKeys = []
+    for (var key in allThings) {
+        var btn = document.getElementById(key + "Include")
+        if (btn.innerHTML == "Exclude") {
+            selectedKeys.push(key)
+        }
+    }
+    return selectedKeys
+}
+
+
+function changeBtn(btn, label, btntype="btn-info") {
     btn.innerHTML = label 
     btn.setAttribute('class', 'btn ' + btntype + ' btn-xs')
 }
 
-changeAllBtn = function (label, type, btntype='btn-info')
-{
+changeAllBtn = function (label, type, btntype='btn-info') {
     for (var key in allThings) {
         btn = document.getElementById(key + type)
         changeBtn(btn, label, btntype)
     }
 }
 
-
-
-
 getHistoryData = function () {
-
     var i 
 
     for (x in allThings) {
@@ -169,6 +155,7 @@ getHistoryData = function () {
         });
     }
 }
+
 addToHistory = function (data) {
     allHistory[data[0].name] = data
 }
@@ -193,13 +180,11 @@ addLastToMap = function (thingdata) {
             console.log("Data.lat is none for thing ", thingName)
             return
         }
-        var date = String(new Date(Number(data.date))).replace('GMT+0200 (CEST)', '')
-
         
+        var date = String(new Date(Number(data.date))).replace('GMT+0200 (CEST)', '')        
         console.log("Adding last received to map: ", data, "with date ", date)
         addPastMarker(data.name, data.lat, data.lng, markerText="Temp: "+ data.temperature + ", Battery: "+ data.battery, time=date)
-    }
-    catch (err) {
+    } catch (err) {
         console.log("Error parsing data from history last received with", thingName, err)
     }
 }

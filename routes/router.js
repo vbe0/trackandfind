@@ -321,13 +321,14 @@ router.post('/profile', function (req, res, next) {
         err.status = 400;
         return next(err);
     	} else {
-		    var body = req.body
-				var r = thingsData.getData(body).then(data => {
-				  res.send(data)
-				})
-		  }
-	  }
-	})
+            var body = req.body
+            var r = thingsData.getData(body).then(data => {
+              res.send(data)
+            })
+          }
+				}
+      }
+    )
 })
 
 

@@ -1,6 +1,7 @@
 <script type="text/javascript">
     requestAllThings("profile")
-    
+    var body = []
+
     // Set text value to 'text' on warning message field
     function toggleText(text) {
         document.getElementById("warning_msg").innerHTML = text;
@@ -23,13 +24,13 @@
     $("#submit_btn").on('click', function() {
         document.getElementById('submit_btn').setAttribute("class", "query_btn_disabled")
         $("#submit_btn").attr('disabled', true)
-                
+        var things = getSelectedBtns()
+        
         var data = {
             start: $('#datetimepicker6').data("DateTimePicker").date(),
-            stop: $('#datetimepicker7').data("DateTimePicker").date()
+            stop: $('#datetimepicker7').data("DateTimePicker").date(),
+            things: things
         }
-        
-        getSelectedCheckBoxes()
 
         $.ajax({
 		    type: 'POST',
@@ -41,61 +42,74 @@
                 },
                 complete: function() {
                     document.getElementById('submit_btn').setAttribute("class", "query_btn");
-                        
+                    body = JSON.parse(mapData)
+                    var maX = getLongestSlice(body)
+                    console.log(body)
+                    
                     // Enable the query button again
                     $("#submit_btn").attr('disabled', false)
                         
                     // Initialize the slider to the context of POST response
                     $('#theSlider').slider({
-                        max: JSON.parse(mapData).length,
-                        enabled: true,
+                        max: maX,
+                        enabled: true
                     })
-                        
-                    // Pinpoint the initial marker on the map
-                    var coordinates = getFirstValidPositions(mapData)
-                        
-                    /* Try to display an initial marker on the map if possible. Alert user if coordinates
-                    * are not present.
-                    */
-                    if (coordinates.lon != undefined && coordinates.lat != undefined) {
-                        addMarker("Bella", coordinates.lon, coordinates.lat)
-                        $('#theSlider').slider('setValue', coordinates.index);
-                        toggleText("Map marker set to first known GPS coordinate")
-                    } else {
-                        toggleText("No GPS available for the selected dataset")
-                        removeMarker("Bella") //bella?
+
+                    for (var i = 0; i < body.length; i++) {
+                        // Pinpoint the initial marker on the map
+                        var coordinates = getFirstValidPositions(JSON.stringify(body[i]))
+                        console.log(coordinates)
+                        /* Try to display an initial marker on the map if possible. Alert user if coordinates
+                        * are not present.
+                        */
+                        if (coordinates != undefined) {
+                            if (coordinates.lon != undefined && coordinates.lat != undefined) {
+                                addMarker("Bella", coordinates.lon, coordinates.lat)
+                                $('#theSlider').slider('setValue', coordinates.index);
+                                toggleText("Map marker set to first known GPS coordinate")
+                            } else {
+                                toggleText("No GPS available for the selected dataset")
+                                removeMarker("Bella") //bella?
+                            }
+                        } else {
+                            toggleText("No GPS available for the selected dataset")
+                        }
                     }
                 }
             })
         })
 
     $('#theSlider').slider();
-
     /* As the slider moves, we want to display each (lon-lat) pair.
     * However, they might not exist. Use the latest known pair if this is the case.
     */
-    $('#theSlider').on('slide', function(e){
-        var lon = JSON.parse(mapData)[e.value]['pos']['lon']
-        var lat = JSON.parse(mapData)[e.value]['pos']['lat']
-        
-        if (lon != "None" || lat != "None") {
-            toggleText("Using current GPS coordinate")
-            document.getElementById("theSliderTimestamp").textContent = new Date(JSON.parse(mapData)[e.value]['timestamp'])
-            // bella?
-            addMarker("Bella", lon, lat)
+    $('#theSlider').on('slide', function(e) {
+        console.log(e.value)//, JSON.stringify(body[0]))
+        for (var i = 0; i < body.length; i++) {
+            console.log(body[i])
+            var lon, lat
+            var slice = JSON.stringify(body[0])
+            lon = JSON.parse(slice)[e.value]['pos']['lon']
+            lat = JSON.parse(slice)[e.value]['pos']['lat']
+            
+            if (lon != "None" || lat != "None") {
+                console.log(lon, lat)
+                toggleText("Using current GPS coordinate")
+                document.getElementById("theSliderTimestamp").textContent = new Date(JSON.parse(mapData)[e.value]['timestamp'])
+                // bella?
+                addMarker("Bella", lon, lat)
+            } else {
+                document.getElementById("theSliderTimestamp").textContent = new Date(JSON.parse(mapData)[e.value]['timestamp'])
+                toggleText("No GPS available. Using last known GPS coordinate, if any")
+            }
+            document.getElementById("theTemperature").textContent = JSON.parse(mapData)[e.value]['temperature']
         }
-        else {
-            document.getElementById("theSliderTimestamp").textContent = new Date(JSON.parse(mapData)[e.value]['timestamp'])
-            toggleText("No GPS available. Using last known GPS coordinate, if any")
-        }
-
-        document.getElementById("theTemperature").textContent = JSON.parse(mapData)[e.value]['temperature']
     })
 
     /* Returns the first valid pair of longitude-latitude coordinate values */
-    function getFirstValidPositions(mapData, start=0) {
-        var data = JSON.parse(mapData), i, lon, lat
-
+    function getFirstValidPositions(rawData, start=0) {
+        var data = JSON.parse(rawData), i, lon, lat
+        //console.log(rawData)
         for (i = 0; i < data.length; i++) {
             if (data[i]["pos"]["lon"] != "None" && data[i]["pos"]["lat"] != "None") {
                 lon = data[i]["pos"]["lon"]
@@ -107,6 +121,18 @@
         * the coordinate pair being returned. 'Index' is index in mapData
         */
         return { lon: lon, lat: lat, index: i }
+    }
+
+    /* Returns the length of the longest slice */
+    function getLongestSlice(data) {
+        var max = 0
+        for (var i = 0; i < data.length; i++) {
+            //console.log(data[i].length)
+            if (data[i].length > max) {
+                max = data[i].length
+            }
+        }
+        return max
     }
 
 </script>
