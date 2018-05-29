@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+<script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+
+<div class="container" style="width: 20px;"></div>
+    <div class="ct-chart ct-perfect-fourth"></div>
+</div>
+
+<script>
+    function newChart() {
+        var options = {
+            height: 300,
+            width: 1500
+        }
+        return Chartist.Line('.ct-chart', data={}, options);
+    }
+
+    function setChartData(chart, data) {
+        var labels = [], temps = [], dataset = JSON.parse(data), i
+        
+        for (i = 0; i < dataset.length; i++) {
+            temps.push(dataset[i]['temperature'])
+            labels.push(new Date(dataset[i]['timestamp']))  
+        }
+        console.log(temps)
+        series = [
+            temps
+        ]
+
+        chart.update({labels: labels, series: series})
+    }
+</script>

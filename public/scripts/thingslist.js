@@ -4,63 +4,110 @@ var allThings = {}
 
 var allHistory = {}
 
-function requestAllThings() {
+function requestAllThings(source) {
     $.ajax({
         url: '/things/all',
         data: " ",
         success: function (data) {
             allThings = data
-            fillTable(data)
-            getHistoryData()
+            fillTable(data, source)
+            if (source == "live") {
+                getHistoryData()
+            }
         }
     });
+    
 }
 
-function fillTable(things) {
+function fillTable(things, source) {
+    var myTableDiv, table
 
-        var myTableDiv = document.getElementById("table_div")
-        var table = document.getElementById("things_table")
-        var tableBody = document.createElement('TBODY')
+    if (source == "profile") {
+        myTableDiv = document.getElementById("profile_table_div")
+        table = document.getElementById("profile_things_table")
+    } else {
+        myTableDiv = document.getElementById("table_div")
+        table = document.getElementById("things_table")
+    }
 
-        table.appendChild(tableBody);
+    var tableBody = document.createElement('TBODY')
 
-        //TABLE ROWS
+    table.appendChild(tableBody);
+
+    //TABLE ROWS
+    var tr = document.createElement('TR');
+    tableBody.appendChild(tr);
+    for (var key in things) {
         var tr = document.createElement('TR');
-        tableBody.appendChild(tr);
-        for (var key in things) {
-            var tr = document.createElement('TR');
 
-            var td = document.createElement('TD')
-            td.appendChild(document.createTextNode(key));
-            tr.appendChild(td)
+        var td = document.createElement('TD')
+        td.appendChild(document.createTextNode(key));
+        tr.appendChild(td)
 
-            var td = document.createElement('TD')
-            td.appendChild(document.createTextNode(things[key].label));
-            tr.appendChild(td)
+        var td = document.createElement('TD')
+        td.appendChild(document.createTextNode(things[key].label));
+        tr.appendChild(td)
 
-            var td = document.createElement('TD')
-            td.appendChild(document.createTextNode(things[key].description));         
-            tr.appendChild(td)
+        var td = document.createElement('TD')
+        td.appendChild(document.createTextNode(things[key].description));         
+        tr.appendChild(td)
 
-            var td = document.createElement('TD')
-            var att = document.createAttribute("class");
-            att.value = "text-right"
-            td.setAttributeNode(att)
+        var td = document.createElement('TD')
+        var att = document.createAttribute("class");
+        att.value = "text-right"
+        td.setAttributeNode(att)
 
+        if (source == "live") {
             td.appendChild(makeBtn(key, "Hide", 'btn-primary'));
             td.appendChild(makeBtn(key, "View Path"));
             
             tr.appendChild(td)
-
-
-            tableBody.appendChild(tr);
+        } else if (source == "profile") {
+            td.appendChild(makeBtn(key, "Include"));
+            tr.appendChild(td)
+            var td_temp = document.createElement('TD')
+            var td_accs = document.createElement('TD')
+            var td_time = document.createElement('TD')
+            td_temp.id = key + "temp"
+            td_accs.id = key + "accs"
+            td_time.id = key + "timestamp"
+            tr.appendChild(td_temp)
+            tr.appendChild(td_accs)
+            tr.appendChild(td_time)
         }
+        tableBody.appendChild(tr);
+    }
 
-        myTableDiv.appendChild(table)
+    myTableDiv.appendChild(table)
 }
 
-function makeBtn(id, label, btntype='btn-info') 
-{
+
+function setValidCellStyle(element) {
+    element.style.color = "black"
+    element.style.textDecoration = "none"
+}
+
+function setInvalidCellStyle(element) {
+    element.style.color = "red"
+    element.style.textDecoration = "underline"
+}
+
+function insertSensorData(mapData) {
+    for (var i = 0; i < mapData.length; i++) {
+        try {
+            var key = mapData[i].name
+            var tempCell = document.getElementById(key + "temp")
+            var accsCell = document.getElementById(key + "accs")
+            tempCell.innerHTML = mapData[i].temperature
+            accsCell.innerHTML = mapData[i].sumAcc
+        } catch (err) {
+            continue
+        }
+    }
+}
+
+
+function makeBtn(id, label, btntype='btn-info') {
     var a = document.createElement('BUTTON')    
     var att = document.createAttribute("class")
     att.value = 'btn ' + btntype + ' btn-xs'
@@ -77,14 +124,12 @@ function makeBtn(id, label, btntype='btn-info')
     return a
 }
 
-function buttonEvent(btn) 
-{   
-    console.log(btn)
+function buttonEvent(btn) {   
+    console.log("kek")
     if (btn.innerHTML == "Hide") {
         removeMarker(btn.id.replace('Hide', ''))
         changeBtn(btn, "Show")
-    }
-    else if (btn.innerHTML == "Show") {
+    } else if (btn.innerHTML == "Show") {
         addMarkerWithId(btn.id.replace('Hide', ''))
         changeBtn(btn, "Hide", 'btn-primary')
     }
@@ -105,17 +150,31 @@ function buttonEvent(btn)
         addAllMarkers()
         changeAllBtn('Hide', 'Hide', 'btn-primary')
     }
-    
+    else if (btn.innerHTML == "Include") {
+        changeBtn(btn, "Exclude", 'btn-primary')
+    } else if (btn.innerHTML == "Exclude") {
+        changeBtn(btn, "Include")
+    }
 }
 
-function changeBtn(btn, label, btntype="btn-info") 
-{
+function getSelectedBtns() {
+    var selectedKeys = []
+    for (var key in allThings) {
+        var btn = document.getElementById(key + "Include")
+        if (btn.innerHTML == "Exclude") {
+            selectedKeys.push(key)
+        }
+    }
+    return selectedKeys
+}
+
+
+function changeBtn(btn, label, btntype="btn-info") {
     btn.innerHTML = label 
     btn.setAttribute('class', 'btn ' + btntype + ' btn-xs')
 }
 
-changeAllBtn = function (label, type, btntype='btn-info')
-{
+changeAllBtn = function (label, type, btntype='btn-info') {
     for (var key in allThings) {
         btn = document.getElementById(key + type)
         changeBtn(btn, label, btntype)
@@ -164,13 +223,11 @@ addLastToMap = function (thingdata) {
             console.log("Data.lat is none for thing ", thingName)
             return
         }
-        var date = String(new Date(Number(data.date))).replace('GMT+0200 (CEST)', '')
-
         
+        var date = String(new Date(Number(data.date))).replace('GMT+0200 (CEST)', '')        
         console.log("Adding last received to map: ", data, "with date ", date)
         addPastMarker(data.name, data.lat, data.lng, markerText="Temp: "+ data.temperature + ", Battery: "+ data.battery, time=date)
-    }
-    catch (err) {
+    } catch (err) {
         console.log("Error parsing data from history last received with", thingName, err)
     }
 }

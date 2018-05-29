@@ -20,7 +20,8 @@ head
             th Description
             th#btnAll(class='text-right') 
 script(type="text/javascript").
-    requestAllThings()
+    requestAllThings("live")
     var btnAll = document.getElementById('btnAll')//$('#btnAll')
+    console.log(btnAll)
     btnAll.appendChild( makeBtn("btnall", "Hide All"))
     btnAll.appendChild( makeBtn("btnall", "Show All"))
