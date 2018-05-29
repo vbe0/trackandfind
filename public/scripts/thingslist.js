@@ -270,6 +270,7 @@ addLastToMap = function (thingdata) {
     }
 }
 
+
 addTrackerPathToMap = function (thingName) {
     var x, prev_lat = 0.0, prev_lng = 0.0
     var coords = []
