@@ -48,7 +48,7 @@ function fillTable(things) {
             td.setAttributeNode(att)
 
             td.appendChild(makeBtn(key, "Hide", 'btn-primary'));
-            td.appendChild(makeBtn(key, "View History"));
+            td.appendChild(makeBtn(key, "View Path"));
             
             tr.appendChild(td)
 
@@ -88,18 +88,18 @@ function buttonEvent(btn)
         addMarkerWithId(btn.id.replace('Hide', ''))
         changeBtn(btn, "Hide", 'btn-primary')
     }
-    else if (btn.innerHTML == "View History") {
-        addTrackerPathToMap(btn.id.replace('View History', ''))        
-        changeBtn(btn, "Hide History", 'btn-primary')
+    else if (btn.innerHTML == "View Path") {
+        addTrackerPathToMap(btn.id.replace('View Path', ''))        
+        changeBtn(btn, "Hide Path", 'btn-primary')
     }
-    else if (btn.innerHTML == "Hide History") {
-        removePath(btn.id.replace('View History', ''))                
-        changeBtn(btn, "View History")
+    else if (btn.innerHTML == "Hide Path") {
+        removePath(btn.id.replace('View Path', ''))                
+        changeBtn(btn, "View Path")
     }
     else if (btn.innerHTML == "Hide All") {
         removeMarkers()
         changeAllBtn('Show', 'Hide')
-        changeAllBtn('View History', 'View History')
+        changeAllBtn('View Path', 'View Path')
     }
     else if (btn.innerHTML == "Show All") {
         addAllMarkers()
