@@ -11,14 +11,20 @@ head
         colgroup
             col( width='10%')
             col( width='10%')
-            col( width='44%')
-            col( width='36%')
+            col( width='34%')
+            col( width='11%')
+            col( width='10%')
+            col( width='7%')
+            col( width='18%')
         thead
         tr
             th ID
             th Name
             th Description
-            th#btnAll(class='text-right') 
+            th#btnAll(class='text-right')
+            th Temperature
+            th Battery
+            th Date
 script(type="text/javascript").
     requestAllThings("live")
     var btnAll = document.getElementById('btnAll')//$('#btnAll')

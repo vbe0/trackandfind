@@ -39,7 +39,7 @@ function getParams(timeP, thing) {
 	}
 
 	const DAY = 86400000
-	const START = 1525478400000 // Data prior to this timestamp is not interesting at all
+	const START = 1525125600000 // Data prior to this timestamp is not interesting at all
 	
 	/* 'startDate' is used to denote the start of the interval */
 	var startDate, userStart, endDate, userEnd

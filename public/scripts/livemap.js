@@ -32,17 +32,30 @@ addToMap = function (data) {
         var obj = {lng:lng, lat:lat, battery:battery, date:d.getTime(), name:thing, sumAcc:data.message.sumAcc, temperature:temp}
 
         addToDeviceHistory(thing, obj)
+        insertDeviceSensorData(thing, obj)
+        
 
         if (data.message.lat == 'None'|| data.message.lng == 'None') {
             console.log ("Received data without coordinates from ", thing, ". Data:", data)
-            return 
+        }
+        else if (isHide(thing)) {
+            console.log("Thing is hidden on map: ", thing)
         } else {
             addMarker(thing, lat, lng, markerText="Temperature: " + temp + "Battery: "+ battery)
         }
     }
     catch (err) {
-        console.log("Error parsing data from tracker: ", thing, " lat, lng", lat, lng, " data.message.lat, data.message.lng ", data.message.lat, data.message.lng)
+        console.log("Error parsing data from tracker: ", thing, " lat, lng", lat, lng)
+        console.log("Error: ", err)
     }
 }
 
-
+isHide = function(thing) {
+    var hideBtns = getSelectedHideBtns()
+    console.log("Hidebtns, ", hideBtns)
+    if (hideBtns.includes(thing)) {
+        console.log("Thing ", thing, " is hidden.")
+        return true
+    }
+    return false 
+}

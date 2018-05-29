@@ -65,16 +65,16 @@ function fillTable(things, source) {
         } else if (source == "profile") {
             td.appendChild(makeBtn(key, "Include"));
             tr.appendChild(td)
-            var td_temp = document.createElement('TD')
-            var td_accs = document.createElement('TD')
-            var td_time = document.createElement('TD')
-            td_temp.id = key + "temp"
-            td_accs.id = key + "accs"
-            td_time.id = key + "timestamp"
-            tr.appendChild(td_temp)
-            tr.appendChild(td_accs)
-            tr.appendChild(td_time)
         }
+        var td_temp = document.createElement('TD')
+        var td_accs = document.createElement('TD')
+        var td_time = document.createElement('TD')
+        td_temp.id = key + "temp"
+        td_accs.id = key + "accs"
+        td_time.id = key + "timestamp"
+        tr.appendChild(td_temp)
+        tr.appendChild(td_accs)
+        tr.appendChild(td_time)
         tableBody.appendChild(tr);
     }
 
@@ -104,6 +104,34 @@ function insertSensorData(mapData) {
             continue
         }
     }
+}
+function insertDeviceSensorData(thing, data, old=false) {
+    try {
+        var key = thing
+        var tempCell = document.getElementById(key + "temp")
+        var accsCell = document.getElementById(key + "accs")
+        var timeCell = document.getElementById(key + "timestamp")
+        
+        tempCell.innerHTML = data.temperature
+        accsCell.innerHTML = data.battery
+        timeCell.innerHTML = datedate(data.date)
+        if (old) {
+            setInvalidCellStyle(tempCell)
+            setInvalidCellStyle(accsCell)
+            setInvalidCellStyle(timeCell)
+        } else {
+            setValidCellStyle(tempCell)
+            setValidCellStyle(accsCell)
+            setValidCellStyle(timeCell)
+        }
+    } catch (err) {
+        console.log("Error in insertDeviceSensorData: ", err)
+    }
+}
+function datedate(date) {
+    var d = new Date(date)
+    d = String(d).replace("GMT+0200 (CEST)", "")
+    return d
 }
 
 
@@ -167,7 +195,16 @@ function getSelectedBtns() {
     }
     return selectedKeys
 }
-
+getSelectedHideBtns = function () {
+    var selected = []
+    for (var key in allThings) {
+        var btn = document.getElementById(key + 'Hide')
+        if (btn.innerHTML == "Show") {
+            selected.push(key)
+        }
+    }
+    return selected
+}
 
 function changeBtn(btn, label, btntype="btn-info") {
     btn.innerHTML = label 
@@ -226,6 +263,7 @@ addLastToMap = function (thingdata) {
         
         var date = String(new Date(Number(data.date))).replace('GMT+0200 (CEST)', '')        
         console.log("Adding last received to map: ", data, "with date ", date)
+        insertDeviceSensorData(data.name, data, true)
         addPastMarker(data.name, data.lat, data.lng, markerText="Temp: "+ data.temperature + ", Battery: "+ data.battery, time=date)
     } catch (err) {
         console.log("Error parsing data from history last received with", thingName, err)
