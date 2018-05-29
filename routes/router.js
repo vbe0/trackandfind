@@ -79,7 +79,7 @@ router.get('/profile', function (req, res, next) {
           err.status = 400;
           return next(err);
         } else {
-          return res.render('pages/index');
+          return res.render('pages/livemap.pug');
         }
       }
     });
@@ -139,7 +139,7 @@ router.get('/data/:name', function (req, res, next) {
 
 
 // GET live map page
-router.get('/livemap', function (req, res, next) {
+router.get('/history', function (req, res, next) {
   User.findById(req.session.userId)
     .exec(function (error, user) {
       if (error) {
@@ -150,7 +150,7 @@ router.get('/livemap', function (req, res, next) {
           err.status = 400;
           return next(err);
         } else {
-          return res.render('pages/livemap.pug');
+          return res.render('pages/index');
         }
       }
     });
