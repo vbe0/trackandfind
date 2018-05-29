@@ -123,9 +123,7 @@ changeAllBtn = function (label, type, btntype='btn-info')
 }
 
 getHistoryData = function () {
-
     var i 
-
     for (x in allThings) {
         $.ajax({
             url: '/data/'+ x,
@@ -137,8 +135,13 @@ getHistoryData = function () {
         });
     }
 }
+
 addToHistory = function (data) {
     allHistory[data[0].name] = data
+}
+
+addToDeviceHistory = function (device, data) {
+    allHistory[device].push(data) 
 }
 
 addLastToMap = function (thingdata) {
@@ -173,12 +176,20 @@ addLastToMap = function (thingdata) {
 }
 
 addTrackerPathToMap = function (thingName) {
-    var x 
+    var x, prev_lat = 0.0, prev_lng = 0.0
     var coords = []
     //console.log(allHistory[thingName])
-
-    for (x in allHistory[thingName]) {
-        if (allHistory[thingName][x].lat != 'None' && allHistory[thingName][x].lng != undefined) {
+    var x = allHistory[thingName].length - 1, i = 0
+    for (i = 0; i <= 100 && x >= 0; x--) {
+        var lat = allHistory[thingName][x].lat
+        var lng = allHistory[thingName][x].lng
+        if (lat != 'None' && lng != undefined) {
+            if (Math.abs(lat - prev_lat) < 0.002163 && Math.abs(lng - prev_lng) < 0.00217) {
+                continue
+            }
+            prev_lat = lat
+            prev_lng = lng
+            i++
             coords.push([allHistory[thingName][x].lat, allHistory[thingName][x].lng])
         }
     }
