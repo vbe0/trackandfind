@@ -55,27 +55,17 @@
             <div id="spn_url"></div>
             <button type="submit" id="submit_btn" class="query_btn">Query</button>
             <input id="theSlider" data-slider-id='theSlider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="1" data-slider-value="0"/>
-            <br>
-            <br>
-            <span id="timestamplabel">Time : <span id="theSliderTimestamp"></span></span>
-            <br>
-            <br>
-            <span id="temperaturelabel">Temperature : <span id="theTemperature"></span></span>
-            <br>
-            <br>
-            <span id="batteryvoltage">Current battery voltage : <span id="theBatteryVoltage"></span></span>
-            <br>
-            <br>
-            <div id="warning_msg" class="warning_msg">Help messages appear here</div>
-            <br>
         </div>
         <div class="things_custom_div" id="profile_table_div" style="margin-top:20px;">
-            <table class="table table-bordered" id="profile_things_table" style="table-layout: fixed; width: 90%;">
+            <table class="table table-bordered" id="profile_things_table" style="table-layout: fixed; width: 800px;">
                 <colgroup>
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="15%">
+                    <col width="10%">
+                    <col width="12%">
+                    <col width="15%">
                     <col width="20%">
-                    <col width="20%">
-                    <col width="24%">
-                    <col width="36%">
                 </colgroup>
                 <thead></thead>
                 <tbody>
@@ -83,7 +73,10 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Description</th>
-                        <th class="text-right" id="profile_thing_btn"> </th>
+                        <th class="text-right" id="profile_thing_btn">Toggle</th>
+                        <th>Temperature</th>
+                        <th>Accelerometer</th>
+                        <th>Timestamp</th>
                     </tr>
                 </tbody>  
             </table>

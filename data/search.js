@@ -130,11 +130,29 @@ function getParams(timeP, thing) {
 
 /* Remove garbage and purify the dataset */
 function purifyData(data) {
+	var arr = data.hits.hits, i
+	var result = []
+	for (i = 0; i < arr.length; i++) {
+		var vals = arr[i]["_source"]
+		var value = {}
+		if (vals.state.battery === undefined) {
+			continue
+		}
+		value.date = vals.timestamp
+		value.name = vals.thingName
+		value.lng = vals.state.lng
+		value.lat = vals.state.lat
+		value.sumAcc = vals.state.sumAcc
+		value.battery = vals.state.battery 
+		value.temperature = vals.state.temperature
 
+		result.push(value)
+	}
+	return result
+/*
 	var arr = data.hits.hits, i
 	var result = []
 	for (i = 0; i < data.hits.hits.length; i++) {
-		//console.log(arr[i])
 		var data_i = {timestamp: arr[i]["_source"]['timestamp'],
 			pos: {
 				lon: arr[i]["_source"]["state"]["payload"].split(",")[0],
@@ -144,10 +162,10 @@ function purifyData(data) {
 			temperature: arr[i]["_source"]["state"]["payload"].split(",")[3],
 			accSum: arr[i]["_source"]["state"]["payload"].split(",")[4]
 		}
-
 		result.push(data_i)
 	}
 	return result
+*/
 }
 
 var packData = function(start, stop, thing) {

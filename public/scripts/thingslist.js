@@ -60,15 +60,49 @@ function fillTable(things, source) {
         if (source == "live") {
             td.appendChild(makeBtn(key, "Hide", 'btn-primary'));
             td.appendChild(makeBtn(key, "View History"));
+            tr.appendChild(td)
         } else if (source == "profile") {
             td.appendChild(makeBtn(key, "Include"));
+            tr.appendChild(td)
+            var td_temp = document.createElement('TD')
+            var td_accs = document.createElement('TD')
+            var td_time = document.createElement('TD')
+            td_temp.id = key + "temp"
+            td_accs.id = key + "accs"
+            td_time.id = key + "timestamp"
+            tr.appendChild(td_temp)
+            tr.appendChild(td_accs)
+            tr.appendChild(td_time)
         }
-
-        tr.appendChild(td)
         tableBody.appendChild(tr);
     }
 
     myTableDiv.appendChild(table)
+}
+
+
+function setValidCellStyle(element) {
+    element.style.color = "black"
+    element.style.textDecoration = "none"
+}
+
+function setInvalidCellStyle(element) {
+    element.style.color = "red"
+    element.style.textDecoration = "underline"
+}
+
+function insertSensorData(mapData) {
+    for (var i = 0; i < mapData.length; i++) {
+        try {
+            var key = mapData[i].name
+            var tempCell = document.getElementById(key + "temp")
+            var accsCell = document.getElementById(key + "accs")
+            tempCell.innerHTML = mapData[i].temperature
+            accsCell.innerHTML = mapData[i].sumAcc
+        } catch (err) {
+            continue
+        }
+    }
 }
 
 

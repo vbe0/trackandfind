@@ -32,22 +32,26 @@ body {
 /* Customized positioning of available things */
 .things_custom_div {
     position: absolute;
-    top: 490px;
-    left: 1200px;
+    top: 300px;
+    left: 800px;
 }
 
 /* Customized positioning of query parameter panel */
 .query_custom_div {
     position: absolute;
-    top: 80px;
-    left: 1200px;
+    top: 50px;
+    left: 800px;
+}
+
+.slider {
+    width: 400px !important;
 }
 
 /* Customized positioning of the map on /profile */
 .map_custom_div {
     position: absolute;
-    top: 80px;
-    left: 30px;
+    top: 65px;
+    left: 15px;
 }
 
 /* CSS for query button */
