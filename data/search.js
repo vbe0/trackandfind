@@ -150,32 +150,13 @@ function purifyData(data) {
 	}
 	result.sort(function(a,b){return a.date - b.date})
 	return result
-/*
-	var arr = data.hits.hits, i
-	var result = []
-	for (i = 0; i < data.hits.hits.length; i++) {
-		var data_i = {timestamp: arr[i]["_source"]['timestamp'],
-			pos: {
-				lon: arr[i]["_source"]["state"]["payload"].split(",")[0],
-				lat: arr[i]["_source"]["state"]["payload"].split(",")[1]
-			},
-			battery: arr[i]["_source"]["state"]["payload"].split(",")[2],
-			temperature: arr[i]["_source"]["state"]["payload"].split(",")[3],
-			accSum: arr[i]["_source"]["state"]["payload"].split(",")[4]
-		}
-		result.push(data_i)
-	}
-	return result
-*/
 }
 
 var packData = function(start, stop, thing) {
 	var k = 0, result = []
 	return new Promise(
 		function (resolve, reject) {
-			//console.log(start, stop, thing)
 			var res = getSensorData(start, stop, thing).then(data => {
-				//console.log("Finished getting data from " + thing)
 				resolve(data)
 				return data
 			})
@@ -199,7 +180,6 @@ module.exports = {
 						Promise.resolve(),
 				).then(_ => {
 					resolve(result)
-					//console.log(result)
 					return result
 				})
 			}

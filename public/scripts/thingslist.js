@@ -4,7 +4,9 @@ var allThings = {}
 
 var allHistory = {}
 
-function requestAllThings(source) {
+var globalMapData = {}
+
+function requestAllThings(source="live") {
     $.ajax({
         url: '/things/all',
         data: " ",
@@ -22,9 +24,9 @@ function requestAllThings(source) {
 function fillTable(things, source) {
     var myTableDiv, table
 
-    if (source == "profile") {
-        myTableDiv = document.getElementById("profile_table_div")
-        table = document.getElementById("profile_things_table")
+    if (source == "history") {
+        myTableDiv = document.getElementById("history_table_div")
+        table = document.getElementById("history_things_table")
     } else {
         myTableDiv = document.getElementById("table_div")
         table = document.getElementById("things_table")
@@ -59,11 +61,14 @@ function fillTable(things, source) {
 
         if (source == "live") {
             td.appendChild(makeBtn(key, "Hide", 'btn-primary'));
-            td.appendChild(makeBtn(key, "View Path"));
-            
+            td.appendChild(makeBtn(key, "View Path"))
             tr.appendChild(td)
-        } else if (source == "profile") {
+        } else if (source == "history") {
             td.appendChild(makeBtn(key, "Include"));
+            var pathBtn = makeBtn(key, "View Path")
+            pathBtn.id = key + "View Path" + "historic"
+            pathBtn.style.visibility = 'hidden'
+            td.appendChild(pathBtn)
             tr.appendChild(td)
         }
         var td_temp = document.createElement('TD')
@@ -92,12 +97,14 @@ function setInvalidCellStyle(element) {
     element.style.textDecoration = "underline"
 }
 
-function insertSensorData(mapData) {
+function insertSensorData(mapData, ) {
     for (var i = 0; i < mapData.length; i++) {
         try {
             var key = mapData[i].name
             var tempCell = document.getElementById(key + "temp")
             var accsCell = document.getElementById(key + "accs")
+            var pathCell = document.getElementById(key + "View Path" + "historic")
+            pathCell.style.visibility = 'visible'
             tempCell.innerHTML = mapData[i].temperature
             accsCell.innerHTML = mapData[i].sumAcc
         } catch (err) {
@@ -153,7 +160,6 @@ function makeBtn(id, label, btntype='btn-info') {
 }
 
 function buttonEvent(btn) {   
-    console.log("kek")
     if (btn.innerHTML == "Hide") {
         removeMarker(btn.id.replace('Hide', ''))
         changeBtn(btn, "Show")
@@ -162,11 +168,20 @@ function buttonEvent(btn) {
         changeBtn(btn, "Hide", 'btn-primary')
     }
     else if (btn.innerHTML == "View Path") {
-        addTrackerPathToMap(btn.id.replace('View Path', ''))        
+        if (btn.id.includes("historic")) {
+            addHistoricPathToMap(btn.id.replace('View Path' + 'historic', ''))
+        } else {
+            addTrackerPathToMap(btn.id.replace('View Path', ''))        
+        }
         changeBtn(btn, "Hide Path", 'btn-primary')
     }
     else if (btn.innerHTML == "Hide Path") {
-        removePath(btn.id.replace('View Path', ''))                
+        if (btn.id.includes("historic")) {
+            console.log("removing historic")
+            removePath(btn.id.replace('View Path' + 'historic', ''))
+        } else {
+            removePath(btn.id.replace('View Path', ''))
+        }
         changeBtn(btn, "View Path")
     }
     else if (btn.innerHTML == "Hide All") {
@@ -291,9 +306,38 @@ addTrackerPathToMap = function (thingName) {
             prev_lat = lat
             prev_lng = lng
             i++
+            console.log([allHistory[thingName][x].lat, allHistory[thingName][x].lng])
             coords.push([allHistory[thingName][x].lat, allHistory[thingName][x].lng])
         }
     }
     console.log("Adding path for ", thingName)
+    addPath(thingName, coords)
+}
+
+
+
+function addHistoricPathToMap(thingName, mapData = undefined) {
+    var i, coords = [], tmp = [2]
+
+
+    if (globalMapData.length == undefined) {
+        console.log("First time")
+        globalMapData = mapData
+    } else {
+        return
+    }
+
+    for (i = 0; i < globalMapData.length; i++) {
+        tmp[0] = String(globalMapData[i].lat)
+        tmp[1] = String(globalMapData[i].lng) 
+        var lat = globalMapData[i].lat
+        var lng = globalMapData[i].lng
+        // ["69.37439", "18.30176"]
+        if (lat != 'None' && lng != "None" && lat != undefined && lng != undefined) {
+            coords.push([String(globalMapData[i].lat), String(globalMapData[i].lng)])
+            console.log([String(globalMapData[i].lat), String(globalMapData[i].lng)])
+        }
+    }
+    console.log(thingName)
     addPath(thingName, coords)
 }

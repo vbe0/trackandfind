@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    requestAllThings("profile")
+    requestAllThings("history")
     var body = []
 
     // Set text value to 'text' on warning message field
@@ -55,9 +55,11 @@
                     enabled: true
                 })
 
+                var names = getNames(body)
+
                 for (var i = 0; i < body.length; i++) {
                     insertSensorData(body[i], body[i])
-                    console.log(body[i])
+                    addHistoricPathToMap(names[i], body[i])
                 }
             }
         })
