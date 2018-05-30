@@ -148,6 +148,7 @@ function purifyData(data) {
 
 		result.push(value)
 	}
+	result.sort(function(a,b){return a.date - b.date})
 	return result
 /*
 	var arr = data.hits.hits, i

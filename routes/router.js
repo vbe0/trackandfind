@@ -11,7 +11,7 @@ const FetchData = require('../data/fetchdata.js')
 var thingsData = require('../data/search.js')
 
 var g_things = {time:undefined, things: {}} 
-var g_thingsData = {time:undefined, data: {}}
+var g_thingsData = {time:{}, data: {}}
 
 // GET route for login
 router.get('/', function (req, res, next) {
@@ -123,9 +123,9 @@ router.get('/data/:name', function (req, res, next) {
           time = {}
           time.start = '2018-05-01T00:00:00'  // Have no good data before this. 
           ct = d.getTime()
-          if (g_thingsData.data[name] === undefined || g_thingsData.data[name].length == 0 || g_thingsData.time === undefined || ct - g_thingsData.time > 1000 * 60 * 10) {
-            g_thingsData.time = d.getTime()
+          if (g_thingsData.data[name] === undefined || g_thingsData.data[name].length == 0 || JSON.stringify(g_thingsData.time) == '{}' || ct - g_thingsData.time[name] > 1000 * 60 * 5) {
             FetchData.getData(time, req.params.name).then(s => {
+              g_thingsData.time[name] = d.getTime()
               g_thingsData.data[name] = s 
               res.send(s)
             })

@@ -218,19 +218,24 @@ changeAllBtn = function (label, type, btntype='btn-info') {
     }
 }
 
-getHistoryData = function () {
-    var i 
-    for (x in allThings) {
+getHistoryData = function (things=Object.keys(allThings)) {
+    for (var i = 0; i < things.length; i++) {
         $.ajax({
-            url: '/data/'+ x,
+            url: '/data/'+ things[i],
             data: " ",
             success: function (data) {
-                addToHistory(data)
-                addLastToMap(data)
+                if (data[0] == undefined) {
+                    console.log("Failed to get data for ", things[i])
+                } else {
+                    addToHistory(data)
+                    addLastToMap(data)
+                }
             }
         });
+
     }
 }
+
 
 addToHistory = function (data) {
     allHistory[data[0].name] = data
@@ -239,7 +244,6 @@ addToHistory = function (data) {
 addToDeviceHistory = function (device, data) {
     allHistory[device].push(data) 
 }
-
 addLastToMap = function (thingdata) {
     try {
         var thingName = thingdata[0].name
@@ -248,6 +252,8 @@ addLastToMap = function (thingdata) {
             console.log("Data for ", thingName, " is undefined.")
             return
         }
+        data = thingdata[thingdata.length - 1]
+        insertDeviceSensorData(data.name, data, true)
         for (i = 1; i <= thingdata.length; i++){
             data = thingdata[thingdata.length - i]
             if (data.lng === "None"){
@@ -263,7 +269,6 @@ addLastToMap = function (thingdata) {
         
         var date = String(new Date(Number(data.date))).replace('GMT+0200 (CEST)', '')        
         console.log("Adding last received to map: ", data, "with date ", date)
-        insertDeviceSensorData(data.name, data, true)
         addPastMarker(data.name, data.lat, data.lng, markerText="Temp: "+ data.temperature + ", Battery: "+ data.battery, time=date)
     } catch (err) {
         console.log("Error parsing data from history last received with", thingName, err)
