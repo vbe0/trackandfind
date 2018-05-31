@@ -2,6 +2,8 @@
     requestAllThings("history")
     var body = []
 
+    var chart = newChart('.ct-chart')
+
     // Set text value to 'text' on warning message field
     function toggleText(text) {
         document.getElementById("warning_msg").innerHTML = text;
@@ -56,16 +58,16 @@
                 })
 
                 var names = getNames(body)
-
                 for (var i = 0; i < body.length; i++) {
                     insertSensorData(body[i], body[i])
-                    addHistoricPathToMap(names[i], body[i])
+                    //addHistoricPathToMap(names[i], body[i])
                 }
             }
         })
     })
    
     $('#theSlider').slider();
+    $('#chartSlider').slider();
     /* As the slider moves, we want to display each (lon-lat) pair.
     * However, they might not exist. Use the latest known pair if this is the case.
     */
@@ -98,6 +100,9 @@
                 setInvalidCellStyle(accsCell)
             }
         }
+
+        var granularity = document.getElementById("chartSlider").value
+        setChartData(chart, body[0], e.value, granularity)
     })
 
     /* Returns the names of all things */ 

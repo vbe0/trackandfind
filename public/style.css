@@ -36,6 +36,21 @@ body {
     left: 800px;
 }
 
+.ct-series-a .ct-line {
+    stroke: greenyellow;
+    stroke-width: 3px; 
+}
+
+.ct-label {
+    font-size: 15px;
+}
+
+.charts_custom_div {
+    position: absolute;
+    top: 800px;
+    left: 60px;
+}
+
 /* Customized positioning of query parameter panel */
 .query_custom_div {
     position: absolute;
@@ -44,7 +59,7 @@ body {
 }
 
 .slider {
-    width: 400px !important;
+    width: 500px !important;
 }
 
 /* Customized positioning of the map on /profile */
