@@ -4,7 +4,6 @@
         
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="/public/style.css" />
 
         <!-- Optional theme -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
@@ -14,12 +13,18 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 
+        <!-- Chart -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+        <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+        <script src="/public/scripts/chart.js"></script>
+
         <!-- Slider js and css. -->
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.min.css" />
-        <script type="text/javascript" src="public/scripts/thingslist.js"></script>
+        <script type="text/javascript" src="/public/scripts/thingslist.js"></script>
+        <link rel="stylesheet" type="text/css" href="/public/style.css" />
 
         <div class="query_custom_div">
             <h2>Selector panel</h3>
@@ -54,7 +59,13 @@
             <button type="submit" id="submit_btn" class="query_btn">Query</button>
             <input id="theSlider" data-slider-id='theSlider' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="1" data-slider-value="0"/>
         </div>
-
+        
+        <div class="charts_custom_div">
+            <div id="theChart" class="ct-chart"></div>
+            <h2>Granularity</h2>
+            <input id="chartSlider" data-slider-id='chartSliter' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="0"/>
+        </div>
+        
         <div class="things_custom_div" id="history_table_div" style="margin-top:20px;">
             <table class="table table-bordered" id="history_things_table" style="table-layout: fixed; width: 800px;">
                 <colgroup>
@@ -63,7 +74,7 @@
                     <col width="15%">
                     <col width="10%">
                     <col width="12%">
-                    <col width="15%">
+                    <col width="15%"><div class="ct-chart" id="accChart"></div>
                     <col width="20%">
                 </colgroup>
                 <thead></thead>
