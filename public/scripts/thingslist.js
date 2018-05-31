@@ -308,7 +308,7 @@ addTrackerPathToMap = function (thingName) {
             prev_lat = lat
             prev_lng = lng
             i++
-            console.log([allHistory[thingName][x].lat, allHistory[thingName][x].lng])
+            //console.log([allHistory[thingName][x].lat, allHistory[thingName][x].lng])
             coords.push([allHistory[thingName][x].lat, allHistory[thingName][x].lng])
         }
     }
