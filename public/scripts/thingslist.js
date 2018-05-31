@@ -195,7 +195,7 @@ function buttonEvent(btn) {
     }
     else if (btn.innerHTML == "Include") {
         changeBtn(btn, "Exclude", 'btn-primary')
-        addHistoricPathToMap(btn.id.replace('View Path' + 'historic', ''))
+        addHistoricPathToMap(btn.id.replace('Include', ''))
     } else if (btn.innerHTML == "Exclude") {
         removePath(btn.id.replace('Include', ''))
         changeBtn(btn, "Include")
