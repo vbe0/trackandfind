@@ -3,7 +3,7 @@
 function newChart(id) {
     var options = {
         height: '200px',
-        width: '1600px',
+        width: '1900px',
         showGrid: false,
         axisX: {
             labelFontSize: 30
