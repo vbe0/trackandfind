@@ -65,19 +65,23 @@ function fillTable(things, source) {
             td.appendChild(makeBtn(key, "Hide", 'btn-primary'));
             td.appendChild(makeBtn(key, "View Path"))
             tr.appendChild(td)
+            var td_accs = document.createElement('TD')
+            td_accs.id = key + "accs"
+            tr.appendChild(td_accs)
         } else if (source == "history") {
             td.appendChild(makeBtn(key, "Include"));
             tr.appendChild(td)
+            var accKey = makeBtn(key, "View Accs")
+            accKeys.push(accKey)
+            td.appendChild(accKey)
         }
-        var td_temp = document.createElement('TD')
         var td_time = document.createElement('TD')
-        var accKey = makeBtn(key, "View Accs")
+        var td_temp = document.createElement('TD')
         td_temp.id = key + "temp"
         td_time.id = key + "timestamp"
         tr.appendChild(td_temp)
-        td.appendChild(accKey)
-        accKeys.push(accKey)
         tr.appendChild(td_time)
+        
         tableBody.appendChild(tr);
     }
 
