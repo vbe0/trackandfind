@@ -195,10 +195,10 @@ function buttonEvent(btn) {
     }
     else if (btn.innerHTML == "Include") {
         changeBtn(btn, "Exclude", 'btn-primary')
-        addHistoricPathToMap(btn.id.replace('Include', ''))
+        //addHistoricPathToMap(btn.id.replace('Include', ''))
     } else if (btn.innerHTML == "Exclude") {
-        removePath(btn.id.replace('Include', ''))
         changeBtn(btn, "Include")
+        removePath(btn.id.replace('Include', ''))
     }
 }
 
@@ -328,6 +328,10 @@ function addHistoricPathToMap(thingName, mapData = undefined) {
     } else {
         return
     }
+    if (globalMapData == undefined) {
+        return 
+    }
+
 
     for (i = 0; i < globalMapData.length; i++) {
         tmp[0] = String(globalMapData[i].lat)
