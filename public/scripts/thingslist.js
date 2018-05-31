@@ -6,6 +6,8 @@ var allHistory = {}
 
 var globalMapData = {}
 
+var accKeys = []
+
 function requestAllThings(source="live") {
     $.ajax({
         url: '/things/all',
@@ -65,20 +67,16 @@ function fillTable(things, source) {
             tr.appendChild(td)
         } else if (source == "history") {
             td.appendChild(makeBtn(key, "Include"));
-            // var pathBtn = makeBtn(key, "View Path")
-            // pathBtn.id = key + "View Path" + "historic"
-            // pathBtn.style.visibility = 'hidden'
-            // td.appendChild(pathBtn)
             tr.appendChild(td)
         }
         var td_temp = document.createElement('TD')
-        var td_accs = document.createElement('TD')
         var td_time = document.createElement('TD')
+        var accKey = makeBtn(key, "View Accs")
         td_temp.id = key + "temp"
-        td_accs.id = key + "accs"
         td_time.id = key + "timestamp"
         tr.appendChild(td_temp)
-        tr.appendChild(td_accs)
+        td.appendChild(accKey)
+        accKeys.push(accKey)
         tr.appendChild(td_time)
         tableBody.appendChild(tr);
     }
@@ -97,21 +95,37 @@ function setInvalidCellStyle(element) {
     element.style.textDecoration = "underline"
 }
 
-function insertSensorData(mapData, ) {
+function insertSensorData(thing, mapData) {
     for (var i = 0; i < mapData.length; i++) {
         try {
-            var key = mapData[i].name
+            var key = thing
             var tempCell = document.getElementById(key + "temp")
-            var accsCell = document.getElementById(key + "accs")
-            var pathCell = document.getElementById(key + "View Path" + "historic")
-            pathCell.style.visibility = 'visible'
+            var timeCell = document.getElementById(key + "timestamp")
             tempCell.innerHTML = mapData[i].temperature
-            accsCell.innerHTML = mapData[i].sumAcc
+            timeCell.innerHTML = datedate(mapData[i].date)
+            console.log(mapData[i].temperature, mapData[i].sumAcc)
+            return
         } catch (err) {
             continue
         }
     }
 }
+
+
+function toggleAccButton(btn) {
+    if (btn.innerHTML == "View Accs") {
+        changeBtn(btn, "Hide Accs", 'btn-primary')
+        for (var i = 0; i < accKeys.length; i++) {
+            if (btn != accKeys[i]) {  
+                changeBtn(accKeys[i], "View Accs")
+            }
+        }
+    } else if (btn.innerHTML == "Hide Accs") {
+        changeBtn(btn, "View Accs")
+    }
+}
+
+
 function insertDeviceSensorData(thing, data, old=false) {
     try {
         var key = thing
@@ -148,9 +162,12 @@ function makeBtn(id, label, btntype='btn-info') {
     att.value = 'btn ' + btntype + ' btn-xs'
     a.setAttributeNode(att)
     att = document.createAttribute("onclick")
-    att.value = "buttonEvent(this)"
+    if (label == "View Accs") {
+        att.value = "toggleAccButton(this)"
+    } else {
+        att.value = "buttonEvent(this)"
+    }
     a.setAttributeNode(att)
-
     att = document.createAttribute("id")
     att.value = id + label
     a.setAttributeNode(att)

@@ -78,14 +78,11 @@
             if (body[i][e.value] != null) {
                 var key = body[i][e.value].name
                 var tempCell = document.getElementById(key + "temp")
-                var accsCell = document.getElementById(key + "accs")
                 var timeCell = document.getElementById(key + "timestamp")
                 
                 setValidCellStyle(tempCell)
-                setValidCellStyle(accsCell)
                 tempCell.innerHTML = body[i][e.value].temperature
-                accsCell.innerHTML = body[i][e.value].sumAcc
-                timeCell.innerHTML = new Date(body[i][e.value].date)
+                timeCell.innerHTML = datedate(body[i][e.value].date)
 
                 var lng = body[i][e.value].lng
                 var lat = body[i][e.value].lat
@@ -95,15 +92,31 @@
                 }
             } else {
                 var tempCell = document.getElementById(names[i] + "temp")
-                var accsCell = document.getElementById(names[i] + "accs")
                 setInvalidCellStyle(tempCell)
-                setInvalidCellStyle(accsCell)
             }
         }
 
-        var granularity = document.getElementById("chartSlider").value
-        setChartData(chart, body[0], e.value, granularity)
+        for (var i = 0; i < accKeys.length; i++) {
+            if (document.getElementById(accKeys[i].id).innerHTML != "View Accs") {
+                //console.log("selected thing = ", document.getElementById(accKeys[i].id).id)
+                var thingBody = findThingBody(document.getElementById(accKeys[i].id).id.replace("View Accs", ""), body)
+                //console.log(thingBody[0])
+                var granularity = document.getElementById("chartSlider").value
+                setChartData(chart, thingBody, e.value, granularity)
+            }
+        }
     })
+
+    function findThingBody(thing, body) {
+        for (var i = 0; i < body.length; i++) {
+            //console.log(body[i], thing)
+            for (var j = 0; j < body[i].length; j++) {
+                if (body[i][j].name == thing) {
+                    return body[i]
+                }
+            }
+        }
+    }
 
     /* Returns the names of all things */ 
     function getNames(data) {

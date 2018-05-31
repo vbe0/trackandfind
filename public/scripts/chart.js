@@ -3,7 +3,7 @@
 function newChart(id) {
     var options = {
         height: '200px',
-        width: '1600px',
+        width: '1900px',
         showGrid: false,
         axisX: {
             labelFontSize: 30
@@ -23,7 +23,7 @@ function setChartData(chart, data, idx, granularity) {
     for (var i = idx; i < Number(idx + Number(granularity)); i++) {
         if (data[i].sumAcc != undefined) {
             accs.push(Number(data[i].sumAcc))
-            labels.push([new Date(Number(data[i].date))])
+            labels.push([datedate(new Date(Number(data[i].date)))])
         } else {
             return
         }
