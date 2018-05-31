@@ -65,10 +65,10 @@ function fillTable(things, source) {
             tr.appendChild(td)
         } else if (source == "history") {
             td.appendChild(makeBtn(key, "Include"));
-            var pathBtn = makeBtn(key, "View Path")
-            pathBtn.id = key + "View Path" + "historic"
-            pathBtn.style.visibility = 'hidden'
-            td.appendChild(pathBtn)
+            // var pathBtn = makeBtn(key, "View Path")
+            // pathBtn.id = key + "View Path" + "historic"
+            // pathBtn.style.visibility = 'hidden'
+            // td.appendChild(pathBtn)
             tr.appendChild(td)
         }
         var td_temp = document.createElement('TD')
@@ -195,7 +195,9 @@ function buttonEvent(btn) {
     }
     else if (btn.innerHTML == "Include") {
         changeBtn(btn, "Exclude", 'btn-primary')
+        addHistoricPathToMap(btn.id.replace('View Path' + 'historic', ''))
     } else if (btn.innerHTML == "Exclude") {
+        removePath(btn.id.replace('Include', ''))
         changeBtn(btn, "Include")
     }
 }
@@ -335,7 +337,7 @@ function addHistoricPathToMap(thingName, mapData = undefined) {
         // ["69.37439", "18.30176"]
         if (lat != 'None' && lng != "None" && lat != undefined && lng != undefined) {
             coords.push([String(globalMapData[i].lat), String(globalMapData[i].lng)])
-            console.log([String(globalMapData[i].lat), String(globalMapData[i].lng)])
+            //console.log([String(globalMapData[i].lat), String(globalMapData[i].lng)])
         }
     }
     console.log(thingName)
